@@ -1,0 +1,125 @@
+.categories-section{
+  padding: 5rem 0;
+}
+
+.categories-section .categories-container {
+  width: calc(100% - 14rem);
+  height: 90%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows:  25vh 25vh 16vh 33vh;
+}
+
+.categories-section .category{
+  position: relative;
+  height: calc(100% - 10px);
+  border-radius: 7px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.categories-section .tshirts {
+  margin: 5px;
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+}
+
+.categories-section .trackpants {
+  margin: 5px;
+  grid-column: 1 / 2;
+  grid-row: 3 / 5;
+}
+
+.categories-section .joggers {
+  margin: 5px;
+  grid-column: 2 / 3;
+  grid-row: 3 / 5;
+}
+
+.categories-section .shorts {
+  margin: 5px;
+  grid-column: 3 / 4;
+  grid-row: 4 / 5;
+}
+
+.categories-section .winterwear {
+  margin: 5px;
+  grid-column: 3 / 4;
+  grid-row: 1 / 4;
+}
+
+.categories-section .category .background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: scale(1.03);
+}
+
+.categories-section .category:hover .background {
+  transform: scale(1);
+}
+
+.categories-section .tshirts .background {
+  background: linear-gradient(
+                    to bottom right, 
+                    rgba(35, 37, 38, 0.5), 
+                    rgba(65, 67, 69, 0.5)
+                ), url(../../assets/Categories/tshirts.jpg);
+  background-size: cover;
+}
+
+.categories-section .winterwear .background {
+  background: linear-gradient(
+                    to bottom right, 
+                    rgba(35, 37, 38, 0.5), 
+                    rgba(65, 67, 69, 0.5)
+                ), url(../../assets/Categories/wintewear.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.categories-section .trackpants .background {
+  background: linear-gradient(
+                    to bottom right, 
+                    rgba(35, 37, 38, 0.5), 
+                    rgba(65, 67, 69, 0.5)
+                ), url(../../assets/Categories/trackpants.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.categories-section .joggers .background {
+  background: linear-gradient(
+                    to bottom right, 
+                    rgba(35, 37, 38, 0.5), 
+                    rgba(65, 67, 69, 0.5)
+                ), url(../../assets/Categories/joggers.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.categories-section .shorts .background {
+  background: linear-gradient(
+                    to bottom right, 
+                    rgba(35, 37, 38, 0.5), 
+                    rgba(65, 67, 69, 0.5)
+                ), url(../../assets/Categories/shorts.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.categories-section .category .category-heading {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  bottom: 0;
+  color: var(--primary-light);
+  padding: var(--space-md) var(--space-sm);
+  font-size: 2.8rem;
+}
+
+.categories-section .category:hover .category-heading {
+  color: var(--accent-color);
+}
+

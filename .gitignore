@@ -1,0 +1,48 @@
+# Node modules (both frontend and backend)
+**/node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+**/.env
+
+# Build output
+frontend/build/
+backend/dist/
+
+# Optional lock files
+package-lock.json
+yarn.lock
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+
+# Coverage
+coverage/
+
+# Passwords
+Passwords/
+
+# Others
+*.tgz
+/your-app
+  /client
+    /node_modules
+    /build
+    .env
+  /backend
+    /node_modules
+    /dist
+    .env
+  .gitignore

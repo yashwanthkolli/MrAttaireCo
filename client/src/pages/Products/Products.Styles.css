@@ -1,0 +1,13 @@
+.products-page {
+  min-height: 100vh;
+  padding: 5rem 7rem 5rem 7rem;
+}
+
+.product-grid {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 5rem;
+}

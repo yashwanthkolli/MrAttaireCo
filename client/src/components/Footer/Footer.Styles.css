@@ -1,0 +1,105 @@
+.footer-section {
+  position: relative;
+  background: var(--secondary-dark);
+  padding: 5rem 10rem;
+  color: var(--primary-light);
+}
+
+.footer-section .socials {
+  position: absolute;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--accent-color);
+  padding-right: var(--space-md);
+  border-radius: 0 2px 2px 0;
+  font-size: 1.8rem;
+}
+
+.footer-section .socials a {
+  width: 100%;
+  background-color: var(--accent-color);
+  border-radius: 0 2px 2px 0;
+  padding: var(--space-sm);
+  text-align: center;
+}
+
+.footer-section .socials a:hover {
+  width: 150%;
+}
+
+.footer-section .content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5rem;
+}
+
+.footer-section .content .details {
+  width: 30%;
+}
+
+.footer-section .content .details .logo-container {
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  margin-bottom: var(--space-md);
+}
+
+.footer-section .content .details .logo-container img{
+  height: 100%;
+  margin-right: var(--space-sm);
+}
+
+.footer-section .content .details .company-text {
+  white-space: pre-wrap;
+  color: var(--secondary-light);
+  margin-bottom: var(--space-md);
+}
+
+.footer-section .content .details .contact {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.footer-section .content .details .contact .medium {
+  color: var(--secondary-light);
+}
+
+.footer-section .content .links {
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
+}
+
+.footer-section .content .links .links-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-section .content .links .links-list .links-title {
+  margin-bottom: var(--space-lg);
+  color: var(--secondary-light);
+}
+
+.footer-section .content .links .links-list a {
+  margin-bottom: var(--space-sm);
+}
+
+.footer-section .copywrite {
+  width: 100%;
+  text-align: center;
+  color: var(--secondary-light);
+}
+
+.footnote {
+  width: 100%;
+  text-align: center;
+  background: var(--primary-dark);
+  color: var(--accent-color);
+  padding: var(--space-sm) 0;
+  font-weight: 700;
+}
