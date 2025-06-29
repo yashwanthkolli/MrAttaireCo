@@ -13,8 +13,8 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     category: category ? category : '',
-    pricemin: '',
-    pricemax: '',
+    priceMin: 0,
+    priceMax: 5000,
     color: '',
     sort: '-createdAt'
   });

@@ -15,6 +15,7 @@ import Profile from './pages/Profile/Profile';
 import ChangePassword from './components/auth/ChangePassword';
 import Products from './pages/Products/Products';
 import Footer from './components/Footer/Footer';
+import ProductDetails from './pages/ProductDetails/ProductDetails';
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
           /> */}
           <Route path="/products" element={<Products />} />
           <Route path="/products/:category" element={<Products />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
         </Routes>
         <Footer />
       </AuthProvider>

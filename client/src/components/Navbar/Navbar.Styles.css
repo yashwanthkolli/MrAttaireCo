@@ -62,6 +62,7 @@
   box-shadow: var(--shadow-sm);
   padding: var(--space-md);
   transform: translateX(-50%);
+  z-index: 10;
 }
 
 .navbar .dropdown-container:hover .dropdown-content, .navbar .dropdown-container .dropdown-content:hover{

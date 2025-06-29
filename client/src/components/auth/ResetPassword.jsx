@@ -16,7 +16,6 @@ const ResetPassword = () => {
   useEffect(() => {
     const checkToken = async () => {
       try {
-        console.log("H")
         await API.get(`/auth/checkresettoken/${resetToken}`);
         setTokenValid(true);
       } catch (err) {

@@ -1,6 +1,7 @@
 .products-page {
   min-height: 100vh;
   padding: 5rem 7rem 5rem 7rem;
+  overflow: hidden;
 }
 
 .product-grid {
