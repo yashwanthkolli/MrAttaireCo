@@ -1,14 +1,36 @@
 import { Link } from 'react-router-dom';
 
 import './ProductCard.Styles.css';
+import { useRef, useState } from 'react';
 
-const ProductCard = ({ product, dark }) => {
+const ProductCard = ({ product, dark, small }) => {
+  const [image, setImage] = useState(product.images.find(img => img.isPrimary)?.url || product.images[0]?.url)
+  const timerId = useRef(null);
+
+  const handleMouseEnter = () => {
+    // for(const i in product.images) {
+    //   timerId.current = setTimeout(() => {
+    //     setImage(product.images[i].url)
+    //   }, i * 1000)
+    // }
+    setImage(product.images[1]?.url)
+  }
+
+  const handleMouseLeave = () => {
+    // clearTimeout(timerId.current)
+    // setTimeout(() => {
+    //     setImage(product.images.find(img => img.isPrimary)?.url || product.images[0]?.url)
+    //   }, 1000)
+
+    setImage(product.images.find(img => img.isPrimary)?.url || product.images[0]?.url)
+  }
+
   return (
-    <div className="product-card">
+    <div className="product-card" onMouseOver={handleMouseEnter} onMouseOut={handleMouseLeave} >
       <Link to={`/product/${product._id}`}>
         <div className="product-image">
           <img 
-            src={product.images.find(img => img.isPrimary)?.url || product.images[0]?.url} 
+            src={image} 
             alt={product.name}
           />
           {product.discountedPrice && (
@@ -19,7 +41,7 @@ const ProductCard = ({ product, dark }) => {
         </div>
         <div className={`product-details ${dark ? 'dark' : 'light'}`}>
           <h5 className='description'>{product.description}</h5>
-          <h3 className='name'>{product.name}</h3>
+          <h3 className={`name ${small ? 'small' : 'large'}`}>{product.name}</h3>
           <div className="price">
             {product.discountedPrice ? (
               <>

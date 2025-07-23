@@ -26,9 +26,16 @@
 }
 
 .product-card .product-details .name {
-  font-size: 2rem;
   font-weight: 500;
   margin: 5px 0;
+}
+
+.product-card .product-details .large {
+  font-size: 2rem;
+}
+
+.product-card .product-details .small {
+  font-size: 1.6rem;
 }
 
 .product-card .product-details .description {

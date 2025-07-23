@@ -1,0 +1,126 @@
+.product-detail .container {
+  padding: 5rem 7rem 5rem 7rem;
+}
+
+.product-detail .breadcrumb {
+  margin-bottom: var(--space-lg);
+  font-size: 1.4rem;
+}
+
+.product-detail .breadcrumb a {
+  color: var(--secondary-dark);
+  text-decoration: none;
+}
+
+.product-detail .breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.product-detail .product-grid {
+  display: flex;
+}
+
+.product-detail .product-grid .images-container {
+  width: 65%;
+}
+
+.product-detail .product-grid .info-container {
+  width: calc(30% - 2rem);
+  padding: 2rem 1rem;
+  border-radius: 7px;
+  box-shadow: var(--shadow-sm);
+}
+
+.info-container .description {
+  color: var(--secondary-light);
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.info-container .new-tag {
+  background: var(--primary-dark);
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+  color: var(--primary-light);
+}
+
+.info-container .name {
+  margin-top: 1rem;
+}
+
+.info-container .thumbnail-container{
+  display: flex;
+  margin: 2rem 0;
+  gap: 1rem;
+}
+
+.info-container .thumbnail-container .img-container {
+  width: 5rem;
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.info-container .thumbnail-container img {
+  width: 100%;
+}
+
+.info-container .size-guide-link {
+  width: 100%;;
+  color: var(--accent-color);
+  text-align: right;
+}
+
+.info-container .size-guide-link:hover {
+  text-decoration: underline;
+}
+
+.product-detail .other-details {
+  width: calc(100% - 14rem);
+  padding: 5rem 7rem 5rem 7rem;
+  background-color: var(--primary-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.product-detail .other-details .product-info {
+  width: 70%;
+  margin: auto;
+}
+
+.shipping-details-container{
+  width: 70%;
+  margin: 3rem auto;
+}
+
+.shipping-details-container .heading-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--primary-dark);
+}
+
+.shipping-details-container .details-section {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.shipping-details-container .open {
+  height: auto;
+}
+.shipping-details-container .closed {
+  height: 0;
+}
+
+.related-products-section {
+  width: 70%;
+  margin: auto;
+}
+.related-products-section .products-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 3rem;
+}

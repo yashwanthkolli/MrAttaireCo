@@ -1,6 +1,12 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import GoogleLoginButton from './GoogleLogin';
+
+import './Signup.Styles.css';
+import Input from '../Input/Input';
+import { FaEye } from 'react-icons/fa';
+import Button from '../Button/Button';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +18,7 @@ const Signup = () => {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false)
 
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -45,64 +52,69 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <h2>Sign Up</h2>
+    <div className='signup-container'>
+      <h2 className='heading'>Start to Style</h2>
+      <p className='sub-heading'>Please Fill Your Details To SignUp</p>
+
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>First Name:</label>
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Last Name:</label>
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Phone:</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Register</button>
+        <Input
+          name="firstName"
+          label="First Name"
+          value={formData.firstName}
+          onChange={handleChange}
+          placeholder='First Name'
+          required
+        />
+        <Input
+          name="lastName"
+          label="Last Name"
+          value={formData.lastName}
+          onChange={handleChange}
+          placeholder='Last Name'
+          required
+        />
+        <Input
+          name="email"
+          label="Email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder='Email'
+          required
+        />
+        <Input
+          name="password"
+          label="Password"
+          type={passwordVisible ? "text" :"password"}
+          icon={<FaEye onClick={() => setPasswordVisible(prev => !prev)} />}
+          iconPosition='right'
+          value={formData.password}
+          onChange={handleChange}
+          placeholder='Password'
+          required
+        />
+        <Input
+          name="phone"
+          label="Phone"
+          value={formData.phone}
+          onChange={handleChange}
+          placeholder='Phone Number'
+          required
+        />
+        <Button type="submit">Register</Button>
       </form>
-      <p>
-        Already have an account? <button onClick={() => navigate('/auth/login')}>Login</button>
+
+      <div className='or'>
+        <hr />
+        <span>Or</span>
+      </div>
+      
+      <GoogleLoginButton />
+      <p className='others text'>
+        <Link to='/auth/register'>Sign Up</Link>
+        <Link to='/pages/termsandconditions'>Terms</Link>
       </p>
     </div>
   );

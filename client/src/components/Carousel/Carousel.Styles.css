@@ -1,0 +1,25 @@
+.carousel {
+  width: 100vw;
+  overflow: hidden;
+  background: var(--primary-dark);
+  color: var(--primary-light);
+  padding: 5px 0;
+  position: relative;
+  z-index: 5;
+}
+
+.carousel .carousel-track {
+  width: 200vw;
+  display: flex;
+  animation: scroll 15s linear infinite;
+}
+
+.carousel .carousel-track .slide {
+  width: 25%;
+  text-align: center;
+}
+
+@keyframes scroll {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(-50%)}
+}

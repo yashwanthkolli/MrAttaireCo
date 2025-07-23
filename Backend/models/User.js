@@ -49,6 +49,8 @@ const userSchema = new mongoose.Schema({
     default: 'default.jpg'
   },
   addresses: [{
+    recipientName: String,
+    phoneNumber: String,
     street: String,
     city: String,
     state: String,

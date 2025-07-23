@@ -1,0 +1,8 @@
+.checkout-page {
+  display: flex;
+}
+
+.checkout-page .checkout-section {
+  width: 50%;
+  box-shadow: var(--shadow-sm);
+}

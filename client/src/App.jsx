@@ -3,7 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import Home from './pages/Home/Home';
 import AuthPage from './pages/Auth/Auth';
 import Signup from './components/auth/Signup';
-import Login from './components/auth/login';
+import Login from './components/auth/Login';
 import VerifyEmail from './components/auth/VerifyEmail';
 import './App.css'
 import ForgotPassword from './components/auth/ForgotPassword';
@@ -16,51 +16,93 @@ import ChangePassword from './components/auth/ChangePassword';
 import Products from './pages/Products/Products';
 import Footer from './components/Footer/Footer';
 import ProductDetails from './pages/ProductDetails/ProductDetails';
+import { CartProvider } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
+import Wishlist from './pages/Wishlist/Wishlist';
+import Cart from './pages/Cart/Cart';
+import SearchResults from './pages/SearchResults/SearchResults';
+import Carousel from './components/Carousel/Carousel';
+import AboutUs from './pages/AboutUs/AboutUs';
+import FAQs from './pages/Faqs/Faqs';
+import TermsAndConditions from './pages/Policies/TermsAndConditions';
+import Refund from './pages/Policies/Refund';
+import Address from './pages/Address/Address';
+import Checkout from './pages/Checkout/Checkout';
 
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<AuthPage />}>
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Signup />} />
-            <Route path="verifyemail/:verificationToken" element={<VerifyEmail />} />
-            <Route path="forgotpassword" element={<ForgotPassword />} />
-            <Route path="resetpassword/:resetToken" element={<ResetPassword />} />
-            <Route path="google/callback" element={<GoogleCallback />} />
-          </Route>
-          <Route 
-            path="/profile" 
-            element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="change-password"
-            element={
-              <PrivateRoute>
-                <ChangePassword />
-              </PrivateRoute>
-            }
-          />
-          {/* <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          /> */}
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:category" element={<Products />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-        </Routes>
-        <Footer />
+        <CartProvider>
+          <WishlistProvider>
+            <Carousel />
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/auth" element={<AuthPage />}>
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Signup />} />
+                <Route path="verifyemail/:verificationToken" element={<VerifyEmail />} />
+                <Route path="forgotpassword" element={<ForgotPassword />} />
+                <Route path="resetpassword/:resetToken" element={<ResetPassword />} />
+                <Route path="google/callback" element={<GoogleCallback />} />
+              </Route>
+              <Route 
+                path="/profile" 
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route 
+                path="/addresses" 
+                element={
+                  <PrivateRoute>
+                    <Address />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="change-password"
+                element={
+                  <PrivateRoute>
+                    <ChangePassword />
+                  </PrivateRoute>
+                }
+              />
+              {/* <Route
+                path="/dashboard"
+                element={
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                }
+              /> */}
+              <Route path="/products" element={<Products />} />
+              <Route path="/products/search" element={<SearchResults />} />
+              <Route path="/products/:category" element={<Products />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/pages/aboutus" element={<AboutUs />} />
+              <Route path="/pages/FAQs" element={<FAQs />} />
+              <Route path="/pages/termsandconditions" element={<TermsAndConditions />} />
+              <Route path="/pages/refundpolicy" element={<Refund />} />
+
+              <Route 
+                path="/checkout"
+                element={
+                  <PrivateRoute>
+                    <Checkout />
+                  </PrivateRoute>
+                }
+              />
+            </Routes>
+            <Footer />
+          </WishlistProvider>
+        </CartProvider>
       </AuthProvider>
     </Router>
   )

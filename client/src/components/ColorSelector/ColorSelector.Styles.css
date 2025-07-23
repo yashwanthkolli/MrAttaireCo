@@ -1,0 +1,27 @@
+.selector {
+  margin-bottom: 2rem;
+}
+
+.selector label {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.options {
+  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.color-options .color-option {
+  height: 3rem;
+  width: 5rem;
+  outline: none;
+  border: 1px solid var(--secondary-dark);
+  border-radius: 2px;
+}
+
+.color-options .selected {
+  outline: 3px solid var(--secondary-dark);
+}

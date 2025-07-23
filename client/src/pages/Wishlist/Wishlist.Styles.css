@@ -1,0 +1,9 @@
+.wishlist-page {
+  min-height: 30vh;
+  padding: 5rem 7rem 5rem 7rem;
+  overflow: hidden;
+}
+
+.wishlist-page .heading {
+  margin-bottom: 3rem;
+}

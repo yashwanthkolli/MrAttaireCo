@@ -5,6 +5,7 @@
   --primary-dark: #242423;
   --secondary-dark: #333533;
   --accent-color: #A3320B;
+  /* --accent-color: #ea8617; */
 
   font-size: 10px;
 
@@ -24,7 +25,7 @@
   --font-heading-lg: ;
 
   /* Others */
-  --shadow-sm: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  --shadow-sm: 0px 0px 16px 0px rgba(0,0,0,0.2);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

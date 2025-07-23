@@ -1,7 +1,9 @@
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import API from '../../utils/api';
+import Button from '../Button/Button';
+import Input from '../Input/Input';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -28,26 +30,26 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div>
-      <h2>Forgot Password</h2>
+    <div className='login-container'>
+      <h2 className='heading'>Forgot Password?</h2>
+      <p className='sub-heading'>Please Enter Your Email Id To Recieve Reset Link</p>
       {message && <p style={{ color: 'green' }}>{message}</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" disabled={isLoading}>
+        <Input
+          name="email"
+          label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder='Email'
+          required
+        />
+        <Button type="submit" disabled={isLoading}>
           {isLoading ? 'Sending...' : 'Send Reset Link'}
-        </button>
+        </Button>
       </form>
-      <p>
-        Remember your password? <button onClick={() => navigate('/auth/login')}>Login</button>
+      <p className='others text'>
+        Remember Your Password? &nbsp;<Link to='/auth/login'>Login In</Link>
       </p>
     </div>
   );

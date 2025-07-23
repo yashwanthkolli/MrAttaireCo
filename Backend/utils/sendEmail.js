@@ -1,28 +1,30 @@
-const nodemailer = require('nodemailer');
+const mailjet = require ('node-mailjet')
+	.apiConnect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE)
 
-const sendEmail = async options => {
-  // 1) Create a transporter
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    auth: {
-      user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD
-    }
-  });
-
-  // 2) Define the email options
-  const mailOptions = {
-    from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-    contentType: 'text/html'
-    // html: options.html (you can add HTML email templates later)
-  };
-
-  // 3) Actually send the email
-  await transporter.sendMail(mailOptions);
-};
+const sendEmail = async options  => {
+  try{
+    mailjet
+    .post("send", {'version': 'v3.1'})
+    .request({
+      "Messages":[
+          {
+              "From": {
+                  "Email": "support@mrattireco.com",
+                  "Name": "Mr Attire"
+              },
+              "To": [
+                  {
+                      "Email": options.email
+                  }
+              ],
+              "Subject": options.subject,
+              "TextPart": options.message
+          }
+      ]
+    })
+  } catch(err) {
+    console.log(err)
+  }
+}
 
 module.exports = sendEmail;

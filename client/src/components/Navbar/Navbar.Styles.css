@@ -5,6 +5,8 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--primary-light);
+  position: relative;
+  z-index: 5;
 }
 
 .navbar a{
@@ -37,7 +39,30 @@
 }
 
 .navbar .user-routes .route-icon{
+  position: relative;
   font-size: 2rem;
+}
+
+.navbar .user-routes .route-icon .value {
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  color: var(--primary-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  bottom: 0;
+  right: -1.5rem;
+}
+
+.navbar .user-routes .route-icon .wishlist {
+  background: var(--primary-dark);
+}
+
+.navbar .user-routes .route-icon .cart {
+  background: var(--accent-color);
 }
 
 .navbar .dropdown-container{

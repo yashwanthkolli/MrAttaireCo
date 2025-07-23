@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import API from '../../utils/api';
+import Button from '../Button/Button';
+import Input from '../Input/Input';
+import { FaEye } from 'react-icons/fa';
 
 const ResetPassword = () => {
   const { resetToken } = useParams();
@@ -11,6 +14,7 @@ const ResetPassword = () => {
   const [error, setError] = useState('');
   const [tokenValid, setTokenValid] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   // Check token validity when component mounts
   useEffect(() => {
@@ -65,34 +69,36 @@ const ResetPassword = () => {
   }
 
   return (
-    <div>
-      <h2>Reset Password</h2>
+    <div className='login-container'>
+      <h2 className='heading'>Reset Password</h2>
       {message && <p style={{ color: 'green' }}>{message}</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>New Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength="6"
-          />
-        </div>
-        <div>
-          <label>Confirm Password:</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            minLength="6"
-          />
-        </div>
-        <button type="submit" disabled={isLoading}>
+        <Input
+          name="newpassword"
+          label="New Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder='New Password'
+          required
+          minLength="6"
+        />
+        <Input
+          name="password"
+          label="Confirm Password"
+          type={passwordVisible ? "text" :"password"}
+          icon={<FaEye onClick={() => setPasswordVisible(prev => !prev)} />}
+          iconPosition='right'
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder='Confirm Password'
+          required
+          minLength="6"
+        />
+        <Button type="submit" disabled={isLoading}>
           {isLoading ? 'Resetting...' : 'Reset Password'}
-        </button>
+        </Button>
       </form>
     </div>
   );

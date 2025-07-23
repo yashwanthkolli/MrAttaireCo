@@ -14,6 +14,10 @@ const productSchema = new mongoose.Schema({
     required: [true, 'Please add a description'],
     maxlength: [2000, 'Description cannot exceed 2000 characters']
   },
+  information: {
+    type: String,
+    required: [true, 'Please add a information']
+  },
   price: {
     type: Number,
     required: [true, 'Please add a price'],
@@ -28,10 +32,6 @@ const productSchema = new mongoose.Schema({
       message: 'Discounted price must be below regular price'
     }
   },
-  colors: [{
-    type: String,
-    required: true
-  }],
   category: {
     type: String,
     required: [true, 'Please select a category'],
@@ -48,28 +48,24 @@ const productSchema = new mongoose.Schema({
       'footwear'
     ]
   },
-  stock: {
-    type: [{
+  variants: [{
+    color: {
+      type: String,
+      required: true
+    },
+    sizes: [{
       size: {
         type: String,
         required: true,
         enum: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
       },
-      quantity: {
+      stock: {
         type: Number,
         required: true,
         min: 0
       }
-    }],
-    validate: {
-      validator: function(stock) {
-        // Ensure no duplicate sizes
-        const sizes = stock.map(item => item.size);
-        return new Set(sizes).size === sizes.length;
-      },
-      message: 'Duplicate sizes are not allowed'
-    }
-  },
+    }]
+  }],
   sold: {
     type: Number,
     default: 0

@@ -27,7 +27,7 @@ mongoose.connect(MONGO_URI)
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true,
-  methods: ['GET', 'POST', 'OPTIONS', 'PUT'],
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
@@ -46,7 +46,7 @@ app.use(fileUpload({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 1000 // limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
 
@@ -67,12 +67,16 @@ app.get('/api/health', (req, res) => {
 // Import routes
 const auth = require('./routes/auth');
 const products = require('./routes/products');
-const hero = require('./routes/hero')
+const hero = require('./routes/hero');
+const cart = require('./routes/cart');
+const user = require('./routes/user');
 
 // Mount routers
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/products', products);
 app.use('/api/v1/hero', hero);
+app.use('/api/v1/cart', cart);
+app.use('/api/v1/users', user);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

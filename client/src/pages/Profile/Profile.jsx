@@ -1,6 +1,12 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+
+import './Profile.Styles.css';
+import { FaCircleUser } from 'react-icons/fa6';
+import Input from '../../components/Input/Input';
+import Button from '../../components/Button/Button';
+import AddressSection from '../../components/AddressSection/AddressSection';
 
 const Profile = () => {
   const { user, updateDetails } = useContext(AuthContext);
@@ -9,7 +15,6 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
-    email: user?.email || '',
     phone: user?.phone || ''
   });
   const [message, setMessage] = useState('');
@@ -34,98 +39,92 @@ const Profile = () => {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>My Profile</h1>
-      
+    <div className='profile-page'>
       {message && <div style={{ color: 'green' }}>{message}</div>}
       {error && <div style={{ color: 'red' }}>{error}</div>}
-
-      {!editMode ? (
-        <div>
-          <h2>Personal Information</h2>
-          <p>Name: {user?.firstName} {user?.lastName}</p>
-          <p>Email: {user?.email}</p>
-          <p>Phone: {user?.phone || 'Not provided'}</p>
-          
-          <button onClick={() => setEditMode(true)}>Edit Profile</button>
-          <button onClick={() => navigate('/change-password')}>
-            Change Password
-          </button>
+      <div className='personal-info'>
+        <div className='user'>
+          {
+            user.profilePicture ? 
+            <div className='profile-picture'>
+              <img src={user.profilePicture} referrerPolicy="no-referrer" alt='user' />
+            </div>
+            :
+            <div className='icon'>
+              <FaCircleUser />
+            </div>
+          }
+          <div className='details'>
+            <h3 className='name heading'>{user?.firstName} {user?.lastName}</h3>
+            <h4 className='email sub-heading'>{user?.email}</h4>
+          </div>
         </div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <h2>Edit Profile</h2>
-          <div>
-            <label>First Name:</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label>Last Name:</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label>Phone:</label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </div>
-          <button type="submit">Save Changes</button>
-          <button type="button" onClick={() => setEditMode(false)}>
-            Cancel
-          </button>
-        </form>
-      )}
-
-      <div style={{ marginTop: '2rem' }}>
-        <h2>Addresses</h2>
-        {user?.addresses?.length > 0 ? (
-          <div>
-            {user.addresses.map((address, index) => (
-              <div key={index} style={{ border: '1px solid #ddd', padding: '1rem', marginBottom: '1rem' }}>
-                <p>{address.street}</p>
-                <p>{address.city}, {address.state} {address.zipCode}</p>
-                <p>{address.country}</p>
-                {address.isDefault && <p>Default Address</p>}
-              </div>
-            ))}
+        {!editMode ? (
+          <div className='other-details'>
+            <p className='detail'>
+              <span className='label'>First Name:</span>
+              <span className='value'>{user?.firstName}</span>
+            </p>
+            <p className='detail'>
+              <span className='label'>Last Name:</span>
+              <span className='value'>{user?.lastName}</span>
+            </p>
+            <p className='detail'>
+              <span className='label'>Phone Number:</span>
+              <span className='value'>{user?.phone || 'Not provided'}</span>
+            </p>
+            
+            <div className='buttons-container'>
+              <Button onClick={() => setEditMode(true)} width='45%' className='small-font'>
+                Edit Profile
+              </Button>
+              <Button onClick={() => navigate('/change-password')} width='45%' className='small-font'>
+                Change Password
+              </Button>
+            </div>
           </div>
         ) : (
-          <p>No addresses saved</p>
+          <form onSubmit={handleSubmit} className='other-details'>
+            <h2>Edit Profile</h2>
+            <div className='detail'>
+              <span className='label'>First Name:</span>
+              <Input
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className='detail'>
+              <span className='label'>Last Name:</span>
+              <Input
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className='detail'>
+              <span className='label'>Phone Number:</span>
+              <Input
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </div>
+            <div className='buttons-container'>
+              <Button type="submit"  width='45%' className='small-font'>
+                Save Changes
+                </Button>
+              <Button type="button" onClick={() => setEditMode(false)}  width='45%' className='small-font'>
+                Cancel
+              </Button>
+            </div>
+          </form>
         )}
-        <button onClick={() => navigate('/add-address')}>
-          Add New Address
-        </button>
       </div>
 
-      <div style={{ marginTop: '2rem' }}>
-        <h2>Order History</h2>
-        <p>Feature coming soon!</p>
-      </div>
+      <AddressSection setError={setError} setMessage={setMessage} />
     </div>
   );
 };

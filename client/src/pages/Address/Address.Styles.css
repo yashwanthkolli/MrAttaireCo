@@ -1,0 +1,8 @@
+.address-page {
+  padding: 5rem 7rem 5rem 7rem;
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

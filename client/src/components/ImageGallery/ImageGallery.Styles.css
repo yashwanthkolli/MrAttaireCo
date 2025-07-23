@@ -1,0 +1,15 @@
+.image-grid {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.image-grid .img-container {
+  width: 47%;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.img-container img {
+  width: 100%;
+}

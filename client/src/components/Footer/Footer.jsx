@@ -20,7 +20,7 @@ const Footer = () => {
           <div className='details'>
             <div className='logo-container'>
               <img src={LogoLight} alt='white-logo' />
-              <span className='sub-heading'>Mr Attaire Co</span>
+              <span className='sub-heading'>Mr Attaire & Co</span>
             </div>
             <div className='company-text text'>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
@@ -50,10 +50,9 @@ const Footer = () => {
               <Link to='/products/shorts'>Shorts</Link>
             </div>
             <div className='links-list'>
-              <div className='links-title'>Legal</div>
+              <div className='links-title'>Others</div>
+              <Link to='/pages/FAQs'>FAQs</Link>
               <Link to='/pages/termsandconditions'>Terms and Conditons</Link>
-              <Link to='/pages/privacypolicy'>Privacy Policy</Link>
-              <Link to='/pages/shippingpolicy'>Shipping Policy</Link>
               <Link to='/pages/refundpolicy'>Refund Policy</Link>
             </div>
             {/* <div className='links-list'>

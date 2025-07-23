@@ -5,7 +5,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   const reqQuery = { ...req.query };
 
   // Fields to exclude
-  const removeFields = ['select', 'sort', 'page', 'limit', 'priceMin', 'priceMax'];
+  const removeFields = ['select', 'sort', 'page', 'limit', 'priceMin', 'priceMax', 'colors', 'sizes'];
   removeFields.forEach(param => delete reqQuery[param]);
 
   // Handle price filters
@@ -15,26 +15,13 @@ const advancedResults = (model, populate) => async (req, res, next) => {
     if (req.query.priceMax) reqQuery.price.$lte = Number(req.query.priceMax);
   }
 
-  // Handle colors filters
-  if (req.query.colors) {
-    reqQuery.colors = { $in: req.query.colors.split(',') };
-  }
-
-  // Handle sizes filters
-  if (req.query.sizes) {
-  const sizes = req.query.sizes.split(',');
-  reqQuery['stock.size'] = { $in: sizes };
-  // reqQuery['stock.quantity'] = { $gt: 0 };
-  console.log(reqQuery)
-}
-
-  // Transform query parameters
+  // Create base query object
   const transformedQuery = {};
   for (let key in reqQuery) {
     // Handle operator queries (price[gte], price[lte], etc.)
     if (key.includes('[') && key.includes(']')) {
       const field = key.split('[')[0];
-      const operator = key.match(/\[(.*?)\]/)[1]; // Extract operator between []
+      const operator = key.match(/\[(.*?)\]/)[1];
       const value = reqQuery[key];
 
       if (!transformedQuery[field]) {
@@ -42,7 +29,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
       }
 
       // Convert numeric fields
-      const numericFields = ['price', 'stock', 'ratings']; // Add your numeric fields
+      const numericFields = ['price', 'discountedPrice', 'ratings', 'sold'];
       if (numericFields.includes(field)) {
         transformedQuery[field]['$'+operator] = Number(value);
       } else {
@@ -52,6 +39,21 @@ const advancedResults = (model, populate) => async (req, res, next) => {
       // Regular fields
       transformedQuery[key] = reqQuery[key];
     }
+  }
+
+  // Handle color filtering with new variants structure
+  if (req.query.colors) {
+    const colors = req.query.colors.split(',');
+    transformedQuery['variants.color'] = { $in: colors };
+  }
+
+  // Handle size filtering with new variants structure
+  if (req.query.sizes) {
+    const sizes = req.query.sizes.split(',');
+    transformedQuery['variants.sizes.size'] = { $in: sizes };
+    
+    // Optional: Only show products with available stock for the size
+    // transformedQuery['variants.sizes.stock'] = { $gt: 0 };
   }
 
   // Finding resource
@@ -84,7 +86,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
     query = query.populate(populate);
   }
 
-  // // Executing query
+  // Executing query
   const results = await query;
 
   // Pagination result

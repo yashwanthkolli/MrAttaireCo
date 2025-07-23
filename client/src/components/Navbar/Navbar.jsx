@@ -6,9 +6,14 @@ import './Navbar.Styles.css';
 import logo from '../../assets/logo.png';
 import { FaRegHeart, FaRegUser } from 'react-icons/fa';
 import { FiShoppingCart } from 'react-icons/fi';
+import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
+import NavbarSearch from '../NavbarSearch/NavbarSearch';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
+  const { totalItems } = useCart();
+  const { wishlistCount } = useWishlist();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -27,7 +32,10 @@ const Navbar = () => {
         <Link className='sub-heading' to="/products">
           Products
         </Link>
+        
       </div>
+
+      <NavbarSearch />
 
       <div className='user-routes'>
         {isAuthenticated ? (
@@ -49,12 +57,6 @@ const Navbar = () => {
                 <button className='logout-button sub-heading' onClick={handleLogout}>Logout</button>
               </div>
             </div>
-            <Link className='route-icon' to="/wishlist">
-              <FaRegHeart />
-            </Link>
-            <Link className='route-icon' to="/cart">
-              <FiShoppingCart />
-            </Link>
             {/* {user?.role === 'admin' && (
               <Link to="/admin">
                 Admin
@@ -71,6 +73,20 @@ const Navbar = () => {
             </Link>
           </>
           )}
+          <Link className='route-icon' to="/wishlist">
+            <FaRegHeart />
+            {
+              wishlistCount > 0 &&
+              <span className='value wishlist'>{wishlistCount < 9 ? wishlistCount : '9+'}</span>
+            }
+          </Link>
+          <Link className='route-icon' to="/cart">
+            <FiShoppingCart /> 
+            {
+              totalItems > 0 &&
+              <span className='value cart'>{totalItems < 9 ? totalItems : '9+'}</span>
+            }
+          </Link>
       </div>
     </nav>
   );

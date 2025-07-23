@@ -1,0 +1,74 @@
+.cart-summary {
+  width: 70%;
+  margin: auto;
+}
+
+.cart-summary h3 {
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+}
+
+.cart-summary .content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-summary .content .text-container {
+  width: 40%;
+}
+
+.cart-summary .content .text-container .info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-summary .content .text-container .shipping-details {
+  width: 100%;
+  text-align: right;
+  margin-bottom: 3rem;
+}
+
+.cart-summary .content .text-container .coupon-section {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5rem;
+}
+
+.coupon-section .coupon-input-container {
+  width: 80%;
+  height: fit-content;
+  border: 1px solid var(--primary-dark);
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  font-size: 2rem;
+  border-radius: 2px;
+}
+
+.coupon-section .coupon-input-container .icon {
+  padding: 1rem 1rem 1rem 0;
+}
+
+.coupon-section .coupon-input-container .coupon-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 0;
+  border: none;
+  outline: none;
+  font-family: var(--font-main);
+}
+
+.cart-summary .content .text-container a {
+  color: var(--accent-color);
+}
+
+.cart-summary .content .text-container a:hover {
+  text-decoration: underline;
+}
+
+.cart-summary .content .buttons-container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}

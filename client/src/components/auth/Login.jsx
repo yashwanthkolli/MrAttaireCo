@@ -4,6 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import API from '../../utils/api';
 import GoogleLoginButton from './GoogleLogin';
 
+import './Login.css';
+import Button from '../Button/Button';
+import Input from '../Input/Input';
+import { FaEye } from 'react-icons/fa';
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -17,6 +22,7 @@ const Login = () => {
   const [isVerificationError, setIsVerificationError] = useState(false);
   const [showResend, setShowResend] = useState(false);
   const [resendEmail, setResendEmail] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const resendVerification = async () => {
     try {
@@ -50,8 +56,9 @@ const Login = () => {
   };
   
   return (
-    <div>
-      <h2>Login</h2>
+    <div className='login-container'>
+      <h2 className='heading'>Welcome Back</h2>
+      <p className='sub-heading'>Please Enter Your Details</p>
       {isVerificationError ? 
         <>
         <p style={{ color: 'red' }}>Please verify your email before logging in. Check your email for the verification link.</p>
@@ -74,33 +81,43 @@ const Login = () => {
         : <></>
       }
       {error && !isVerificationError ? <div style={{ color: 'red' }}>{error}</div> : <></>}
-      <GoogleLoginButton />
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+        <Input
+          name="email"
+          label="Email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder='Email'
+          required
+        />
+
+        <Input
+          name="password"
+          label="Password"
+          type={passwordVisible ? "text" :"password"}
+          icon={<FaEye onClick={() => setPasswordVisible(prev => !prev)} />}
+          iconPosition='right'
+          value={formData.password}
+          onChange={handleChange}
+          placeholder='Password'
+          required
+        />
+        <div className='forgot-password'>
+          <Link className='text' to='/auth/forgotpassword'>Forgot Password?</Link>
         </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
+        <Button type="submit">Login</Button>
       </form>
-      <Link to='/auth/forgotpassword'>Forgot Password?</Link>
-      <p>
-        Don't have an account? <button onClick={() => navigate('/auth/register')}>Sign Up</button>
+
+      <div className='or'>
+        <hr />
+        <span>Or</span>
+      </div>
+
+      <GoogleLoginButton />
+
+      <p className='others text'>
+        <Link to='/auth/register'>Sign Up</Link>
+        <Link to='/pages/termsandconditions'>Terms</Link>
       </p>
     </div>
   );

@@ -168,3 +168,66 @@ exports.uploadProductImage = asyncHandler(async (req, res, next) => {
     }
   }
 });
+
+// @desc    Get search suggestions
+// @route   GET /api/v1/search/suggestions
+// @access  Public
+exports.getSearchSuggestions = asyncHandler(async (req, res, next) => {
+  const query = req.query.q || '';
+  
+  const products = await Product.find({
+    $or: [
+      { name: { $regex: query, $options: 'i' } },
+      { description: { $regex: query, $options: 'i' } },
+      { category: { $regex: query, $options: 'i' } }
+    ]
+  })
+  .limit(5)
+  .select('name price images');
+
+  res.status(200).json({
+    success: true,
+    data: products
+  });
+});
+
+// @desc    Get full search results
+// @route   GET /api/v1/search
+// @access  Public
+exports.getSearchResults = asyncHandler(async (req, res, next) => {
+  const query = req.query.q || '';
+  
+  // Advanced search with pagination
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 10;
+  const skip = (page - 1) * limit;
+
+  const [products, total] = await Promise.all([
+    Product.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { description: { $regex: query, $options: 'i' } },
+        { category: { $regex: query, $options: 'i' } },
+        { tags: { $regex: query, $options: 'i' } }
+      ]
+    })
+    .skip(skip)
+    .limit(limit),
+    
+    Product.countDocuments({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { description: { $regex: query, $options: 'i' } }
+      ]
+    })
+  ]);
+
+  res.status(200).json({
+    success: true,
+    count: products.length,
+    total,
+    pages: Math.ceil(total / limit),
+    data: products
+  });
+});
+

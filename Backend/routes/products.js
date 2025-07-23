@@ -5,7 +5,9 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
-  uploadProductImage
+  uploadProductImage,
+  getSearchSuggestions,
+  getSearchResults
 } = require('../controllers/products');
 const { protect, authorize } = require('../middleware/auth');
 const Product = require('../models/Product');
@@ -17,6 +19,14 @@ router
   .route('/')
   .get(advancedResults(Product, 'reviews'), getProducts)
   .post(protect, authorize('admin'), createProduct);
+
+  router
+  .route('/search')
+  .get(getSearchResults);
+
+router
+  .route('/search/suggestions')
+  .get(getSearchSuggestions);
 
 router
   .route('/:id')

@@ -102,4 +102,6 @@
   color: var(--accent-color);
   padding: var(--space-sm) 0;
   font-weight: 700;
+  position: relative;
+  z-index: 5;
 }

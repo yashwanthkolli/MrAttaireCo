@@ -1,0 +1,83 @@
+.address-section {
+  background: #fff;
+  width: 80%;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.address-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.address-section .section-header .button-container {
+  width: 15%;
+}
+
+.address-section .section-header .button-container .small-btn {
+  font-size: 1.2rem;
+}
+
+.address-section .address-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.address-section .address-list .address-card {
+  border: 1px solid #ddd;
+  padding: 2rem 2rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.address-section .address-list .address-card .default-badge {
+  background: var(--primary-dark);
+  color: var(--primary-light);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1.2rem;
+}
+
+.address-section .address-actions {
+  display: flex;
+  gap: 3rem;
+  font-size: 2.5rem;
+}
+
+.address-section .address-actions .icon {
+  cursor: pointer;
+}
+
+.address-section .address-actions .delete-icon {
+  color: var(--accent-color);
+}
+
+.address-section .address-form {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.address-section .address-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.address-section .address-form .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.address-section .address-form .checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.address-section .no-address {
+  margin-bottom: 1.5rem;
+}

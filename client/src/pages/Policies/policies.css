@@ -1,0 +1,28 @@
+.policy {
+  padding: 5rem 7rem 5rem 7rem;
+  color: var(--primary-dark);
+}
+
+.policy .heading {
+  margin-bottom: 5px;
+}
+
+.policy .tag {
+  margin-bottom: 3rem;
+}
+
+.policy .policy-section {
+  margin-bottom: 3rem;
+}
+
+.policy .policy-section .sub-heading {
+  margin-bottom: 2rem;
+}
+
+.policy .policy-section .policy-info {
+  margin-bottom: 1rem;
+}
+
+.policy .bold {
+  font-weight: 500;
+}

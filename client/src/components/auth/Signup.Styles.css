@@ -1,0 +1,44 @@
+.signup-container .heading {
+  font-size: 2rem;
+  letter-spacing: 0.8px;
+  margin-bottom: 0;
+}
+
+.signup-container .sub-heading {
+  font-family: var(--font-secondary);
+  text-align: center;
+  font-weight: 400;
+}
+
+.signup-container form {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.signup-container .or {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.signup-container .or span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--primary-light);
+  padding: 1rem 2rem;
+  font-family: var(--font-main);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.signup-container .others {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-top: 2rem;
+}
+
+.signup-container .others a:first-of-type {
+  margin-right: 3rem;
+}

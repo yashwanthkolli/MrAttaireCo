@@ -60,16 +60,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateDetails = async (formData) => {
-  try {
-    const res = await API.put('/auth/updatedetails', formData);
-    setUser(res.data.data);
-    return { success: true };
-  } catch (err) {
-    return { success: false, error: err.response.data };
-  }
-};
+    try {
+      const res = await API.put('/auth/updatedetails', formData);
+      setUser(res.data.data);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.response.data };
+    }
+  };
 
-const updatePassword = async (passwordData) => {
+  const updatePassword = async (passwordData) => {
     try {
       const res = await API.put('/auth/updatepassword', passwordData);
       // Optionally re-authenticate after password change
@@ -81,6 +81,46 @@ const updatePassword = async (passwordData) => {
       return { success: false, error: err.response?.data };
     }
   };
+
+  const addAddress = async (addressData) => {
+    try {
+      const res = await API.post('/users/address', addressData);
+      setUser(res.data.data);
+      return { success: true };
+    } catch (err) {
+      return {success: false, error: err.response.data}
+    }
+  }
+
+  const deleteAddress = async (addressId) => {
+    try {
+      const res = await API.delete(`/users/address/${addressId}`);
+      setUser(res.data.data);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.response.data };
+    }
+  }
+
+  const setDefaultAddress = async (addressId) => {
+    try {
+      const res = await API.put(`/users/address/${addressId}/default`);
+      setUser(res.data.data);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.response.data }
+    }
+  }
+
+  const updateAddress = async (addressId, addressData) => {
+    try {
+      const res = await API.put(`/users/address/${addressId}`, addressData);
+      setUser(res.data.data);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.response.data }
+    }
+  }
 
   const logout = async () => {
     try {
@@ -104,7 +144,11 @@ const updatePassword = async (passwordData) => {
         logout,
         checkAuthStatus,
         updateDetails,
-        updatePassword
+        updatePassword,
+        addAddress,
+        deleteAddress,
+        setDefaultAddress,
+        updateAddress
       }}
     >
       {children}

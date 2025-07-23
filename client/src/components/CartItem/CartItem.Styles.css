@@ -1,0 +1,97 @@
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 45%;
+  padding: 2rem 2rem;
+  margin: 2rem 0;
+  box-shadow: var(--shadow-sm);
+  border-radius: 7px;
+}
+
+.cart-item .img-container {
+  width: 20%;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.cart-item .details-container {
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* .cart-item .details-container .info {
+  width: 40%;
+} */
+
+.cart-item .details-container .price {
+  color: var(--secondary-dark);
+}
+
+.cart-item .details-container .varient {
+  margin-top: 1rem;
+}
+
+.cart-item .details-container .color {
+  text-transform: capitalize;
+}
+
+.cart-item .details-container .buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cart-item .details-container .buttons-container .quantity-container {
+  margin-bottom: 1rem;
+}
+
+.cart-item .details-container .quantity-btn {
+  outline: none;
+  padding: 1rem 2rem;
+  background: none;
+  color: var(--primary-dark);
+  border: 1px solid var(--primary-dark);  
+  font-size: 2rem;
+  border-radius: 2px;
+}
+
+.cart-item .details-container .quantity-btn:hover {
+  background: var(--primary-dark);
+  color: var(--primary-light);
+}
+
+.cart-item .details-container .quantity-btn:disabled,
+.cart-item .details-container .quantity-btn[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.cart-item .details-container .quantity {
+  margin: 0 2rem;
+} 
+
+.cart-item .details-container .delete-item {
+  width: 100%;
+  outline: none;
+  padding: 1rem 2rem;
+  background: var(--accent-color);
+  color: var(--primary-light);
+  border: 1px solid var(--accent-color);  
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-item .details-container .delete-item:hover {
+  background: var(--primary-light);
+  color: var(--accent-color);
+}
+
+.cart-item .details-container .delete-item span {
+  margin-left: 1rem;
+}
