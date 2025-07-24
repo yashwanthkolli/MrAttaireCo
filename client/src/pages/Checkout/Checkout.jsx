@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import AddressComponent from './AddressComponent';
+import { useCart } from '../../context/CartContext';
 import './Checkout.Styles.css';
+import CartComponent from './CartComponent';
 
 const Checkout = () => {
+  const { cart, validateCart, totalItems } = useCart();
   const [newAddress, setNewAddress] = useState({
     recipientName: '',
     phoneNumber: '',
@@ -11,7 +14,13 @@ const Checkout = () => {
     state: '',
     zipCode: '',
     country: ''
-  })
+  });
+  const [coupon, setCoupon] = useState('');
+
+  const subtotal = cart.items.reduce((sum, item) => {
+    const price = item.discountedPriceAtAddition || item.priceAtAddition;
+    return sum + (price * item.quantity);
+  }, 0);
 
   return (
     <div className='checkout-page'>
@@ -19,7 +28,13 @@ const Checkout = () => {
         <AddressComponent newAddress={newAddress} setNewAddress={setNewAddress} />
       </div>
       <div className='cart-section'>
-        Hello
+        <CartComponent 
+          coupon={coupon} 
+          setCoupon={setCoupon} 
+          cart={cart} 
+          subtotal={subtotal}
+          totalItems={totalItems} 
+        />
       </div>
     </div>
   )

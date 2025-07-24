@@ -5,3 +5,30 @@
   border-radius: 7px;
   /* box-shadow: var(--shadow-sm); */
 }
+
+.address-component .address-form select {
+  padding: 3px 1rem;
+  vertical-align: middle;
+  border-radius: 2px;
+  width: 100%;
+  min-height: 36px;
+  background-color: #ffffff;
+  border: 1px solid var(--secondary-dark);
+  transition: all 0.2s ease-in-out 0s;
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: normal;
+  margin-bottom: 1rem;
+}
+
+.address-component .address-form .row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.address-component .address-form .row div {
+  width: 100%;
+}

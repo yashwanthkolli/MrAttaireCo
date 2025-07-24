@@ -4,8 +4,10 @@ import { AuthContext } from '../../context/AuthContext'
 import { countryStateData } from './CountryData';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
+import { useNavigate } from 'react-router-dom';
 
 const AddressComponent = ({newAddress, setNewAddress}) => {
+  const navigate = useNavigate()
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -51,20 +53,22 @@ const AddressComponent = ({newAddress, setNewAddress}) => {
             <option value='India'>India</option>
             <option value='UK'>United Kingdom</option>
           </select>
-          <Input 
-            name='recipientName'
-            value={newAddress.recipientName}
-            onChange={handleChange}
-            placeholder='Name'
-            required
-          />
-          <Input 
-            name='phoneNumber'
-            value={newAddress.phoneNumber}
-            onChange={handleChange}
-            placeholder='Phone Number'
-            required
-          />
+          <div className='row'>
+            <Input 
+              name='recipientName'
+              value={newAddress.recipientName}
+              onChange={handleChange}
+              placeholder='Name'
+              required
+            />
+            <Input 
+              name='phoneNumber'
+              value={newAddress.phoneNumber}
+              onChange={handleChange}
+              placeholder='Phone Number'
+              required
+            />
+          </div>
           <Input 
             name='street'
             value={newAddress.street}
@@ -72,39 +76,42 @@ const AddressComponent = ({newAddress, setNewAddress}) => {
             placeholder='Street'
             required
           />
-          <Input 
-            name='city'
-            value={newAddress.city}
-            onChange={handleChange}
-            placeholder='City'
-            required
-          />
-          {
-            newAddress.country !== 'UK' && 
-            <select
-              name="state"
-              value={newAddress.state}
+          <div className='row'>
+            <Input 
+              name='city'
+              value={newAddress.city}
               onChange={handleChange}
+              placeholder='City'
               required
-              className="form-select"
-            >
-              <option value="">Select State</option>
-              {
-                countryStateData && countryStateData[newAddress.country] &&
-                countryStateData[newAddress.country].map(state => 
-                  <option key={state} value={state}>{state}</option>
-                )
-              }
-            </select>
-          }
-          <Input 
-            name='zipCode'
-            value={newAddress.zipCode}
-            onChange={handleChange}
-            placeholder='ZipCode'
-            required
-          />
+            />
+            {
+              newAddress.country !== 'UK' && 
+              <select
+                name="state"
+                value={newAddress.state}
+                onChange={handleChange}
+                required
+                className="form-select"
+              >
+                <option value="">Select State</option>
+                {
+                  countryStateData && countryStateData[newAddress.country] &&
+                  countryStateData[newAddress.country].map(state => 
+                    <option key={state} value={state}>{state}</option>
+                  )
+                }
+              </select>
+            }
+            <Input 
+              name='zipCode'
+              value={newAddress.zipCode}
+              onChange={handleChange}
+              placeholder='ZipCode'
+              required
+            />
+            </div>
           <Button type='submit'>Proceed</Button>
+          <Button onClick={() => navigate(-1)} variant='danger'>Cancel</Button>
         </form>
 
         {

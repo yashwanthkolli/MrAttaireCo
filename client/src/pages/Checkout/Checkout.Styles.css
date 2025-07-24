@@ -6,3 +6,7 @@
   width: 50%;
   box-shadow: var(--shadow-sm);
 }
+
+.checkout-page .cart-section {
+  width: 50%;
+}
