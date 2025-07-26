@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddressComponent from './AddressComponent';
 import { useCart } from '../../context/CartContext';
 import './Checkout.Styles.css';
 import CartComponent from './CartComponent';
+import API from '../../utils/api';
 
 const Checkout = () => {
   const { cart, validateCart, totalItems } = useCart();
@@ -16,6 +17,17 @@ const Checkout = () => {
     country: ''
   });
   const [coupon, setCoupon] = useState('');
+  const [etd, setEtd] = useState('')
+
+  useEffect(() => {
+    const getShippingETD = async (zipCode) => {
+      const res = await API.get(`/shipping?deliveryPincode=${zipCode}`)
+      console.log(res)
+    }
+    if(newAddress.country === 'India' && newAddress.zipCode.length > 5) {
+      getShippingETD(newAddress.zipCode)
+    } 
+  }, [newAddress.zipCode])
 
   const subtotal = cart.items.reduce((sum, item) => {
     const price = item.discountedPriceAtAddition || item.priceAtAddition;

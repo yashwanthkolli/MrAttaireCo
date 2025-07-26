@@ -12,8 +12,6 @@ const CartComponent = ({coupon, setCoupon, subtotal, cart, totalItems}) => {
 
   const total = subtotal + shipping - discount;
 
-  console.log(cart)
-
   return (
     <div className='cart-section'>
       <div className='cart-items-list'>
