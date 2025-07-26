@@ -55,7 +55,7 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
     // Extract all ETD strings (e.g., "3-5 days")
     const etds = options
       .map(option => option.etd)
-      .filter(etd => etd && isValidDate(etd));  // Validate dates
+      .filter(etd => etd);  // Validate dates
 
     // Convert dates to timestamps to find the latest one
     const latestDate = new Date(Math.max(...etdDates.map(date => new Date(date))));
