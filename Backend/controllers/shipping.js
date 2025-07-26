@@ -16,7 +16,7 @@ const getShiprocketToken = async () => {
   }
 };
 
-// @desc    Fetch Shipping Options from Shiprocket
+// @desc    Fetch Shipping Estimate from Shiprocket
 // @route   GET /api/v1/shipping
 // @access  Private
 exports.getShippingOptions = asyncHandler(async (req, res, next) => {
@@ -45,14 +45,20 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
       }
     );
 
-    const options = response.data.data.available_courier_companies.map(option => ({
-      courierId: option.courier_id,
-      name: option.courier_name,
-      price: option.rate,
-      etd: option.etd,  // Estimated delivery time (e.g., "3-5 days")
-    }));
+    // Extract all ETD strings (e.g., "3-5 days")
+    const etds = response.data.data.available_courier_companies
+      .map(option => option.etd)
+      .filter(etd => etd); // Remove empty/null values
 
-    res.status(200).json({ options });
+    // Parse ETD ranges (e.g., "3-5" → 5, "7" → 7)
+    const maxDays = etds.reduce((max, etd) => {
+      const numbers = etd.match(/\d+/g); // Extract numbers from string
+      if (!numbers) return max;
+      const highestInRange = Math.max(...numbers.map(Number));
+      return Math.max(max, highestInRange);
+    }, 0);
+
+    res.status(200).json({ maxDays });
 
   } catch (error) {
     return next(
