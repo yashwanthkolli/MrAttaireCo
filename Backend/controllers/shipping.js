@@ -6,11 +6,11 @@ const ErrorResponse = require('../utils/errorResponse');
 // Get Shiprocket Auth Token
 const getShiprocketToken = async () => {
   try {
+    console.log('5')
     const response = await axios.post('https://apiv2.shiprocket.in/v1/external/auth/login', {
       email: process.env.SHIPROCKET_EMAIL,
       password: process.env.SHIPROCKET_PASSWORD,
     });
-    console.log(response.data.token)
     return response.data.token;
   } catch (error) {
     console.error('Shiprocket auth failed:', error.response?.data);
@@ -38,14 +38,16 @@ const parseShiprocketDate = (dateString) => {
 // @access  Private
 exports.getShippingOptions = asyncHandler(async (req, res, next) => {
   const { deliveryPincode } = req.query;
-  console.log(deliveryPincode)
   const weight = req.body.weight || 0.5;
+  console.log('2')
 
   if (!deliveryPincode) {
+    console.log('3')
     return next(new ErrorResponse('Delivery pincode is required', 400));
   }
 
   try {
+    console.log('4')
     const token = await getShiprocketToken();
     
     // const response = await axios.get(
