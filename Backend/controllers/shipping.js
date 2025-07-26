@@ -37,6 +37,7 @@ const parseShiprocketDate = (dateString) => {
 // @access  Private
 exports.getShippingOptions = asyncHandler(async (req, res, next) => {
   const { deliveryPincode } = req.query;
+  console.log(deliveryPincode)
   const weight = req.body.weight || 0.5;
 
   if (!deliveryPincode) {
