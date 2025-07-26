@@ -45,8 +45,15 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
       }
     );
 
+    const options = response.data.data.available_courier_companies.map(option => ({
+      courierId: option.courier_id,
+      name: option.courier_name,
+      price: option.rate,
+      etd: option.etd,  // Estimated delivery time (e.g., "3-5 days")
+    }));
+
     // Extract all ETD strings (e.g., "3-5 days")
-    const etds = response.data.data.available_courier_companies
+    const etds = options
       .map(option => option.etd)
       .filter(etd => etd); // Remove empty/null values
 
@@ -58,7 +65,9 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
       return Math.max(max, highestInRange);
     }, 0);
 
-    res.status(200).json({ maxDays });
+
+
+    res.status(200).json({ options, etds, maxDays });
 
   } catch (error) {
     return next(
