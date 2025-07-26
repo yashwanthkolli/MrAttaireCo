@@ -69,6 +69,7 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
     res.status(200).json({ options, etds }); 
 
   } catch (error) {
+    console.log(error)
     return next(
       new ErrorResponse(`Failed to fetch shipping options`, 500)
     );
