@@ -10,6 +10,7 @@ const getShiprocketToken = async () => {
       email: process.env.SHIPROCKET_EMAIL,
       password: process.env.SHIPROCKET_PASSWORD,
     });
+    console.log(response.data.token)
     return response.data.token;
   } catch (error) {
     console.error('Shiprocket auth failed:', error.response?.data);
