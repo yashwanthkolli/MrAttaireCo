@@ -63,16 +63,6 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
     // Format as YYYY-MM-DD (ISO) for consistency
     const formattedDate = latestDate.toISOString().split('T')[0];
 
-    // Parse ETD ranges (e.g., "3-5" → 5, "7" → 7)
-    const maxDays = etds.reduce((max, etd) => {
-      const numbers = etd.match(/\d+/g); // Extract numbers from string
-      if (!numbers) return max;
-      const highestInRange = Math.max(...numbers.map(Number));
-      return Math.max(max, highestInRange);
-    }, 0);
-
-
-
     res.status(200).json({ options, etds, formattedDate }); 
 
   } catch (error) {
