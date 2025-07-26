@@ -73,15 +73,13 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
       .map(option => parseShiprocketDate(option.etd))
       .filter(date => date !== null);  // Validate dates
 
+    if (etds.length === 0) {
+      return res.json({ etd: null }); // No valid dates
+    }
+
     const latestDate = moment.max(etds);
 
-    // Convert dates to timestamps to find the latest one
-    // const latestDate = new Date(Math.max(...etdDates.map(date => new Date(date))));
-
-    // Format as YYYY-MM-DD (ISO) for consistency
-    // const formattedDate = latestDate.toISOString().split('T')[0];
-
-    res.status(200).json({ options, etds, latestDate: latestDate.format('YYYY-MM-DD') }); 
+    res.status(200).json({ etd: latestDate.format('MMMM Do YYYY') }); 
 
   } catch (error) {
     console.log(error)
