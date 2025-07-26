@@ -55,7 +55,13 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
     // Extract all ETD strings (e.g., "3-5 days")
     const etds = options
       .map(option => option.etd)
-      .filter(etd => etd); // Remove empty/null values
+      .filter(etd => etd && isValidDate(etd));  // Validate dates
+
+    // Convert dates to timestamps to find the latest one
+    const latestDate = new Date(Math.max(...etdDates.map(date => new Date(date))));
+
+    // Format as YYYY-MM-DD (ISO) for consistency
+    const formattedDate = latestDate.toISOString().split('T')[0];
 
     // Parse ETD ranges (e.g., "3-5" → 5, "7" → 7)
     const maxDays = etds.reduce((max, etd) => {
@@ -67,7 +73,7 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
 
 
 
-    res.status(200).json({ options, etds, maxDays });
+    res.status(200).json({ options, etds, formattedDate }); 
 
   } catch (error) {
     return next(
