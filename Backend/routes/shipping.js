@@ -6,6 +6,6 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(protect, getShippingOptions);
+  .get(getShippingOptions);
 
 module.exports = router;
