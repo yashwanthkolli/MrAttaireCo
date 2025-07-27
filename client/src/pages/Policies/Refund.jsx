@@ -2,12 +2,12 @@ const Refund = () => {
   return (
     <div className='policy'>
       <h1 className='heading'>Return & Refund Policy – MR. ATTIRE</h1>
-      {/* <p className='text tag'>Effective: {new Date().toLocaleDateString()}</p> */}
+      <p className='text tag'>Effective: July 25th, 2025</p>
 
       <section className='policy-section'>
         <h2 className='sub-heading policy-heading'>1. Return Eligibility</h2>
         <p className='text policy-info'>
-          At Mr. Attire, we want you to love what you wear. If something isn't right, here's how we can help:
+          At <span className="bold">Mr. Attire</span>, we want you to love what you wear. If something isn't right, here's how we can help:
         </p>
         <p className='text policy-info'>
           &nbsp;&nbsp;• Returns are accepted within <span className='bold'>7 days</span> of delivery.

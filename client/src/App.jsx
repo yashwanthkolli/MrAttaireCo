@@ -28,6 +28,8 @@ import TermsAndConditions from './pages/Policies/TermsAndConditions';
 import Refund from './pages/Policies/Refund';
 import Address from './pages/Address/Address';
 import Checkout from './pages/Checkout/Checkout';
+import Privacy from './pages/Policies/Privacy';
+import Shipping from './pages/Policies/Shipping';
 
 function App() {
   return (
@@ -90,6 +92,8 @@ function App() {
               <Route path="/pages/FAQs" element={<FAQs />} />
               <Route path="/pages/termsandconditions" element={<TermsAndConditions />} />
               <Route path="/pages/refundpolicy" element={<Refund />} />
+              <Route path="/pages/privacypolicy" element={<Privacy />} />
+              <Route path="/pages/shippinganddelivery" element={<Shipping />} />
 
               <Route 
                 path="/checkout"

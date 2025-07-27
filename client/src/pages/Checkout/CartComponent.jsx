@@ -3,7 +3,7 @@ import Button from '../../components/Button/Button';
 import './CartComponent.Styles.css';
 import { useState } from 'react';
 
-const CartComponent = ({coupon, setCoupon, subtotal, cart, totalItems}) => {
+const CartComponent = ({coupon, setCoupon, subtotal, cart, totalItems, etd}) => {
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
 
@@ -76,6 +76,13 @@ const CartComponent = ({coupon, setCoupon, subtotal, cart, totalItems}) => {
           <div className='total-item coupon-discount text'>
             <span>Coupon Discount</span>
             <span>₹ {discount}</span>
+          </div>
+        }
+        {
+          etd && 
+          <div className='total-item coupon-discount text'>
+            <span>Delivery by</span>
+            <span>{etd}</span>
           </div>
         }
         <div className='total sub-heading'>

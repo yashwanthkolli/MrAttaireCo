@@ -6,7 +6,7 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 
-const AddressComponent = ({newAddress, setNewAddress}) => {
+const AddressComponent = ({newAddress, setNewAddress, handleSubmit}) => {
   const navigate = useNavigate()
   const { user } = useContext(AuthContext);
 
@@ -26,11 +26,6 @@ const AddressComponent = ({newAddress, setNewAddress}) => {
 
   const handleCountryChange = (e) => {
     setNewAddress(prev => ({...prev, country: e.target.value, state: e.target.value === 'UK' ? '' : prev.state}))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(newAddress)
   }
 
   const handleSelectAddress = (address) => {

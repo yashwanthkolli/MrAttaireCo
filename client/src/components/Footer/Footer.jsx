@@ -54,6 +54,8 @@ const Footer = () => {
               <Link to='/pages/FAQs'>FAQs</Link>
               <Link to='/pages/termsandconditions'>Terms and Conditons</Link>
               <Link to='/pages/refundpolicy'>Refund Policy</Link>
+              <Link to='/pages/privacypolicy'>Privacy Policy</Link>
+              <Link to='/pages/shippinganddelivery'>Shipping and Delivery</Link>
             </div>
             {/* <div className='links-list'>
               <div className='links-title'>Socials</div>
