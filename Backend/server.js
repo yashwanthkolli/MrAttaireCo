@@ -71,6 +71,7 @@ const hero = require('./routes/hero');
 const cart = require('./routes/cart');
 const user = require('./routes/user');
 const shipping = require('./routes/shipping');
+const payment = require('./routes/payment');
 
 // Mount routers
 app.use('/api/v1/auth', auth);
@@ -79,6 +80,7 @@ app.use('/api/v1/hero', hero);
 app.use('/api/v1/cart', cart);
 app.use('/api/v1/users', user);
 app.use('/api/v1/shipping', shipping);
+app.use('/api/v1/payments', payment);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
