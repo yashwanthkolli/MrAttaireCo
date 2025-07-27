@@ -12,7 +12,8 @@ const GoogleLoginButton = () => {
           try {
             // Send the credential to your backend
             const res = await window.open(
-                `http://localhost:5000/api/v1/auth/google`,
+                // `http://localhost:5000/api/v1/auth/google`,
+                'http://mrattireco.com/backend/api/v1/auth/google',
                 '_self' // Opens in same tab
             )
             
