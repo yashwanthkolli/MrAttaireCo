@@ -1,6 +1,5 @@
 const axios = require('axios');
-const publicIp = require('public-ip');
-const { publicIpv4 } = publicIp
+import { publicIpv4 } from 'public-ip';
 const { cache } = require('../utils/cache');
 const countryConfig = require('../config/countryConfig');
 
