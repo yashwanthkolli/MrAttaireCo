@@ -1,6 +1,6 @@
 const axios = require('axios');
-const publicIp = require('public-ip');
-const { publicIpv4 } = publicIp;
+// const publicIp = require('public-ip');
+// const { publicIpv4 } = publicIp;
 const { cache } = require('../utils/cache');
 const countryConfig = require('../config/countryConfig');
 
@@ -11,8 +11,8 @@ class CountryDetector {
 
   async getPublicIp() {
     try {
-      // Use the proper method from public-ip v3+
-      return await publicIpv4();
+      const publicIp = await import('public-ip');
+      return publicIp.publicIpv4();
     } catch (error) {
       console.error('Failed to get public IP:', error);
       return null;
