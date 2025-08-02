@@ -1,11 +1,22 @@
 const axios = require('axios');
+const publicIp = require('public-ip');
+const { publicIpv4 } = publicIp
 const { cache } = require('../utils/cache');
 const countryConfig = require('../config/countryConfig');
 
 class CountryDetector {
   constructor() {
     this.ipApiUrl = 'http://ip-api.com/json/';
-    this.fallbackApiUrl = 'https://ipapi.co/json/';
+  }
+
+  async getPublicIp() {
+    try {
+      // Use the proper method from public-ip v3+
+      return await publicIpv4();
+    } catch (error) {
+      console.error('Failed to get public IP:', error);
+      return null;
+    }
   }
 
   async detectCountryByIp(ip) {
@@ -16,24 +27,19 @@ class CountryDetector {
       const cachedCountry = cache.get(cacheKey);
       if (cachedCountry) return cachedCountry;
 
-      // Try primary API
+      // Free tier of ip-api allows 45 requests per minute
       const response = await axios.get(`${this.ipApiUrl}${ip}?fields=status,message,countryCode`);
       
-      if (response.data.status === 'success') {
-        const countryCode = response.data.countryCode;
-        cache.set(cacheKey, countryCode, 86400);
-        return countryCode;
+      if (response.data.status !== 'success') {
+        throw new Error(response.data.message || 'IP API error');
       }
 
-      // Fallback to ipapi.co if primary fails
-      const fallbackResponse = await axios.get(`${this.fallbackApiUrl}`);
-      if (fallbackResponse.data && fallbackResponse.data.country) {
-        const countryCode = fallbackResponse.data.country;
-        cache.set(cacheKey, countryCode, 86400);
-        return countryCode;
-      }
-
-      throw new Error('All IP detection APIs failed');
+      const countryCode = response.data.countryCode;
+      
+      // Cache the result for 24 hours
+      cache.set(cacheKey, countryCode, 86400);
+      
+      return countryCode;
     } catch (error) {
       console.error('Country detection failed:', error);
       return null;
@@ -42,22 +48,24 @@ class CountryDetector {
 
   async getClientCountry(req) {
     try {
-      console.log(req.ip)
+      // Get client IP (handles various proxy scenarios)
       let ip = req.headers['x-forwarded-for'] || 
                req.headers['x-real-ip'] || 
                req.connection.remoteAddress;
       
+      // Handle IPs in x-forwarded-for (might be comma-separated list)
       if (ip && ip.includes(',')) {
         ip = ip.split(',')[0].trim();
       }
 
-      console.log(ip)
-
-      // For localhost/testing, use the IP detection APIs directly
-      if (!ip || ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1') {
-        const response = await axios.get('https://ipapi.co/json/');
-        return response.data.country;
+      // If localhost or testing, use public IP
+      if (ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1') {
+        ip = await this.getPublicIp();
+        console.log(ip)
+        if (!ip) throw new Error('Could not determine public IP');
       }
+
+      if (!ip) throw new Error('No IP address detected');
 
       return await this.detectCountryByIp(ip);
     } catch (error) {
