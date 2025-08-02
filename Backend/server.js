@@ -35,6 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(helmet());
 app.use(passport.initialize());
+app.set('trust proxy', true);
 
 // File Uploads
 const fileUpload = require('express-fileupload');
