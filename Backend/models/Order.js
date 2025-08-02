@@ -20,7 +20,7 @@ const orderSchema = new mongoose.Schema({
       type: Number, 
       required: true 
     },
-    priceAtPurchase: {  // Snapshot of price when ordered
+    priceAtAddition: {  // Snapshot of price when ordered
       type: Number, 
       required: true 
     }

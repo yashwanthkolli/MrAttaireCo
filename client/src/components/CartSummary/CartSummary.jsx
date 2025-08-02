@@ -1,18 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import Button from '../Button/Button';
 
 import './CartSummary.Styles.css';
 import { FaTag } from 'react-icons/fa6';
+import API from '../../utils/api';
 
 const CartSummary = () => {
-  const { cart, isGuestCart, clearCart, validateCart } = useCart();
+  const { cart, isGuestCart, clearCart, validateCart, refreshCart } = useCart();
   const [couponCode, setCouponCode] = useState('');
+  const [couponData, setCouponData] = useState({});
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
   const [errors, setErrors] = useState('')
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (cart.couponUsed) {
+      setCouponCode(cart.couponUsed);
+    }
+  }, [cart])
 
   if (!cart || cart.items.length === 0) {
     return (
@@ -28,28 +36,32 @@ const CartSummary = () => {
     return sum + (price * item.quantity);
   }, 0);
 
-  const handleApplyCoupon = (e) => {
+  const handleApplyCoupon = async (e) => {
     e.preventDefault();
     setCouponError('');
-    
-    // Frontend-only validation for demo
-    if (!couponCode.trim()) {
-      setCouponError('Please enter a coupon code');
-      return;
-    }
-    
-    // Simulate "valid" coupon codes for demo
-    const validDemoCoupons = ['WELCOME10', 'SUMMER20', 'FREESHIP'];
-    if (validDemoCoupons.includes(couponCode.toUpperCase())) {
-      setCouponApplied(true);
-    } else {
-      setCouponError('Invalid coupon code');
-    }
+
+    await API.post('/coupon/apply', { couponCode })
+    .then(res => {
+      if (res.data && res.data.success && res.data.couponValid) {
+        setCouponApplied(true);
+        setCouponCode(res.data.coupon.code);
+        setCouponData(res.data.coupon);
+        refreshCart();
+      } 
+    })
+    .catch((err => {
+      setCouponError(err.response.data.error)
+    }))
   };
 
-  const handleRemoveCoupon = () => {
-    setCouponApplied(false);
-    setCouponCode('');
+  const handleRemoveCoupon = async () => {
+    const { data } = await API.get('/coupon/remove')
+    if (data.success) {
+      setCouponApplied(false);
+      setCouponCode('');
+      setCouponData({});
+      refreshCart();
+    }
   };
 
   const handleProceedToCheckout = async () => {
@@ -71,8 +83,6 @@ const CartSummary = () => {
   }
 };
 
-console.log(errors)
-
   return (
     <div className='cart-summary'>
       <h3 className="sub-heading">Order Summary</h3>
@@ -83,9 +93,21 @@ console.log(errors)
             <span className='title'>Subtotal: </span>
             <span className='value'>₹{subtotal.toFixed(2)}</span>
           </div>
+          { couponData && couponData.discountAmount > 0 &&
+            <div className='info sub-heading'>
+              <span className='title'>Discount: </span>
+              <span className='value'>₹{couponData.discountAmount}</span>
+            </div>
+          }
           
-          <div className='shipping-details'>
-            Tax and shipping included
+          
+          <div className='tax-details'>
+            Tax included
+          </div>
+
+          <div className='info sub-heading total-info'>
+            <span className='title'>Total: </span>
+            <span className='value'>₹{couponData && couponData.discountAmount ? subtotal - couponData.discountAmount : subtotal}</span>
           </div>
 
           {/* Coupon Code Section */}
@@ -106,7 +128,7 @@ console.log(errors)
               <Button
                 type='submit'
                 className='margin0'
-                width='15%'
+                width='20%'
                 variant='secondary'
               >
                 Apply
@@ -116,7 +138,7 @@ console.log(errors)
                 type='button'
                 onClick={handleRemoveCoupon}
                 className='margin0'
-                width='15%'
+                width='20%'
                 variant='danger'
               >
                 Remove

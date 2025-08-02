@@ -25,7 +25,7 @@ mongoose.connect(MONGO_URI)
 
 // Middlewares
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://mrattireco.com', 'https://www.mrattireco.com'],
+  origin: ['http://localhost:3000', 'https://mrattireco.com', 'https://www.mrattireco.com', 'http://192.168.31.104:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -72,6 +72,9 @@ const cart = require('./routes/cart');
 const user = require('./routes/user');
 const shipping = require('./routes/shipping');
 const payment = require('./routes/payment');
+const orders = require('./routes/order');
+const coupons = require('./routes/coupon');
+const country = require('./routes/country');
 
 // Mount routers
 app.use('/api/v1/auth', auth);
@@ -81,6 +84,9 @@ app.use('/api/v1/cart', cart);
 app.use('/api/v1/users', user);
 app.use('/api/v1/shipping', shipping);
 app.use('/api/v1/payments', payment);
+app.use('/api/v1/orders', orders);
+app.use('/api/v1/coupon', coupons);
+app.use('/api/v1/country', country);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

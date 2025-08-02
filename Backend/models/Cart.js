@@ -44,6 +44,9 @@ const cartSchema = new mongoose.Schema({
     unique: true
   },
   items: [cartItemSchema],
+  couponUsed: {
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now

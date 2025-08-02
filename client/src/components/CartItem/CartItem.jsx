@@ -42,7 +42,7 @@ const CartItem = ({ item }) => {
               {item.product.name}
             </h3>
           </Link>
-          <p className='price sub-heading'>${totalPrice}</p>
+          <p className='price sub-heading'>₹{totalPrice}</p>
           <p className='varient text'>
             <span className='color'>{item.variant.color}</span>
             {' '}/{' '}

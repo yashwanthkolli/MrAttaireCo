@@ -1,14 +1,67 @@
 import { FaTag } from 'react-icons/fa6';
 import Button from '../../components/Button/Button';
 import './CartComponent.Styles.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import API from '../../utils/api';
 
-const CartComponent = ({coupon, setCoupon, subtotal, cart, totalItems, etd}) => {
+const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, etd}) => {
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
+  const [couponData, setCouponData] = useState({});
 
-  const shipping = 10;
-  const discount = 10;
+  useEffect(() => {
+    const fetchCouponData = async () => {
+      const { data } =  await API.post('/coupon/apply', { couponCode })
+      if (data && data.success && data.couponValid) {
+        setCouponData(data.coupon)
+      } 
+    }
+
+    if (cart.couponUsed) {
+      setCouponCode(cart.couponUsed);
+      setCouponApplied(true);
+      fetchCouponData();
+    }
+  }, [cart])
+
+  const handleApplyCoupon = async (e) => {
+    e.preventDefault();
+    setCouponError('');
+
+    await API.post('/coupon/apply', { couponCode })
+    .then(res => {
+      if (res.data && res.data.success && res.data.couponValid) {
+        setCouponApplied(true);
+        setCouponCode(res.data.coupon.code);
+        setCouponData(res.data.coupon);
+      } 
+    })
+    .catch(err => {
+      setCouponCode('')
+      setCouponError(err.response.data.error)
+    })
+  };
+
+  const handleRemoveCoupon = async () => {
+    const { data } = await API.get('/coupon/remove')
+    if (data.success) {
+      setCouponApplied(false);
+      setCouponCode('');
+      setCouponData({});
+      refreshCart();
+    }
+  };
+
+  let shipping = 100;
+  let discount = 0;
+
+  if (couponData && couponData.discountAmount) {
+    discount = couponData.discountAmount
+  }
+
+  if (couponData && couponData.freeShipping) {
+    shipping = 0;
+  }
 
   const total = subtotal + shipping - discount;
 
@@ -28,14 +81,14 @@ const CartComponent = ({coupon, setCoupon, subtotal, cart, totalItems, etd}) => 
           )
         }
       </div>
-      <form className='coupon-section'>
+      <form className='coupon-section' onSubmit={handleApplyCoupon}>
         <div className='coupon-input-container'>
           <label htmlFor='coupon-code'><FaTag className='icon' /></label>
           <input
             type='text'
             id='coupon-code'
-            value={coupon}
-            onChange={(e) => setCoupon(e.target.value)}
+            value={couponCode}
+            onChange={(e) => setCouponCode(e.target.value)}
             disabled={couponApplied}
             placeholder='Coupon Code'
             className='coupon-input'
@@ -45,7 +98,7 @@ const CartComponent = ({coupon, setCoupon, subtotal, cart, totalItems, etd}) => 
           <Button
             type='submit'
             className='margin0'
-            width='15%'
+            width='20%'
             variant='secondary'
           >
             Apply
@@ -55,7 +108,7 @@ const CartComponent = ({coupon, setCoupon, subtotal, cart, totalItems, etd}) => 
             type='button'
             onClick={handleRemoveCoupon}
             className='margin0'
-            width='15%'
+            width='20%'
             variant='danger'
           >
             Remove
@@ -72,7 +125,7 @@ const CartComponent = ({coupon, setCoupon, subtotal, cart, totalItems, etd}) => 
           <span>₹ {shipping}</span>
         </div>
         {
-          discount && 
+          couponData.discountAmount > 0 && 
           <div className='total-item coupon-discount text'>
             <span>Coupon Discount</span>
             <span>₹ {discount}</span>

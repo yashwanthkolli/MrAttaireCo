@@ -5,8 +5,10 @@ import { countryStateData } from './CountryData';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import { SiRazorpay } from 'react-icons/si';
+import { BsCashCoin } from 'react-icons/bs';
 
-const AddressComponent = ({newAddress, setNewAddress, handleSubmit}) => {
+const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMethod, setPaymentMethod}) => {
   const navigate = useNavigate()
   const { user } = useContext(AuthContext);
 
@@ -104,8 +106,32 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit}) => {
               placeholder='ZipCode'
               required
             />
+          </div>
+          <div className='payment-options'>
+            <h2>Payment Method</h2>
+            <div className='option'>
+              <input 
+                type="radio" 
+                id="razorpay" 
+                name="payment-option" 
+                value="razorpay" 
+                onChange={(e) => setPaymentMethod(e.target.value)} 
+                defaultChecked 
+              />
+              <label htmlFor="razorpay"><SiRazorpay />Razorpay</label>
             </div>
-          <Button type='submit'>Proceed</Button>
+            <div className='option'>
+              <input type="radio" 
+                id="cod" 
+                name="payment-option" 
+                value="cod" 
+                checked={paymentMethod === 'cod'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+              <label htmlFor="cod"><BsCashCoin />Cash on Delivery</label>
+            </div>
+          </div>
+          <Button type='submit'>{paymentMethod === 'cod' ? 'Confirm Order' : 'Proceed'}</Button>
           <Button onClick={() => navigate(-1)} variant='danger'>Cancel</Button>
         </form>
 

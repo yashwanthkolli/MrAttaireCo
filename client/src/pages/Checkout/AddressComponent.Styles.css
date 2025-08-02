@@ -32,3 +32,36 @@
 .address-component .address-form .row div {
   width: 100%;
 }
+
+.address-component .address-form .payment-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.address-component .address-form .payment-options .option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 3px 1rem;
+  vertical-align: middle;
+  border-radius: 2px;
+  width: 100%;
+  min-height: 36px;
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: normal;
+}
+
+.address-component .address-form .payment-options .option input {
+  width: 10%;
+  accent-color: var(--accent-color);
+}
+
+.address-component .address-form .payment-options .option label {
+  width: 90%;
+}
+
+.address-component .address-form .payment-options .option label svg {
+  margin-right: 1rem;
+}

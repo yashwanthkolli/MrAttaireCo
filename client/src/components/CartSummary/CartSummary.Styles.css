@@ -23,9 +23,13 @@
   justify-content: space-between;
 }
 
-.cart-summary .content .text-container .shipping-details {
+.cart-summary .content .text-container .tax-details {
   width: 100%;
   text-align: right;
+  margin-bottom: 2rem;
+}
+
+.cart-summary .content .text-container .total-info {
   margin-bottom: 3rem;
 }
 
@@ -37,7 +41,7 @@
 }
 
 .coupon-section .coupon-input-container {
-  width: 80%;
+  width: 75%;
   height: fit-content;
   border: 1px solid var(--primary-dark);
   display: flex;

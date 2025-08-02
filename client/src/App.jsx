@@ -30,6 +30,8 @@ import Address from './pages/Address/Address';
 import Checkout from './pages/Checkout/Checkout';
 import Privacy from './pages/Policies/Privacy';
 import Shipping from './pages/Policies/Shipping';
+import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
+import UserOrders from './pages/UserOrders/UserOrders';
 
 function App() {
   return (
@@ -100,6 +102,22 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Checkout />
+                  </PrivateRoute>
+                }
+              />
+              <Route 
+                path="/order-confirmation/:orderId"
+                element={
+                  <PrivateRoute>
+                    <OrderConfirmation />
+                  </PrivateRoute>
+                }
+              />
+              <Route 
+                path="/orders"
+                element={
+                  <PrivateRoute>
+                    <UserOrders />
                   </PrivateRoute>
                 }
               />
