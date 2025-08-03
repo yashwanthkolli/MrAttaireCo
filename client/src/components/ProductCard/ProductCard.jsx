@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-
 import './ProductCard.Styles.css';
 import { useRef, useState } from 'react';
+import PriceDisplay from '../PriceDisplay/PriceDispaly';
 
 const ProductCard = ({ product, dark, small }) => {
   const [image, setImage] = useState(product.images.find(img => img.isPrimary)?.url || product.images[0]?.url)
@@ -49,7 +49,7 @@ const ProductCard = ({ product, dark, small }) => {
                 <span className="discounted-price">${product.discountedPrice.toFixed(2)}</span>
               </>
             ) : (
-              <span>₹{product.price.toFixed(2)}</span>
+              <PriceDisplay basePriceInr={product.price} />
             )}
           </div>
           {/* <div className="product-meta">

@@ -1,16 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import { FiTrash2 } from 'react-icons/fi';
 
 import './CartItem.Styles.css';
 import { Link } from 'react-router-dom';
+import { useCountry } from '../../context/CountryContext';
+import API from '../../utils/api';
 
 const CartItem = ({ item }) => {
+  const { country } = useCountry()
   const { updateCartItem, removeFromCart } = useCart();
   const [quantity, setQuantity] = useState(item.quantity);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [error, setError] = useState('');
+  const [currentPrice, setCurrentPrice] = useState(0);
 
-  const currentPrice = item.discountedPriceAtAddition || item.priceAtAddition;
+  useEffect(() => {
+    setCurrentPrice(item.discountedPriceAtAddition || item.priceAtAddition);
+  }, [])
+
+  useEffect(() => {
+    const convertPrices = async () => {
+      await API.get('/country/convert', {
+        params: {
+          priceInr: item.discountedPriceAtAddition || item.priceAtAddition,
+          countryCode: country?.code
+        }
+      })
+      .then(res => setCurrentPrice(res.data.value))
+      .catch(err => setError(err))
+    }
+
+    if (country?.code !== 'IN') {
+      convertPrices();
+    }
+  }, [country, quantity])
+
   const totalPrice = (currentPrice * quantity).toFixed(2);
 
   const handleQuantityChange = async (newQuantity) => {
@@ -42,7 +67,7 @@ const CartItem = ({ item }) => {
               {item.product.name}
             </h3>
           </Link>
-          <p className='price sub-heading'>₹{totalPrice}</p>
+          <p className='price sub-heading'>{country.symbol ? country.symbol : '₹'}{totalPrice}</p>
           <p className='varient text'>
             <span className='color'>{item.variant.color}</span>
             {' '}/{' '}

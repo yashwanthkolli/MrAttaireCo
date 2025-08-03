@@ -32,100 +32,103 @@ import Privacy from './pages/Policies/Privacy';
 import Shipping from './pages/Policies/Shipping';
 import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
 import UserOrders from './pages/UserOrders/UserOrders';
+import { CountryProvider } from './context/CountryContext';
 
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <CartProvider>
-          <WishlistProvider>
-            <Carousel />
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/auth" element={<AuthPage />}>
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Signup />} />
-                <Route path="verifyemail/:verificationToken" element={<VerifyEmail />} />
-                <Route path="forgotpassword" element={<ForgotPassword />} />
-                <Route path="resetpassword/:resetToken" element={<ResetPassword />} />
-                <Route path="google/callback" element={<GoogleCallback />} />
-              </Route>
-              <Route 
-                path="/profile" 
-                element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                }
-              />
-              <Route 
-                path="/addresses" 
-                element={
-                  <PrivateRoute>
-                    <Address />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="change-password"
-                element={
-                  <PrivateRoute>
-                    <ChangePassword />
-                  </PrivateRoute>
-                }
-              />
-              {/* <Route
-                path="/dashboard"
-                element={
-                  <PrivateRoute>
-                    <Dashboard />
-                  </PrivateRoute>
-                }
-              /> */}
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/search" element={<SearchResults />} />
-              <Route path="/products/:category" element={<Products />} />
-              <Route path="/product/:id" element={<ProductDetails />} />
-              
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/pages/aboutus" element={<AboutUs />} />
-              <Route path="/pages/FAQs" element={<FAQs />} />
-              <Route path="/pages/termsandconditions" element={<TermsAndConditions />} />
-              <Route path="/pages/refundpolicy" element={<Refund />} />
-              <Route path="/pages/privacypolicy" element={<Privacy />} />
-              <Route path="/pages/shippinganddelivery" element={<Shipping />} />
+      <CountryProvider>
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <Carousel />
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/auth" element={<AuthPage />}>
+                  <Route path="login" element={<Login />} />
+                  <Route path="register" element={<Signup />} />
+                  <Route path="verifyemail/:verificationToken" element={<VerifyEmail />} />
+                  <Route path="forgotpassword" element={<ForgotPassword />} />
+                  <Route path="resetpassword/:resetToken" element={<ResetPassword />} />
+                  <Route path="google/callback" element={<GoogleCallback />} />
+                </Route>
+                <Route 
+                  path="/profile" 
+                  element={
+                    <PrivateRoute>
+                      <Profile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route 
+                  path="/addresses" 
+                  element={
+                    <PrivateRoute>
+                      <Address />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="change-password"
+                  element={
+                    <PrivateRoute>
+                      <ChangePassword />
+                    </PrivateRoute>
+                  }
+                />
+                {/* <Route
+                  path="/dashboard"
+                  element={
+                    <PrivateRoute>
+                      <Dashboard />
+                    </PrivateRoute>
+                  }
+                /> */}
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/search" element={<SearchResults />} />
+                <Route path="/products/:category" element={<Products />} />
+                <Route path="/product/:id" element={<ProductDetails />} />
+                
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/pages/aboutus" element={<AboutUs />} />
+                <Route path="/pages/FAQs" element={<FAQs />} />
+                <Route path="/pages/termsandconditions" element={<TermsAndConditions />} />
+                <Route path="/pages/refundpolicy" element={<Refund />} />
+                <Route path="/pages/privacypolicy" element={<Privacy />} />
+                <Route path="/pages/shippinganddelivery" element={<Shipping />} />
 
-              <Route 
-                path="/checkout"
-                element={
-                  <PrivateRoute>
-                    <Checkout />
-                  </PrivateRoute>
-                }
-              />
-              <Route 
-                path="/order-confirmation/:orderId"
-                element={
-                  <PrivateRoute>
-                    <OrderConfirmation />
-                  </PrivateRoute>
-                }
-              />
-              <Route 
-                path="/orders"
-                element={
-                  <PrivateRoute>
-                    <UserOrders />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
-            <Footer />
-          </WishlistProvider>
-        </CartProvider>
-      </AuthProvider>
+                <Route 
+                  path="/checkout"
+                  element={
+                    <PrivateRoute>
+                      <Checkout />
+                    </PrivateRoute>
+                  }
+                />
+                <Route 
+                  path="/order-confirmation/:orderId"
+                  element={
+                    <PrivateRoute>
+                      <OrderConfirmation />
+                    </PrivateRoute>
+                  }
+                />
+                <Route 
+                  path="/orders"
+                  element={
+                    <PrivateRoute>
+                      <UserOrders />
+                    </PrivateRoute>
+                  }
+                />
+              </Routes>
+              <Footer />
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
+      </CountryProvider>
     </Router>
   )
 }

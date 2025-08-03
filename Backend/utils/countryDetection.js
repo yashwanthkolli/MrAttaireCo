@@ -49,11 +49,6 @@ class CountryDetector {
   async getClientCountry(req) {
     try {
       // Get client IP (handles various proxy scenarios)
-      console.log('req forwarded', req.headers['x-forwarded-for'])
-      console.log('req real ip', req.headers['x-real-ip'])
-      console.log('connection remoteAddress', req.connection?.remoteAddress)
-      console.log('socket remoteAddress', req.socket?.remoteAddress)
-      console.log('connection?.socket?.remoteAddress', req.connection?.socket?.remoteAddress)
       let ip = req.headers['x-forwarded-for'] || 
                req.headers['x-real-ip'] || 
                req.connection.remoteAddress;

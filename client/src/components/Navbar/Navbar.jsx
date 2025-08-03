@@ -9,6 +9,7 @@ import { FiShoppingCart } from 'react-icons/fi';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import NavbarSearch from '../NavbarSearch/NavbarSearch';
+import CountrySelector from '../CountrySelector/CountrySelector';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
@@ -87,6 +88,7 @@ const Navbar = () => {
               <span className='value cart'>{totalItems < 9 ? totalItems : '9+'}</span>
             }
           </Link>
+          <CountrySelector />
       </div>
     </nav>
   );

@@ -6,14 +6,19 @@ import Button from '../Button/Button';
 import './CartSummary.Styles.css';
 import { FaTag } from 'react-icons/fa6';
 import API from '../../utils/api';
+import PriceDisplay from '../PriceDisplay/PriceDispaly';
+import { useCountry } from '../../context/CountryContext';
+import { calculateCartTotals } from '../../utils/cartCalculator';
 
 const CartSummary = () => {
+  const { country } = useCountry();
   const { cart, isGuestCart, clearCart, validateCart, refreshCart } = useCart();
   const [couponCode, setCouponCode] = useState('');
   const [couponData, setCouponData] = useState({});
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
   const [errors, setErrors] = useState('')
+  const [subTotal, setSubTotal] = useState(0)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,10 +36,39 @@ const CartSummary = () => {
     );
   }
 
-  const subtotal = cart.items.reduce((sum, item) => {
-    const price = item.discountedPriceAtAddition || item.priceAtAddition;
-    return sum + (price * item.quantity);
-  }, 0);
+  useEffect(() => {
+    const convertDiscountValue = async() => {
+      if (couponData && couponData.discountAmount) {
+        const { data } = await API.get('/country/convert', {
+          params: {
+            priceInr: couponData.discountAmount,
+            countryCode: country?.code,
+            priceType: 'sum'
+          }
+        });
+        return data
+      }
+      return 0;
+    }
+
+    if (country?.code === 'IN') {
+      const subtotal = cart.items.reduce((sum, item) => {
+        const price = item.discountedPriceAtAddition || item.priceAtAddition;
+        return sum + (price * item.quantity);
+      }, 0);
+      setSubTotal(subtotal);
+    } else {
+      if (country) {
+        calculateCartTotals(cart, country.code)
+        .then(res => setSubTotal(res.subtotal))
+        .catch(err => setErrors(err))
+        
+        convertDiscountValue()
+        .then(res => setCouponData(prev => ({...prev, discountAmount: res.value})))
+        .catch(err => setErrors(err))
+      }
+    }
+  }, [country, couponApplied])
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
@@ -91,23 +125,23 @@ const CartSummary = () => {
         <div className='text-container text'>
           <div className='info sub-heading'>
             <span className='title'>Subtotal: </span>
-            <span className='value'>₹{subtotal.toFixed(2)}</span>
+            <span className='value'>{country.symbol ? country.symbol : '₹'}{subTotal > 0 ? subTotal.toFixed(2) : 0}</span>
           </div>
           { couponData && couponData.discountAmount > 0 &&
             <div className='info sub-heading'>
               <span className='title'>Discount: </span>
-              <span className='value'>₹{couponData.discountAmount}</span>
+              <span className='value'>{country.symbol ? country.symbol : '₹'}{couponData.discountAmount.toFixed(2)}</span>
             </div>
           }
           
-          
           <div className='tax-details'>
-            Tax included
+            Tax included<br />
+            Shipping charges extra
           </div>
 
           <div className='info sub-heading total-info'>
             <span className='title'>Total: </span>
-            <span className='value'>₹{couponData && couponData.discountAmount ? subtotal - couponData.discountAmount : subtotal}</span>
+            <span className='value'>{country.symbol ? country.symbol : '₹'}{couponData && couponData.discountAmount ? (subTotal - couponData.discountAmount).toFixed(2) : subTotal.toFixed(2)}</span>
           </div>
 
           {/* Coupon Code Section */}

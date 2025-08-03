@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const navigate = useNavigate()
-  const { cart, validateCart, totalItems, refreshCart } = useCart();
+  const { cart, validateCart, totalItems, refreshCart, convertedCart } = useCart();
   const [newAddress, setNewAddress] = useState({
     recipientName: '',
     phoneNumber: '',
@@ -116,6 +116,8 @@ const Checkout = () => {
           subtotal={subtotal}
           totalItems={totalItems} 
           etd={etd}
+          refreshCart={refreshCart}
+          convertedCart={convertedCart}
         />
       </div>
     </div>

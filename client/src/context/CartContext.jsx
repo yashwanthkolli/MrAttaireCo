@@ -1,6 +1,7 @@
-import { createContext, useState, useEffect, useContext, useMemo } from 'react';
+import { createContext, useState, useEffect, useContext, useCallback  } from 'react';
 import API from '../utils/api';
 import { AuthContext } from './AuthContext';
+import { useCountry } from './CountryContext';
 
 const CART_STORAGE_KEY = 'guest_cart';
 
@@ -8,7 +9,9 @@ export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
+  const { country } = useCountry();
   const [cart, setCart] = useState(null);
+  const [convertedCart, setConvertedCart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isGuestCart, setIsGuestCart] = useState(false);
@@ -36,6 +39,39 @@ export const CartProvider = ({ children }) => {
   const clearGuestCart = () => {
     localStorage.removeItem(CART_STORAGE_KEY);
   };
+
+  // Convert cart prices to local currency
+  const convertCartPrices = useCallback(async (cartData) => {
+    if (!cartData?.items || !country?.code) return cartData;
+    
+    try {
+      const { data } = await API.post('/country/convert/cart', {
+        items: cartData.items.map(item => ({
+          id: item._id,
+          priceInr: item.discountedPriceAtAddition || item.priceAtAddition,
+          quantity: item.quantity
+        })),
+        shippingFee: cartData.shippingFee || 0,
+        taxAmount: cartData.taxAmount || 0,
+        countryCode: country.code
+      });
+
+      return {
+        ...cartData,
+        items: cartData.items.map((item, index) => ({
+          ...item,
+          convertedPrice: data.items[index].value
+        })),
+        convertedSubtotal: data.subtotal,
+        convertedShipping: data.shipping,
+        convertedTotal: data.total,
+        currency: data.currency
+      };
+    } catch (error) {
+      console.error('Price conversion failed:', error);
+      return cartData; // Return original cart if conversion fails
+    }
+  }, [country?.code]);
 
   // Merge guest cart with user cart when logging in
   const mergeGuestCartWithUser = async () => {
@@ -66,13 +102,18 @@ export const CartProvider = ({ children }) => {
   const fetchUserCart = async () => {
     try {
       const { data } = await API.get('/cart');
-      setCart(data.data.cart);
-      setTotalItems(calculateTotalItems(data.data.cart));
+      const cartData = data.data.cart;
+      const converted = await convertCartPrices(cartData);
+
+      setCart(cartData);
+      setConvertedCart(converted);
+      setTotalItems(calculateTotalItems(cartData));
       setIsGuestCart(false);
       setError(null);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load cart');
       setCart(null);
+      setConvertedCart(null);
     }
   };
 
@@ -91,7 +132,10 @@ export const CartProvider = ({ children }) => {
       } else {
         // User is guest - load from localStorage
         const guestCart = getGuestCart();
+        const converted = await convertCartPrices(guestCart);
+        
         setCart(guestCart);
+        setConvertedCart(converted);
         setTotalItems(calculateTotalItems(guestCart));
         setIsGuestCart(true);
       }
@@ -99,6 +143,7 @@ export const CartProvider = ({ children }) => {
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load cart');
       setCart(null);
+      setConvertedCart(null);
       setTotalItems(0);
     } finally {
       setLoading(false);
@@ -106,8 +151,10 @@ export const CartProvider = ({ children }) => {
   };
 
   // Update cart and recalculate total items
-  const updateCartState = (newCart) => {
+  const updateCartState = async (newCart) => {
+    const converted = await convertCartPrices(newCart);
     setCart(newCart);
+    setConvertedCart(converted);
     setTotalItems(calculateTotalItems(newCart));
   };
 
@@ -254,12 +301,13 @@ export const CartProvider = ({ children }) => {
   // Initialize cart on mount and user change
   useEffect(() => {
     initializeCart();
-  }, [user]);
+  }, [user, country?.code]);
 
   return (
     <CartContext.Provider
       value={{
         cart,
+        convertedCart,
         loading,
         error,
         isGuestCart,

@@ -61,7 +61,8 @@ class CurrencyService {
     return priceInr * rate;
   }
 
-  async getLocalizedPrice(product, countryCode) {
+  async getLocalizedPrice(product, countryCode, options = {}) {
+    const { applyPsychologicalPricing = true } = options;
     const country = countryConfig.supportedCountries.find(c => c.code === countryCode);
     if (!country) throw new Error(`Unsupported country: ${countryCode}`);
 
@@ -69,14 +70,47 @@ class CurrencyService {
     const multipliedPrice = product.basePrice * country.priceMultiplier;
     
     // Then convert to local currency
-    const localPrice = await this.convertPrice(multipliedPrice, country.currency);
+    let localPrice = await this.convertPrice(multipliedPrice, country.currency);
     
+    // Apply psychological pricing for non-INR currencies
+    if (applyPsychologicalPricing && country.currency !== 'INR') {
+      localPrice = this.applyPsychologicalPricing(localPrice);
+    }
+
     return {
       value: localPrice,
-      formatted: `${country.symbol}${localPrice.toFixed(2)}`,
+      formatted: this.formatPrice(localPrice, country),
       currency: country.currency,
-      originalPrice: product.basePrice // Store original for reference
+      originalPrice: product.basePrice,
+      multiplier: country.priceMultiplier
     };
+  }
+
+  applyPsychologicalPricing(price) {
+    // Round to nearest 4.99 or 9.99 pattern
+    const floor = Math.floor(price);
+    const remainder = price - floor;
+    
+    // Determine whether to use 4.99 or 9.99 pattern
+    const base = remainder < 0.5 ? 4.99 : 9.99;
+    
+    // Get the nearest whole number below the price
+    const wholeNumber = remainder < 0.5 ? floor : floor + 1;
+    
+    // Handle cases where we might go below 0
+    const adjustedWhole = wholeNumber < 1 ? 1 : wholeNumber;
+    
+    return adjustedWhole - 0.01; // Results in x.99
+  }
+
+  formatPrice(price, country) {
+    // Format according to locale
+    return new Intl.NumberFormat(country.locale || 'en-IN', {
+      style: 'currency',
+      currency: country.currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(price);
   }
 }
 

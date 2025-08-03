@@ -49,5 +49,5 @@ module.exports = {
       shippingAvailable: true
     }
   ],
-  defaultCountry: 'GB'
+  defaultCountry: 'IN'
 };

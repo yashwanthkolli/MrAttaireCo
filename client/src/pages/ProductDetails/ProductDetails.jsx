@@ -13,6 +13,7 @@ import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import PriceDisplay from '../../components/PriceDisplay/PriceDispaly';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -122,7 +123,9 @@ const ProductDetails = () => {
             
             <h1 className='name sub-heading'>{product.name}</h1>
             <p className='text description'>{product.description}</p>
-            <div className='price sub-heading'>₹ {product.price}</div>
+            <div className='price sub-heading'>
+              <PriceDisplay basePriceInr={product.price} />
+            </div>
 
             <div className='thumbnail-container'>
               {

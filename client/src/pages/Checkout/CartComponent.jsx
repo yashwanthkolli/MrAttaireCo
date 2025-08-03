@@ -3,15 +3,18 @@ import Button from '../../components/Button/Button';
 import './CartComponent.Styles.css';
 import { useEffect, useState } from 'react';
 import API from '../../utils/api';
+import { useCountry } from '../../context/CountryContext';
 
-const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, etd}) => {
+const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, etd, refreshCart, convertedCart}) => {
+  const { country } = useCountry();
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
   const [couponData, setCouponData] = useState({});
+  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     const fetchCouponData = async () => {
-      const { data } =  await API.post('/coupon/apply', { couponCode })
+      const { data } =  await API.post('/coupon/apply', { couponCode: cart.couponUsed })
       if (data && data.success && data.couponValid) {
         setCouponData(data.coupon)
       } 
@@ -48,35 +51,57 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
       setCouponApplied(false);
       setCouponCode('');
       setCouponData({});
+      setDiscount(0);
       refreshCart();
     }
   };
 
   let shipping = 100;
-  let discount = 0;
 
-  if (couponData && couponData.discountAmount) {
-    discount = couponData.discountAmount
-  }
+  useEffect(() => {
+    const convertDiscountValue = async() => {
+      if (couponData && couponData.discountAmount) {
+        const { data } = await API.get('/country/convert', {
+          params: {
+            priceInr: couponData.discountAmount,
+            countryCode: country?.code,
+            priceType: 'sum'
+          }
+        });
+        return data
+      }
+      return 0;
+    }
+
+    if (couponData && couponData.discountAmount > 0) {
+      if (country?.code === 'IN'){
+        setDiscount(couponData.discountAmount)
+      } else {
+        convertDiscountValue()
+        .then(res => setDiscount(res.value))
+        .catch(err => setCouponError(err))
+      }
+    }
+  }, [couponData])
 
   if (couponData && couponData.freeShipping) {
     shipping = 0;
   }
 
-  const total = subtotal + shipping - discount;
+  const total = convertedCart.convertedSubtotal + shipping - discount;
 
   return (
     <div className='cart-section'>
       <div className='cart-items-list'>
         {
-          cart.items.map(item => 
+          convertedCart.items.map(item => 
             <div className='item' key={item._id}>
               <div className='img-container'>
                 <img src={item.product.images[0].url} alt={item.product.name} />
                 <span className='quatity'>{item.quantity}</span>
               </div>
               <div className='name text'>{item.product.name}</div>
-              <div className='price text'>₹ {item.priceAtAddition * item.quantity}</div>
+              <div className='price text'>{country.symbol ? country.symbol : '₹'}{item.convertedPrice * item.quantity}</div>
             </div>
           )
         }
@@ -118,17 +143,17 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
       <div className='total-section'>
         <div className='total-item subtotal text'>
           <span>Subtotal- {totalItems} items</span>
-          <span>₹ {subtotal}</span>
+          <span>{country.symbol ? country.symbol : '₹'}{convertedCart.convertedSubtotal.toFixed(2)}</span>
         </div>
         <div className='total-item shipping text'>
           <span>Shipping</span>
-          <span>₹ {shipping}</span>
+          <span>{country.symbol ? country.symbol : '₹'}{shipping}</span>
         </div>
         {
-          couponData.discountAmount > 0 && 
+          discount > 0 && 
           <div className='total-item coupon-discount text'>
             <span>Coupon Discount</span>
-            <span>₹ {discount}</span>
+            <span>{country.symbol ? country.symbol : '₹'}{discount.toFixed(2)}</span>
           </div>
         }
         {
@@ -141,7 +166,7 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
         <div className='total sub-heading'>
           <span>Total</span>
           <span>
-            <span className='text'>INR </span>₹<span>{total}</span></span>
+            <span className='text'>{country.currency ? country.currency : 'INR'} </span>{country.symbol ? country.symbol : '₹'}<span>{total.toFixed(2)}</span></span>
         </div>
       </div>
     </div>
