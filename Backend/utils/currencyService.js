@@ -20,7 +20,6 @@ class CurrencyService {
       }
       throw new Error('Invalid response from primary API');
     } catch (primaryError) {
-      console.log('Falling back to secondary API');
       try {
         // Try backup API
         const backupResponse = await axios.get(this.backupApiUrl);

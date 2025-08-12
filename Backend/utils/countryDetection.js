@@ -61,7 +61,6 @@ class CountryDetector {
       // If localhost or testing, use public IP
       if (ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1') {
         ip = await this.getPublicIp();
-        console.log(ip)
         if (!ip) throw new Error('Could not determine public IP');
       }
 

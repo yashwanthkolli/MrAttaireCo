@@ -9,6 +9,8 @@ const Product = require('../models/Product');
 const sendEmail = require('../utils/sendEmail');
 const getShiprocketToken = require('../utils/getShipRocketToken');
 const { validateCoupon, calculateDiscount } = require('../utils/couponValidator');
+const countryConfig = require('../config/countryConfig');
+const currencyService = require('../utils/currencyService');
 
 // @desc    Create Razorpay Order
 // @route   POST /api/v1/payments/create-order
@@ -17,6 +19,17 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
   try {
     const { couponCode, shippingAddress } = req.body;
     const userId = req.user._id;
+
+    // Get country details from shipping address
+    const country = countryConfig.supportedCountries.find(
+      c => c.code === shippingAddress.country
+    ) || countryConfig.supportedCountries.find(
+      c => c.code === countryConfig.defaultCountry
+    );
+
+    if (!country) {
+      return next(new ErrorResponse('Invalid shipping country', 400));
+    }
 
     const userCart = await Cart.findOne({ user: userId }).populate('items.product');
     if (!userCart || userCart.items.length === 0) {
@@ -50,14 +63,18 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
       }
     }
 
-    const amount = total - discount + shippingCost;
+    const { subtotal } = await convertCartTotal(cart, country);
 
-    const amountInPaise = Math.round(amount * 100); // Razorpay uses paise
+    const convertedDiscount = await convertPrice(discount, country);
+
+    const amount = subtotal - convertedDiscount + shippingCost;
+
+    const amountInSmallestUnit = amount.toFixed(2) * 100;
 
     // Create Razorpay order
     const options = {
-      amount: amountInPaise,
-      currency: 'INR',
+      amount: amountInSmallestUnit,
+      currency: country.currency,
       receipt: `order_${Date.now()}`,
     };
 
@@ -325,3 +342,41 @@ const reduceStock = async (items) => {
     );
   }
 }
+
+const convertCartTotal = async (cart, country) => {
+  const convertedItems = await Promise.all(
+    cart.items.map(async item => {
+      // Apply country multiplier first
+      let price = item.priceAtAddition;
+      
+      // Convert currency if needed (with psychological pricing)
+      if (country.currency !== 'INR') {
+        let converted = await currencyService.getLocalizedPrice({basePrice: price}, country.code);
+        price = converted.value;
+      }
+
+      return {
+        ...item.toObject(),
+        convertedPrice: price,
+        itemTotal: price * item.quantity,
+        currency: country.currency
+      };
+    })
+  );
+
+  // Calculate subtotal from converted items
+  const subtotal = convertedItems.reduce((sum, item) => sum + item.itemTotal, 0);
+
+  return {subtotal}
+}
+
+const convertPrice = async (price, country) => {
+  let amt = price;
+
+  if (country.currency !== 'INR') {
+    let converted = await currencyService.getLocalizedPrice({basePrice: price}, country.code, { applyPsychologicalPricing: false });
+    amt = converted.value;
+  }
+
+  return amt.toFixed(2);
+} 
