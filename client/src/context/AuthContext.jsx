@@ -40,6 +40,8 @@ export const AuthProvider = ({ children }) => {
   try {
     const res = await API.post('/auth/login', formData);
     
+    localStorage.setItem('token', res.data.token);
+    
     // Check if user is verified
     const userRes = await API.get('/auth/me');
     if (!userRes.data.data.isVerified) {
@@ -51,7 +53,6 @@ export const AuthProvider = ({ children }) => {
       };
     }
     
-    localStorage.setItem('token', res.data.token);
     await checkAuthStatus();
     return { success: true, data: res.data };
     } catch (err) {
