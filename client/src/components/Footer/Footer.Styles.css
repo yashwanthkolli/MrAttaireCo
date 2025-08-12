@@ -8,6 +8,8 @@
 .footer-section .socials {
   position: absolute;
   left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   background-color: var(--accent-color);
@@ -104,4 +106,49 @@
   font-weight: 700;
   position: relative;
   z-index: 5;
+}
+
+@media (max-width: 768px) {
+  .footer-section {
+    padding: 3rem 2rem;
+  }
+  
+  .footer-section .content {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+  }
+
+  .footer-section .content .details,
+  .footer-section .content .links {
+    width: 100%;
+  }
+
+  .footer-section .content .links .links-list .links-title {
+    margin-bottom: 5px;
+  }
+
+  .footer-section .content .links .links-list a {
+    margin-bottom: 5px;
+  }
+
+  .footer-section .socials {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    padding-right: 0;
+  }
+
+  .footer-section .socials a {
+    width: 25%;
+    border-radius: 2px;
+  }
+
+  .footer-section .socials a:hover {
+    width: 25%;
+  }
 }

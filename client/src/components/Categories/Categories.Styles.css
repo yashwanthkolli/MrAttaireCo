@@ -123,3 +123,89 @@
   color: var(--accent-color);
 }
 
+/* Tablet view: reduce padding, change grid proportions */
+@media (max-width: 1024px) {
+  .categories-section {
+    padding: 4rem 0;
+  }
+
+  .categories-section .categories-container {
+    width: calc(100% - 9rem);
+  }
+
+  /* .categories-section .category .category-heading {
+    font-size: 2.4rem;
+  } */
+}
+
+/* Small tablets / large phones: single column */
+@media (max-width: 768px) {
+  .categories-section {
+    padding: 3rem 0;
+  }
+
+  .categories-section .categories-container {
+    width: calc(100% - 4rem);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .categories-section .tshirts {
+  margin: 5px;
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+}
+
+.categories-section .trackpants {
+  margin: 5px;
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.categories-section .joggers {
+  margin: 5px;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+
+.categories-section .shorts {
+  margin: 5px;
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+.categories-section .winterwear {
+  margin: 5px;
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+}
+
+
+  .categories-section .category {
+    height: 30vh;
+  }
+
+  .categories-section .category .category-heading {
+    font-size: 2rem;
+  }
+}
+
+/* Mobile portrait: compact single column */
+@media (max-width: 480px) {
+  .categories-section {
+    padding: 2rem 0;
+  }
+
+  .categories-section .categories-container {
+    width: calc(100% - 2rem); 
+  }
+
+  .categories-section .category {
+    height: 25vh;
+  }
+
+  .categories-section .category .category-heading {
+    font-size: 1.8rem;
+    padding: var(--space-sm);
+  }
+}

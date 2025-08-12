@@ -1,8 +1,6 @@
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import './Navbar.Styles.css';
-
 import logo from '../../assets/logo.png';
 import { FaRegHeart, FaRegUser } from 'react-icons/fa';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -10,6 +8,8 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import NavbarSearch from '../NavbarSearch/NavbarSearch';
 import CountrySelector from '../CountrySelector/CountrySelector';
+
+import './Navbar.Styles.css';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
@@ -25,9 +25,9 @@ const Navbar = () => {
   return (
     <nav className='navbar'>
       <div className='shop-routes'>
-        <Link to="/">
+        <Link to="/" aria-label='Home'>
           <div className='logo-container'>
-            <img src={logo} />
+            <img src={logo} alt='MrAttire-logo' />
           </div>
         </Link>
         <Link className='sub-heading' to="/products">
@@ -42,7 +42,7 @@ const Navbar = () => {
         {isAuthenticated ? (
           <>
             <div className='dropdown-container'>
-              <button className='drop-button'><FaRegUser /></button>
+              <button className='drop-button' aria-label='User'><FaRegUser /></button>
               <div className='dropdown-content'>
                 <div className='user-info'>
                   <h3 className='user-name sub-heading'>{user.firstName + ' ' + user.lastName}</h3>
@@ -74,14 +74,14 @@ const Navbar = () => {
             </Link>
           </>
           )}
-          <Link className='route-icon' to="/wishlist">
+          <Link className='route-icon' to="/wishlist" aria-label='Wishlist'>
             <FaRegHeart />
             {
               wishlistCount > 0 &&
               <span className='value wishlist'>{wishlistCount < 9 ? wishlistCount : '9+'}</span>
             }
           </Link>
-          <Link className='route-icon' to="/cart">
+          <Link className='route-icon' to="/cart" aria-label='Cart'>
             <FiShoppingCart /> 
             {
               totalItems > 0 &&

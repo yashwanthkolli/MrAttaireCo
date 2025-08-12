@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import API from '../../utils/api';
 
 import './HeroSection.Styles.css'
+import Message from '../Message/Message';
 
 const HeroSection = () => {
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [msg, setMsg] = useState({ type: '', text: '' });
 
   useEffect(() => {
     const fetchHero = async () => {
@@ -14,6 +16,7 @@ const HeroSection = () => {
         setHero(res.data.data);
       } catch (err) {
         console.error('Failed to fetch hero content:', err);
+        setMsg({ type: 'error', text: 'Failed to load hero content' });
       } finally {
         setLoading(false);
       }
@@ -22,8 +25,29 @@ const HeroSection = () => {
     fetchHero();
   }, []);
 
-  if (loading) return <div className="hero-loading">Loading...</div>;
-  if (!hero) return null;
+  if (loading) {
+    return (
+      <section className="hero skeleton-hero">
+        <div className="hero-content">
+          <div className="hero-skeleton-text hero-skeleton-subtitle"></div>
+          <div className="hero-skeleton-text hero-skeleton-title"></div>
+          <div className="hero-skeleton-button"></div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!hero) {
+    return (
+      msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+        />
+      )
+    );
+  }
 
   return (
     <section 

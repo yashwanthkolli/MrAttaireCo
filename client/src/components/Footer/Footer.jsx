@@ -9,13 +9,6 @@ const Footer = () => {
   return (
     <>
       <div className='footer-section'>
-        <div className='socials'>
-          <Link to='https://instagram.com' target="_blank"><FaInstagram /></Link>
-          <Link to='https://facebook.com' target="_blank"><FaFacebook /></Link>
-          <Link to='https://linkdedin.com' target="_blank"><FaLinkedin /></Link>
-          <Link to='https://twitter.com' target="_blank"><FaXTwitter /></Link>
-          <Link to='https://whatsapp.com' target="_blank"><FaWhatsapp  /></Link>
-        </div>
         <div className='content'>
           <div className='details'>
             <div className='logo-container'>
@@ -67,6 +60,13 @@ const Footer = () => {
               <Link to='/products/trackpants'>WhatsApp</Link>
             </div> */}
           </div>
+        </div>
+        <div className='socials'>
+          <Link to='https://instagram.com' target="_blank"><FaInstagram /></Link>
+          <Link to='https://facebook.com' target="_blank"><FaFacebook /></Link>
+          <Link to='https://linkdedin.com' target="_blank"><FaLinkedin /></Link>
+          <Link to='https://twitter.com' target="_blank"><FaXTwitter /></Link>
+          <Link to='https://whatsapp.com' target="_blank"><FaWhatsapp  /></Link>
         </div>
         <div className='copywrite text'>© 2025 Mr Attaire Co. All Rights Reserved.</div>
       </div>

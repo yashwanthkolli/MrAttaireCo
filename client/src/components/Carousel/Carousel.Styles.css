@@ -1,4 +1,4 @@
-.carousel {
+.carousel { /* height = 5px(padding) * 2 + 16px(line height of 'text') = 26px  */
   width: 100vw;
   overflow: hidden;
   background: var(--primary-dark);
@@ -6,6 +6,7 @@
   padding: 5px 0;
   position: relative;
   z-index: 5;
+  cursor: pointer;
 }
 
 .carousel .carousel-track {
@@ -17,9 +18,35 @@
 .carousel .carousel-track .slide {
   width: 25%;
   text-align: center;
+  user-select: none;
 }
 
 @keyframes scroll {
 	0% { transform: translateX(0); }
 	100% { transform: translateX(-50%)}
+}
+
+.copy-acknowledgement {
+  position: absolute;
+  z-index: 99;
+  top: 90vh;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--primary-dark);
+  color: var(--primary-light);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  opacity: 0.9;
+  animation: fadeInOut 2s ease;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  10% { opacity: 1; transform: translate(-50%, 0); }
+  90% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -10px); }
 }

@@ -1,3 +1,54 @@
+/* Skeleton Loader */
+.skeleton-hero {
+  background: #ccc; /* fallback color */
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-hero::before {
+  /* Keep the same overlay style as hero */
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+.hero-skeleton-text {
+  height: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+.hero-skeleton-subtitle {
+  width: 40%;
+  height: 1.2rem;
+}
+
+.hero-skeleton-title {
+  width: 70%;
+  height: 3rem;
+}
+
+.hero-skeleton-button {
+  width: 150px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Hero Section */
 .hero {
   position: relative;
   height: 80vh;
@@ -69,12 +120,67 @@
   background: none;
 }
 
+
+@media (max-width: 1024px) {
+  .hero-content {
+    left: 5rem;
+    bottom: 5rem;
+    max-width: 600px;
+  }
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+  .hero p {
+    font-size: 1.5rem;
+  }
+  .cta-button {
+    padding: 0.8rem 2.5rem;
+    font-size: 1.3rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .hero {
+    padding: 0 1.5rem;
+    height: 70vh;
+  }
+  .hero-content {
+    left: 3rem;
+    bottom: 4rem;
+    max-width: 90%;
+  }
   .hero h1 {
     font-size: 2.5rem;
   }
-  
   .hero p {
     font-size: 1.2rem;
+  }
+  .cta-button {
+    padding: 0.7rem 2rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: auto;
+    min-height: 60vh;
+    padding: 2rem 1rem;
+  }
+  .hero-content {
+    max-width: 100%;
+  }
+  .hero h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  .cta-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
   }
 }

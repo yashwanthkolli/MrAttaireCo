@@ -1,0 +1,28 @@
+.country-selector {
+  position: relative;
+  margin-left: 1rem;
+}
+
+.country-selector .country-text {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  gap: 5px;
+}
+
+.country-selector .country-dropdown {
+  background: var(--primary-light);
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+  border-radius: 2px;
+}
+
+.country-selector .country-dropdown .country-option {
+  cursor: pointer;
+  margin-bottom: 1rem;
+}

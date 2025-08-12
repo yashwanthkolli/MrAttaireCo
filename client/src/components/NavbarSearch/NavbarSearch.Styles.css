@@ -65,10 +65,66 @@
   position: fixed;
   width: 100vw;
   height: 100vh;
-  top: 11rem;
+  top: 9.6rem; /* Combined height of Carousel(26px) and Navbar(7rem) */
   left: 0;
   right: 0;
   bottom: 0;
   background: #242423A0;
   z-index: 9;
+}
+
+/* Tablet view: shrink search bar */
+@media (max-width: 1024px) {
+  .navbar-search .search-input-container input {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.4rem;
+  }
+
+  .navbar-search .search-dropdown img {
+    width: 40px;
+    margin-right: 1.5rem;
+  }
+}
+
+/* Small tablets / large phones */
+@media (max-width: 768px) {
+
+  .navbar-search .search-input-container input {
+    font-size: 1.3rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .navbar-search .search-dropdown {
+    padding: 1.5rem 0;
+  }
+
+  .navbar-search .search-dropdown img {
+    width: 35px;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .navbar-search {
+    width: 50%;
+  }
+
+  .navbar-search .search-input-container input {
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .navbar-search .search-dropdown {
+    padding: 1rem 0;
+  }
+
+  .navbar-search .search-dropdown img {
+    width: 30px;
+    margin-right: 1rem;
+  }
+
+  /* Overlay should start just below navbar */
+  .navbar-search .search-overlay {
+    top: 7rem; /* Adjust if navbar height changes */
+  }
 }

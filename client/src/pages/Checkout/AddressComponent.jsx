@@ -7,9 +7,11 @@ import Button from '../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { SiRazorpay } from 'react-icons/si';
 import { BsCashCoin } from 'react-icons/bs';
+import { useCountry } from '../../context/CountryContext';
 
 const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMethod, setPaymentMethod}) => {
   const navigate = useNavigate()
+  const { updateCountry } = useCountry();
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -27,7 +29,8 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
   }
 
   const handleCountryChange = (e) => {
-    setNewAddress(prev => ({...prev, country: e.target.value, state: e.target.value === 'UK' ? '' : prev.state}))
+    updateCountry(e.target.value)
+    setNewAddress(prev => ({...prev, country: e.target.value, state: e.target.value === 'GB' ? '' : prev.state}))
   }
 
   const handleSelectAddress = (address) => {
@@ -47,8 +50,12 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
             className="form-select"
           >
             <option value="">Select Country</option>
-            <option value='India'>India</option>
-            <option value='UK'>United Kingdom</option>
+            <option value='IN'>India</option>
+            <option value='AU'>Australia</option>
+            <option value='CA'>Canada</option>
+            <option value='DE'>Germany</option>
+            <option value='GB'>United Kingdom</option>
+            <option value='US'>United States of America</option>
           </select>
           <div className='row'>
             <Input 
@@ -82,7 +89,7 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
               required
             />
             {
-              newAddress.country !== 'UK' && 
+              newAddress.country !== 'GB' && 
               <select
                 name="state"
                 value={newAddress.state}

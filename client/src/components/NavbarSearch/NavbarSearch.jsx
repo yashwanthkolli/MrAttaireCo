@@ -26,6 +26,19 @@ const NavbarSearch = () => {
     return () => clearTimeout(timer);
   }, [query]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflowY = 'hidden'; // Disable scrolling
+    } else {
+      document.body.style.overflowY = 'unset'; // Re-enable scrolling
+    }
+
+    // Cleanup function to reset overflow when component unmounts or state changes
+    return () => {
+      document.body.style.overflowY = 'unset';
+    };
+  }, [isOpen]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
