@@ -62,11 +62,11 @@ const Footer = () => {
           </div>
         </div>
         <div className='socials'>
-          <Link to='https://instagram.com' target="_blank"><FaInstagram /></Link>
-          <Link to='https://facebook.com' target="_blank"><FaFacebook /></Link>
-          <Link to='https://linkdedin.com' target="_blank"><FaLinkedin /></Link>
-          <Link to='https://twitter.com' target="_blank"><FaXTwitter /></Link>
-          <Link to='https://whatsapp.com' target="_blank"><FaWhatsapp  /></Link>
+          <Link to='https://instagram.com' target="_blank" aria-label='Instagram'><FaInstagram /></Link>
+          <Link to='https://facebook.com' target="_blank" aria-label='Facebook'><FaFacebook /></Link>
+          <Link to='https://linkdedin.com' target="_blank" aria-label='LinkedIn'><FaLinkedin /></Link>
+          <Link to='https://twitter.com' target="_blank" aria-label='Twitter'><FaXTwitter /></Link>
+          <Link to='https://whatsapp.com' target="_blank" aria-label='Whatsapp'><FaWhatsapp  /></Link>
         </div>
         <div className='copywrite text'>© 2025 Mr Attaire Co. All Rights Reserved.</div>
       </div>

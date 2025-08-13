@@ -7,7 +7,8 @@ import GoogleLoginButton from './GoogleLogin';
 import './Login.css';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
-import { FaEye } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Message from '../Message/Message';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const Login = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [msg, setMsg] = useState({ type: '', text: '' });
 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -48,32 +50,42 @@ const Login = () => {
     const { success, error } = await login(formData);
 
     if (success) {
+      setMsg({ type: 'success', text: 'Login Successful!' });
       navigate(-1);
     } else {
+      setMsg({ type: 'error', text: error.message || 'Login failed' });
       if(error.message === 'Please verify your email first') setIsVerificationError(true)
-      setError(error.message || 'Login failed');
     }
   };
   
   return (
     <div className='login-container'>
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={3000}
+        />
+      )}
       <h2 className='heading'>Welcome Back</h2>
       <p className='sub-heading'>Please Enter Your Details</p>
       {isVerificationError ? 
         <>
-        <p style={{ color: 'red' }}>Please verify your email before logging in. Check your email for the verification link.</p>
-        <div>
+        <p className='error-message'>Please verify your email before logging in. Check your inbox for the verification link, or click the button below to resend it.</p>
+        <div style={{marginBottom: '5rem'}}>
             {!showResend ? (
-            <button onClick={() => {
+            <Button onClick={() => {
                 setShowResend(true);
                 setResendEmail(formData.email);
             }}>
                 Resend verification email
-            </button>
+            </Button>
             ) : (
             <div>
-                <p>We'll send a new verification link to {formData.email}</p>
-                <button onClick={resendVerification}>Confirm Resend</button>
+                <p className='text'>We'll send a new verification link to <b>{formData.email}</b></p>
+                <Button onClick={resendVerification}>Confirm Resend</Button>
             </div>
             )}
         </div>
@@ -95,7 +107,7 @@ const Login = () => {
           name="password"
           label="Password"
           type={passwordVisible ? "text" :"password"}
-          icon={<FaEye onClick={() => setPasswordVisible(prev => !prev)} />}
+          icon={passwordVisible ? <FaEyeSlash onClick={() => setPasswordVisible(prev => !prev)} /> : <FaEye onClick={() => setPasswordVisible(prev => !prev)} />}
           iconPosition='right'
           value={formData.password}
           onChange={handleChange}

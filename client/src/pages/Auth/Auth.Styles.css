@@ -18,3 +18,28 @@
   text-align: center;
   margin-bottom: 3rem;
 }
+
+@media (max-width: 1024px) {
+  .auth-page .auth-container {
+    width: 30%;
+    padding: 2.5rem 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-page .auth-container {
+    width: 50%;
+    padding: 2rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page .auth-container {
+    width: 75%;
+    padding: 1.5rem 1.5rem;
+  }
+  .auth-container .heading {
+    margin-bottom: 2rem;
+    font-size: 1.4rem;
+  }
+}

@@ -34,9 +34,7 @@ const Input = ({
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
-          className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border ${
-            icon ? (iconPosition === 'left' ? 'pl-10' : 'pr-10') : ''
-          } ${error ? 'border-red-300 text-red-900 focus:border-red-500 focus:ring-red-500' : ''} ${inputClassName}`}
+          className={inputClassName}
           {...props}
         />
 
