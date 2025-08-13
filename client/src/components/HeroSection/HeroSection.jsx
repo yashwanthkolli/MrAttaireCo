@@ -9,6 +9,11 @@ const HeroSection = () => {
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState({ type: '', text: '' });
 
+  const optimizeCloudinary = (url) => {
+    if (!url) return '';
+    return url.replace('/upload/', '/upload/f_auto,q_auto,w_1920/'); 
+  };
+
   useEffect(() => {
     const fetchHero = async () => {
       try {
@@ -49,13 +54,19 @@ const HeroSection = () => {
     );
   }
 
+  const heroImageUrl = optimizeCloudinary(hero.backgroundImage?.url);
+
   return (
-    <section 
-      className={`hero ${hero.theme}`}
-      style={{ 
-        backgroundImage: `url(${hero.backgroundImage?.url})` 
-      }}
-    >
+    <section className={`hero ${hero.theme}`}>
+      {heroImageUrl && (
+        <img
+          src={heroImageUrl}
+          alt={hero.title || 'Hero background'}
+          className="hero-image"
+          fetchpriority="high"
+          decoding="async"
+        />
+      )}
       <div className="hero-content">
         <p>{hero.subtitle}</p>
         <h1 className='heading'>{hero.title}</h1>

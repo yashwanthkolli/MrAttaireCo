@@ -60,7 +60,9 @@ exports.uploadHeroImage = asyncHandler(async (req, res, next) => {
       folder: 'mr_attire/hero',
       width: 1920,
       height: 1080,
-      crop: 'fill'
+      crop: 'fill',
+      quality: 'auto', 
+      fetch_format: 'auto'
     });
 
     const backgroundImage = {
