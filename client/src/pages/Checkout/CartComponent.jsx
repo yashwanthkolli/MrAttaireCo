@@ -147,7 +147,7 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
         </div>
         <div className='total-item shipping text'>
           <span>Shipping</span>
-          <span>{country.symbol ? country.symbol : '₹'}{shipping}</span>
+          <span>{country?.symbol ? country.symbol : '₹'}{shipping}</span>
         </div>
         {
           discount > 0 && 

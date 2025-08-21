@@ -48,25 +48,25 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
       }
     );
 
-    const options = response.data.data.available_courier_companies.map(option => ({
-      courierId: option.courier_id,
-      name: option.courier_name,
-      price: option.rate,
-      etd: option.etd,  // Estimated delivery time (e.g., "3-5 days")
-    }));
+    // const options = response.data.data.available_courier_companies.map(option => ({
+    //   courierId: option.courier_id,
+    //   name: option.courier_name,
+    //   price: option.rate,
+    //   etd: option.etd,  // Estimated delivery time (e.g., "3-5 days")
+    // }));
 
-    // Extract all ETD strings (e.g., "3-5 days")
-    const etds = options
-      .map(option => parseShiprocketDate(option.etd))
-      .filter(date => date !== null);  // Validate dates
+    // // Extract all ETD strings (e.g., "3-5 days")
+    // const etds = options
+    //   .map(option => parseShiprocketDate(option.etd))
+    //   .filter(date => date !== null);  // Validate dates
 
-    if (etds.length === 0) {
-      return res.json({ etd: null }); // No valid dates
-    }
+    // if (etds.length === 0) {
+    //   return res.json({ etd: null }); // No valid dates
+    // }
 
-    const latestDate = moment.max(etds);
+    // const latestDate = moment.max(etds);
 
-    res.status(200).json({ etd: latestDate.format('MMMM Do YYYY'), data: options }); 
+    res.status(200).json({ etd: latestDate.format('MMMM Do YYYY'), data: response }); 
 
   } catch (error) {
     return next(
