@@ -26,6 +26,7 @@ const Checkout = () => {
   useEffect(() => {
     const getShippingETD = async (zipCode) => {
       const res = await API.get(`/shipping?deliveryPincode=${zipCode}`)
+      console.log(res)
       if (res.data.etd) setEtd(res.data.etd)
     }
 
