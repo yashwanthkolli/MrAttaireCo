@@ -11,42 +11,52 @@ const passport = require('passport');
 exports.register = asyncHandler(async (req, res, next) => {
   const { firstName, lastName, email, password, phone } = req.body;
 
-  // Create user
-  const user = await User.create({
-    firstName,
-    lastName,
-    email,
-    password,
-    phone
-  });
+  if (!firstName || !lastName || !email || !password || !phone) {
+    throw new ErrorResponse('Please provide all the details', 400);
+  }
 
-  // Generate verification token
-  const verificationToken = user.getVerificationToken();
-  await user.save({ validateBeforeSave: false });
-
-  // Create verification URL
-  const verificationUrl = `${process.env.EMAIL_VERIFICATION_URL}/${verificationToken}`;
-
-  const message = `Welcome to Mr. Attire & Co.! \n\nThank you for registering with us. To complete your registration and verify your email address, please click on the following link: \n\n ${verificationUrl} \n\nThis link will expire in 24 hours. If you didn't request this registration, please ignore this email. \n\nBest regards, \nThe Mr. Attire & Co. Team`;
-
-  try {
-    await sendEmail({
-      email: user.email,
-      subject: 'Email Verification Token',
-      message
+  try{
+    // Create user
+    const user = await User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      phone
     });
 
-    res.status(200).json({
-      success: true,
-      data: 'Email verification token sent to email'
-    });
-  } catch (err) {
-    console.error(err);
-    user.verificationToken = undefined;
-    user.verificationTokenExpires = undefined;
+    // Generate verification token
+    const verificationToken = user.getVerificationToken();
     await user.save({ validateBeforeSave: false });
 
-    throw new ErrorResponse('Email could not be sent', 500);
+    // Create verification URL
+    const verificationUrl = `${process.env.EMAIL_VERIFICATION_URL}/${verificationToken}`;
+
+    const message = `Welcome to Mr. Attire & Co.! \n\nThank you for registering with us. To complete your registration and verify your email address, please click on the following link: \n\n ${verificationUrl} \n\nThis link will expire in 24 hours. If you didn't request this registration, please ignore this email. \n\nBest regards, \nThe Mr. Attire & Co. Team`;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: 'Email Verification Token',
+        message
+      });
+
+      res.status(200).json({
+        success: true,
+        data: 'Email verification token sent to email'
+      });
+    } catch (error) {
+      user.verificationToken = undefined;
+      user.verificationTokenExpires = undefined;
+      await user.save({ validateBeforeSave: false });
+      throw new ErrorResponse('Failed to send Verification Email.', 500)
+    }
+  } catch (err) {
+    if (err?.errorResponse?.code === 11000) {
+      throw new ErrorResponse('User Already exists with the email id.', 500);
+    } else {
+      throw new ErrorResponse('Failed to create user', 500);
+    }
   }
 });
 
