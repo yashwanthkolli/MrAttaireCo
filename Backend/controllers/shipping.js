@@ -48,14 +48,14 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
       }
     );
 
-    console.log(response.data)
-
-    // const options = response.data.data.available_courier_companies.map(option => ({
-    //   courierId: option.courier_id,
-    //   name: option.courier_name,
-    //   price: option.rate,
-    //   etd: option.etd,  // Estimated delivery time (e.g., "3-5 days")
-    // }));
+    const options = response.data.data.available_courier_companies.map(option => ({
+      courierId: option.courier_id,
+      name: option.courier_name,
+      price: option.rate,
+      etd: option.etd,  // Estimated delivery time (e.g., "3-5 days")
+      cod: option.cod,
+      cod_charges: option.cod_charges
+    }));
 
     // // Extract all ETD strings (e.g., "3-5 days")
     // const etds = options
@@ -69,7 +69,7 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
     // const latestDate = moment.max(etds);
 
     // res.status(200).json({ etd: latestDate.format('MMMM Do YYYY'), data: options }); 
-    res.status(200).json({data: response.data})
+    res.status(200).json({data: options});
 
   } catch (error) {
     console.log(error)
