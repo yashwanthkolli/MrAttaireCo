@@ -58,6 +58,10 @@
   accent-color: var(--accent-color);
 }
 
+.address-component .address-form .payment-options .option input[disabled] {
+  background-color: red;
+}
+
 .address-component .address-form .payment-options .option label {
   width: 90%;
 }

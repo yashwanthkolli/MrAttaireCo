@@ -153,7 +153,7 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
           discount > 0 && 
           <div className='total-item coupon-discount text'>
             <span>Coupon Discount</span>
-            <span>{country.symbol ? country.symbol : '₹'}{discount.toFixed(2)}</span>
+            <span>{country?.symbol ? country.symbol : '₹'}{discount.toFixed(2)}</span>
           </div>
         }
         {
@@ -166,7 +166,7 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
         <div className='total sub-heading'>
           <span>Total</span>
           <span>
-            <span className='text'>{country.currency ? country.currency : 'INR'} </span>{country.symbol ? country.symbol : '₹'}<span>{total.toFixed(2)}</span></span>
+            <span className='text'>{country?.currency ? country.currency : 'INR'} </span>{country?.symbol ? country.symbol : '₹'}<span>{total.toFixed(2)}</span></span>
         </div>
       </div>
     </div>

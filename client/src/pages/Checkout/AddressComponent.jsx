@@ -9,7 +9,7 @@ import { SiRazorpay } from 'react-icons/si';
 import { BsCashCoin } from 'react-icons/bs';
 import { useCountry } from '../../context/CountryContext';
 
-const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMethod, setPaymentMethod}) => {
+const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMethod, setPaymentMethod, isCodAvailable}) => {
   const navigate = useNavigate()
   const { updateCountry } = useCountry();
   const { user } = useContext(AuthContext);
@@ -134,8 +134,9 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
                 value="cod" 
                 checked={paymentMethod === 'cod'}
                 onChange={(e) => setPaymentMethod(e.target.value)}
+                disabled={!isCodAvailable}
               />
-              <label htmlFor="cod"><BsCashCoin />Cash on Delivery</label>
+              <label htmlFor="cod"><BsCashCoin />{isCodAvailable ? 'Cash on Delivery' : 'COD is not available to the location'}</label>
             </div>
           </div>
           <Button type='submit'>{paymentMethod === 'cod' ? 'Confirm Order' : 'Proceed'}</Button>

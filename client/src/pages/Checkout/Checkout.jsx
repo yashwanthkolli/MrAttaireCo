@@ -21,16 +21,19 @@ const Checkout = () => {
   });
   const [paymentMethod, setPaymentMethod] = useState('razorpay')
   const [coupon, setCoupon] = useState('');
-  const [etd, setEtd] = useState('')
+  const [etd, setEtd] = useState('');
+  const [isCodAvailable, setIsCodAvailable] = useState(false);
 
   useEffect(() => {
+    console.log(newAddress.zipCode)
     const getShippingETD = async (zipCode) => {
       const res = await API.get(`/shipping?deliveryPincode=${zipCode}`)
-      console.log(res)
+      console.log(res.data)
       if (res.data.etd) setEtd(res.data.etd)
+      setIsCodAvailable(res.data.isCodAvailable)
     }
 
-    if(newAddress.country === 'India' && newAddress.zipCode.length > 5) {
+    if((newAddress.country === 'India' || 'IN') && newAddress.zipCode.length > 5) {
       getShippingETD(newAddress.zipCode)
     } 
   }, [newAddress.zipCode])
@@ -107,6 +110,7 @@ const Checkout = () => {
           handleSubmit={handleProceed} 
           paymentMethod={paymentMethod}
           setPaymentMethod={setPaymentMethod}
+          isCodAvailable={isCodAvailable}
           />
       </div>
       <div className='cart-section'>
