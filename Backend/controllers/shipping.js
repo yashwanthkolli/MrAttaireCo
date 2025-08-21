@@ -40,7 +40,7 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
           pickup_postcode: process.env.SHIPROCKET_PICKUP_PINCODE,
           delivery_postcode: deliveryPincode,
           weight,
-          // cod: 1,  // 0 for prepaid, 1 for COD
+          cod: 0,  // 0 for prepaid, 1 for COD
         },
         headers: {
           'Authorization': `Bearer ${token}`,
