@@ -57,19 +57,21 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
       cod_charges: option.cod_charges
     }));
 
-    // // Extract all ETD strings (e.g., "3-5 days")
-    // const etds = options
-    //   .map(option => parseShiprocketDate(option.etd))
-    //   .filter(date => date !== null);  // Validate dates
+    // Extract all ETD strings (e.g., "3-5 days")
+    const etds = options
+      .map(option => parseShiprocketDate(option.etd))
+      .filter(date => date !== null);  // Validate dates
 
-    // if (etds.length === 0) {
-    //   return res.json({ etd: null }); // No valid dates
-    // }
+    // Find if any courier allows COD
+    const isCodAvailable = options.some(option => option.cod === 1);
 
-    // const latestDate = moment.max(etds);
+    if (etds.length === 0) {
+      return res.json({ etd: null, isCodAvailable }); // No valid dates
+    }
 
-    // res.status(200).json({ etd: latestDate.format('MMMM Do YYYY'), data: options }); 
-    res.status(200).json({data: options});
+    const latestDate = moment.max(etds);
+
+    res.status(200).json({ etd: latestDate.format('MMMM Do YYYY'), isCodAvailable }); 
 
   } catch (error) {
     console.log(error)
