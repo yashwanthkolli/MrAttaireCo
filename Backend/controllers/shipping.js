@@ -66,7 +66,8 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
 
     // const latestDate = moment.max(etds);
 
-    res.status(200).json({ etd: latestDate.format('MMMM Do YYYY'), data: response }); 
+    // res.status(200).json({ etd: latestDate.format('MMMM Do YYYY'), data: options }); 
+    res.status(200).json({data: response})
 
   } catch (error) {
     return next(
