@@ -76,3 +76,57 @@
   display: flex;
   flex-direction: column;
 }
+
+/* ===================== */
+/* 1024px and below - Tablet Landscape */
+/* ===================== */
+@media (max-width: 1024px) {
+  .cart-summary {
+    width: 90%;
+  }
+
+  .cart-summary .content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .cart-summary .content .text-container,
+  .cart-summary .content .buttons-container {
+    width: 100%;
+  }
+}
+
+/* ===================== */
+/* 768px and below - Tablet Portrait */
+/* ===================== */
+@media (max-width: 768px) {
+  .cart-summary h3 {
+    font-size: 2rem;
+  }
+
+  .cart-summary .content {
+    gap: 2rem;
+  }
+
+  .coupon-section .coupon-input-container {
+    font-size: 1.6rem;
+  }
+}
+
+/* ===================== */
+/* 480px and below - Mobile */
+/* ===================== */
+@media (max-width: 480px) {
+  .cart-summary {
+    width: 95%;
+  }
+
+  .cart-summary h3 {
+    font-size: 1.8rem;
+  }
+  .coupon-section .coupon-input-container {
+    padding-left: 0.5rem;
+    font-size: 1.4rem;
+  }
+}
+

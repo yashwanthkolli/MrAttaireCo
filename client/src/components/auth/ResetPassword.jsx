@@ -3,18 +3,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import API from '../../utils/api';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
-import { FaEye } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Message from '../Message/Message';
 
 const ResetPassword = () => {
   const { resetToken } = useParams();
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
   const [tokenValid, setTokenValid] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [msg, setMsg] = useState({ type: '', text: '' });
 
   // Check token validity when component mounts
   useEffect(() => {
@@ -24,7 +24,7 @@ const ResetPassword = () => {
         setTokenValid(true);
       } catch (err) {
         setTokenValid(false);
-        setError('Invalid or expired token');
+        setMsg({type: 'error', text: 'Invalid or expired token'});
       }
     };
     checkToken();
@@ -33,20 +33,19 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setMsg({type: 'error', text: 'Passwords do not match'});
       return;
     }
 
     setIsLoading(true);
-    setError('');
-    setMessage('');
+    setMsg({type: '', text: ''});
 
     try {
       const res = await API.put(`/auth/resetpassword/${resetToken}`, { password });
-      setMessage(res.data.message || 'Password reset successfully');
-      setTimeout(() => navigate('/auth/login'), 2000);
+      setMsg({type: 'success', text: res.data.message || 'Password reset successfully'});
+      setTimeout(() => navigate('/auth'), 2000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to reset password');
+      setMsg({type: 'error', text: err.response?.data?.message || 'Failed to reset password'});
     } finally {
       setIsLoading(false);
     }
@@ -60,19 +59,26 @@ const ResetPassword = () => {
     return (
       <div>
         <h2>Reset Password</h2>
-        <p style={{ color: 'red' }}>{error}</p>
-        <button onClick={() => navigate('/auth/forgotpassword')}>
+        <p style={{ color: 'red' }}>{msg.text}</p>
+        <Button onClick={() => navigate('/auth/forgotpassword')}>
           Request new reset link
-        </button>
+        </Button>
       </div>
     );
   }
 
   return (
     <div className='login-container'>
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={3000}
+        />
+      )}
       <h2 className='heading'>Reset Password</h2>
-      {message && <p style={{ color: 'green' }}>{message}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <Input
           name="newpassword"
@@ -88,7 +94,7 @@ const ResetPassword = () => {
           name="password"
           label="Confirm Password"
           type={passwordVisible ? "text" :"password"}
-          icon={<FaEye onClick={() => setPasswordVisible(prev => !prev)} />}
+          icon={passwordVisible ? <FaEyeSlash onClick={() => setPasswordVisible(prev => !prev)} /> : <FaEye onClick={() => setPasswordVisible(prev => !prev)} />}
           iconPosition='right'
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}

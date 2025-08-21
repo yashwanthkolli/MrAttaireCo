@@ -45,6 +45,7 @@ export const CartProvider = ({ children }) => {
     if (!cartData?.items || !country?.code) return cartData;
     
     try {
+      setLoading(true);
       const { data } = await API.post('/country/convert/cart', {
         items: cartData.items.map(item => ({
           id: item._id,
@@ -70,6 +71,8 @@ export const CartProvider = ({ children }) => {
     } catch (error) {
       console.error('Price conversion failed:', error);
       return cartData; // Return original cart if conversion fails
+    } finally {
+      setLoading(false);
     }
   }, [country?.code]);
 
@@ -101,6 +104,7 @@ export const CartProvider = ({ children }) => {
   // Fetch user cart from API
   const fetchUserCart = async () => {
     try {
+      setLoading(true);
       const { data } = await API.get('/cart');
       const cartData = data.data.cart;
       const converted = await convertCartPrices(cartData);
@@ -114,6 +118,8 @@ export const CartProvider = ({ children }) => {
       setError(err.response?.data?.message || 'Failed to load cart');
       setCart(null);
       setConvertedCart(null);
+    } finally {
+      setLoading(false);
     }
   };
 

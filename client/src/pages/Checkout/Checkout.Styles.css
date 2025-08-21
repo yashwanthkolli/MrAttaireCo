@@ -10,3 +10,42 @@
 .checkout-page .cart-section {
   width: 50%;
 }
+
+/* ===================== */
+/* 1024px and below - Tablet Landscape */
+/* ===================== */
+@media (max-width: 1024px) {
+  .checkout-page {
+    flex-direction: column-reverse;
+  }
+
+  .checkout-page .checkout-section,
+  .checkout-page .cart-section {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+}
+
+/* ===================== */
+/* 768px and below - Tablet Portrait */
+/* ===================== */
+@media (max-width: 768px) {
+  .checkout-page .checkout-section,
+  .checkout-page .cart-section {
+    box-shadow: none; /* cleaner look on smaller screens */
+  }
+}
+
+/* ===================== */
+/* 480px and below - Mobile */
+/* ===================== */
+@media (max-width: 480px) {
+  .checkout-page {
+    padding: 0 1rem;
+  }
+
+  .checkout-page .checkout-section,
+  .checkout-page .cart-section {
+    width: 100%;
+  }
+}

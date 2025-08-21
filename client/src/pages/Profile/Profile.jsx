@@ -7,6 +7,7 @@ import { FaCircleUser } from 'react-icons/fa6';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import AddressSection from '../../components/AddressSection/AddressSection';
+import Message from '../../components/Message/Message';
 
 const Profile = () => {
   const { user, updateDetails } = useContext(AuthContext);
@@ -17,8 +18,7 @@ const Profile = () => {
     lastName: user?.lastName || '',
     phone: user?.phone || ''
   });
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [msg, setMsg] = useState({type: '', text: ''});
 
   const handleChange = (e) => {
     setFormData({
@@ -31,17 +31,24 @@ const Profile = () => {
     e.preventDefault();
     try {
       await updateDetails(formData);
-      setMessage('Profile updated successfully');
+      setMsg({type: 'success', text: 'Profile updated successfully'})
       setEditMode(false);
     } catch (err) {
-      setError(err.response?.data?.message || 'Update failed');
+      setMsg({type: 'error', text: err.response?.data?.message || 'Update failed'});
     }
   };
 
   return (
     <div className='profile-page'>
-      {message && <div style={{ color: 'green' }}>{message}</div>}
-      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={3000}
+        />
+      )}
       <div className='personal-info'>
         <div className='user'>
           {
@@ -78,7 +85,7 @@ const Profile = () => {
               <Button onClick={() => setEditMode(true)} width='45%' className='small-font'>
                 Edit Profile
               </Button>
-              <Button onClick={() => navigate('/change-password')} width='45%' className='small-font'>
+              <Button onClick={() => navigate('/auth/change-password')} width='45%' className='small-font'>
                 Change Password
               </Button>
             </div>
@@ -124,7 +131,7 @@ const Profile = () => {
         )}
       </div>
 
-      <AddressSection setError={setError} setMessage={setMessage} />
+      <AddressSection setMsg={setMsg} />
     </div>
   );
 };

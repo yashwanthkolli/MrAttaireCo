@@ -66,3 +66,86 @@
 .profile-page .personal-info .other-details .buttons-container .small-font {
   font-size: 1.2rem;
 }
+
+
+/* ----------- Responsive Media Queries ----------- */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .profile-page {
+    padding: 4rem 4rem;
+  }
+
+  .profile-page .personal-info {
+    padding: 2rem;
+  }
+
+  .profile-page .personal-info .icon {
+    font-size: 6rem;
+  }
+
+  .profile-page .personal-info .other-details .detail .label,
+  .profile-page .personal-info .other-details .detail .value {
+    font-size: 1.3rem;
+  }
+}
+
+/* Mobile Landscape */
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 3rem 2rem;
+  }
+
+  .profile-page .personal-info {
+    width: 50%;
+    padding: 1.5rem;
+  }
+
+  .profile-page .personal-info .icon {
+    font-size: 5rem;
+  }
+
+  .profile-page .personal-info .profile-picture {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .profile-page .personal-info .other-details .detail {
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .profile-page .personal-info .other-details .detail .label,
+  .profile-page .personal-info .other-details .detail .value {
+    width: 100%;
+    font-size: 1.2rem;
+  }
+}
+
+/* Mobile Portrait */
+@media (max-width: 480px) {
+  .profile-page {
+    padding: 2rem 1rem 0;
+  }
+
+  .profile-page .personal-info {
+    padding: 1rem;
+  }
+
+  .profile-page .personal-info .icon {
+    font-size: 4rem;
+  }
+
+  .profile-page .personal-info .profile-picture {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .profile-page .personal-info .other-details .buttons-container {
+    flex-direction: column;
+  }
+
+  .profile-page .personal-info .other-details .buttons-container .button-component:first-of-type {
+    margin: 1rem;
+  }
+}

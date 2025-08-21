@@ -1,4 +1,5 @@
 .message {
+  max-width: 50vw;
   position: fixed;
   bottom: 20px;
   right: 20px;

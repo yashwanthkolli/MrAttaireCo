@@ -4,9 +4,7 @@ import ProductCard from '../../components/ProductCard/ProductCard';
 import './Wishlist.Styles.css';
 
 const Wishlist = () => {
-  const { wishlist, loading, clearWishlist } = useWishlist();
-
-  if (loading) return <div>Loading...</div>;
+  const { wishlist, loading } = useWishlist();
 
   return (
     <div className='wishlist-page'>
@@ -28,7 +26,7 @@ const Wishlist = () => {
           <i aria-hidden={true}></i>
           <i aria-hidden={true}></i>
         </div>
-        : <></>
+        : <div>Loading...</div>
       }
     </div>
   );

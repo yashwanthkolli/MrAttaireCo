@@ -39,6 +39,6 @@
   margin-top: 2rem;
 }
 
-.signup-container .others a:first-of-type {
-  margin-right: 3rem;
+.signup-container .others a:last-of-type {
+  margin-left: 3rem;
 }

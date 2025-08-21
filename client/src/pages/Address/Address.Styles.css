@@ -6,3 +6,21 @@
   justify-content: center;
   flex-direction: column;
 }
+
+@media (max-width: 1024px) {
+  .address-page {
+    padding: 3rem;
+  }
+}
+
+/* @media (max-width: 768px) {
+  .address-page {
+    padding: 3rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .address-page {
+    padding: 2rem 1rem;
+  }
+} */

@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { useParams, Link } from 'react-router-dom';
 import API from '../../utils/api';
 import ImageGallery from '../../components/ImageGallery/ImageGallery';
 import SizeSelector from '../../components/SizeSelector/SizeSelector';
@@ -14,15 +13,14 @@ import ProductCard from '../../components/ProductCard/ProductCard';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import PriceDisplay from '../../components/PriceDisplay/PriceDispaly';
+import Message from '../../components/Message/Message';
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [mainImageIndex, setMainImageIndex] = useState(0)
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
@@ -30,15 +28,17 @@ const ProductDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
+  const [msg, setMsg] = useState({type: '', text: ''});
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const res = await API.get(`/products/${id}`);
         setProduct(res.data.data);
-        setAvailableSizes(res.data.data.variants[0].sizes)
+        setSelectedColor(res.data.data.variants[0].color);
+        setAvailableSizes(res.data.data.variants[0].sizes);
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load product');
+        setMsg({type: 'error', text: err.response?.data?.message || 'Failed to load product'});
       } finally {
         setLoading(false);
       }
@@ -54,7 +54,7 @@ const ProductDetails = () => {
         const res = await API.get(`/products?_id[ne]=${id}&category=${product.category}&limit=4`)
         setRelatedProducts(res.data.data)
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load related products');
+        setMsg({type: 'error', text: err.response?.data?.message || 'Failed to load related products'});
       }
     }
 
@@ -68,11 +68,11 @@ const ProductDetails = () => {
 
   const handleAddToCart = async () => {
     if (!selectedColor || !selectedSize) {
-      setError('Please select both color and size');
+      setMsg({type: 'error', text: 'Please select both color and size'});
       return;
     }
 
-    setError('');
+    setMsg({type: '', text: ''});
     setIsAdding(true);
 
     const result = await addToCart(
@@ -84,19 +84,26 @@ const ProductDetails = () => {
     setIsAdding(false);
 
     if (result.success) {
-      // Success notification
-      alert(`${product.name} added to cart!`);
+      setMsg({type: 'success', text: `${product.name} added to cart!`});
     } else {
-      setError(result.message || 'Failed to add to cart');
+      setMsg({type: 'error', text: result.message || 'Failed to add to cart'});
     }
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div className="error-message">{error}</div>;
   if (!product) return <div>Product not found</div>;
 
   return (
     <div className="product-detail">
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={3000}
+        />
+      )}
       <div className="container">
         {/* Breadcrumb Navigation */}
         <nav className="breadcrumb">

@@ -6,6 +6,7 @@ import ProductCard from '../../components/ProductCard/ProductCard';
 import FilterSidebar from '../../components/FilterSidebar/FilterSidebar';
 
 import './Products.Styles.css';
+import Message from '../../components/Message/Message';
 
 const Products = () => {
   const { category } = useParams()
@@ -18,6 +19,7 @@ const Products = () => {
     color: '',
     sort: '-createdAt'
   });
+  const [msg, setMsg] = useState({type: '', text: ''})
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -33,6 +35,7 @@ const Products = () => {
         setProducts(res.data.data);
       } catch (err) {
         console.error('Failed to fetch products:', err);
+        setMsg({type: 'error', text: 'Failed to fetch products'})
       } finally {
         setLoading(false);
       }
@@ -46,6 +49,16 @@ const Products = () => {
   };
   return (
     <div className='products-page'>
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={3000}
+        />
+      )}
+
       {/* Filter Sidebar */}
       <div className="col-md-3">
         <FilterSidebar 
@@ -81,7 +94,19 @@ const Products = () => {
           <i aria-hidden={true}></i>
           <i aria-hidden={true}></i>
         </div>
-        : <></>
+        : 
+        <div className="product-grid">
+          {Array(8).fill(null).map((_, index) => (
+            <div className="product-card product-skeleton" key={index}>
+              <div className="product-image product-skeleton-block"></div>
+              <div className="product-details-skeleton">
+                <div className="skeleton-line short"></div>
+                <div className="skeleton-line long"></div>
+                <div className="skeleton-line medium"></div>
+              </div>
+            </div>
+          ))}
+        </div>
       }
     </div>
   )

@@ -6,7 +6,7 @@ import Input from '../Input/Input';
 
 import './AddressSection.Styles.css';
 
-const AddressSection = ({setMessage, setError}) => {
+const AddressSection = ({setMsg}) => {
   const { user, addAddress, deleteAddress, setDefaultAddress, updateAddress } = useContext(AuthContext);
 
   const [addressMode, setAddressMode] = useState(null); // null, 'add', or 'edit'
@@ -51,7 +51,7 @@ const AddressSection = ({setMessage, setError}) => {
         await updateAddress(currentAddress._id, addressForm)
       }
 
-      setMessage('Address updated successfully');
+      setMsg({type: 'success', text: 'Address updated successfully'});
       setAddressMode(null);
       setCurrentAddress(null);
       setAddressForm({
@@ -63,25 +63,25 @@ const AddressSection = ({setMessage, setError}) => {
         isDefault: false
       });
     } catch (err) {
-      setError(err.response?.data?.message || 'Address update failed');
+      setMsg({type: 'error', text: err.response?.data?.message || 'Address update failed'});
     }
   };
 
   const handleDeleteAddress = async (addressId) => {
     try {
       await deleteAddress(addressId);
-      setMessage('Address deleted successfully');
+      setMsg({type: 'success', text: 'Address deleted successfully'});
     } catch (err) {
-      setError(err.response?.data?.message || 'Address deletion failed');
+      setMsg({type: 'error', text: err.response?.data?.message || 'Address deletion failed'});
     }
   };
 
   const handleSetDefaultAddress = async (addressId) => {
     try {
       await setDefaultAddress(addressId);
-      setMessage('Default address updated successfully');
+      setMsg({type: 'success', text: 'Default address updated successfully'});
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to set default address');
+      setMsg({type: 'error', text: err.response?.data?.message || 'Failed to set default address'});
     }
   };
 

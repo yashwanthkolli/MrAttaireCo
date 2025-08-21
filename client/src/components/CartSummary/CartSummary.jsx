@@ -6,9 +6,9 @@ import Button from '../Button/Button';
 import './CartSummary.Styles.css';
 import { FaTag } from 'react-icons/fa6';
 import API from '../../utils/api';
-import PriceDisplay from '../PriceDisplay/PriceDispaly';
 import { useCountry } from '../../context/CountryContext';
 import { calculateCartTotals } from '../../utils/cartCalculator';
+import Message from '../Message/Message';
 
 const CartSummary = () => {
   const { country } = useCountry();
@@ -16,14 +16,14 @@ const CartSummary = () => {
   const [couponCode, setCouponCode] = useState('');
   const [couponData, setCouponData] = useState({});
   const [couponApplied, setCouponApplied] = useState(false);
-  const [couponError, setCouponError] = useState('');
-  const [errors, setErrors] = useState('')
-  const [subTotal, setSubTotal] = useState(0)
+  const [subTotal, setSubTotal] = useState(0);
+  const [msg, setMsg] = useState({type: '', text: ''});
   const navigate = useNavigate();
 
   useEffect(() => {
     if (cart.couponUsed) {
       setCouponCode(cart.couponUsed);
+      setCouponApplied(true);
     }
   }, [cart])
 
@@ -61,18 +61,18 @@ const CartSummary = () => {
       if (country) {
         calculateCartTotals(cart, country.code)
         .then(res => setSubTotal(res.subtotal))
-        .catch(err => setErrors(err))
+        .catch(err => setMsg({type: 'error', text: 'Cannot convert total into local currency.'}))
         
         convertDiscountValue()
         .then(res => setCouponData(prev => ({...prev, discountAmount: res.value})))
-        .catch(err => setErrors(err))
+        .catch(err => setMsg({type: 'error', text: 'Cannot convert discount into local currency.'}))
       }
     }
   }, [country, couponApplied])
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
-    setCouponError('');
+    setMsg({type: '', text: ''});
 
     await API.post('/coupon/apply', { couponCode })
     .then(res => {
@@ -80,11 +80,12 @@ const CartSummary = () => {
         setCouponApplied(true);
         setCouponCode(res.data.coupon.code);
         setCouponData(res.data.coupon);
-        refreshCart();
+        // refreshCart();
+        setMsg({type: 'success', text: 'Hurray! You got the discount.'});
       } 
     })
     .catch((err => {
-      setCouponError(err.response.data.error)
+      setMsg({type: 'error', text: err.response.data.error || 'Use a valid coupon.'})
     }))
   };
 
@@ -94,32 +95,42 @@ const CartSummary = () => {
       setCouponApplied(false);
       setCouponCode('');
       setCouponData({});
-      refreshCart();
+      // refreshCart();
+      setMsg({type: 'error', text: 'Coupon removed.'});
     }
   };
 
   const handleProceedToCheckout = async () => {
   try {
     if (isGuestCart) {
-      navigate('/auth/login')
+      navigate('/auth')
     } else {
       validateCart()
       .then(validation => {
         if (validation.data.allItemsAvailable && !validation.data.pricesUpdated) {
           navigate('/checkout'); // Redirect to checkout page
         } else {
-          setErrors('Some items have been changed. The cart is automatically updated. Check the cart again'); // Show errors to user
+          setMsg({type: 'error', text: 'Some items have been changed. The cart is automatically updated. Check the cart again'}); // Show errors to user
         }
       })
     }
   } catch (error) {
-    setErrors("Failed to validate cart. Please try again.");
+    setMsg({type: 'error', text: 'Failed to validate cart. Please try again.'});
   }
 };
 
   return (
     <div className='cart-summary'>
       <h3 className="sub-heading">Order Summary</h3>
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={msg.type === 'success' ? 10000 : 3000}
+        />
+      )}
       
       <div className='content'>
         <div className='text-container text'>
@@ -152,7 +163,7 @@ const CartSummary = () => {
                 type='text'
                 id='coupon-code'
                 value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
+                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                 disabled={couponApplied}
                 placeholder='Coupon Code'
                 className='coupon-input'
@@ -193,7 +204,6 @@ const CartSummary = () => {
           </Button>
         </div>
       </div>
-      {errors && (<div className="checkout-errors">{errors}</div>)}
     </div>
   );
 };

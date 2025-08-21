@@ -66,7 +66,7 @@ const Navbar = () => {
           </>
           ) : (
           <>
-            <Link className='sub-heading' to="/auth/login">
+            <Link className='sub-heading' to="/auth">
               Login
             </Link>
             <Link className='sub-heading' to="/auth/register">

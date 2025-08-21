@@ -2,17 +2,24 @@ import { useState } from 'react'
 import AddressSection from '../../components/AddressSection/AddressSection';
 
 import './Address.Styles.css';
+import Message from '../../components/Message/Message';
 
 const Address = () => {
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [msg, setMsg] = useState({type: '', text: ''});
 
   return (
     <div className='address-page'>
-      {message && <div style={{ color: 'green' }}>{message}</div>}
-      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={3000}
+        />
+      )}
 
-      <AddressSection setMessage={setMessage} setError={setError} />
+      <AddressSection setMsg={setMsg} />
     </div>
   )
 }

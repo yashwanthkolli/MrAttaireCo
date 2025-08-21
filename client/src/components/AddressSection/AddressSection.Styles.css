@@ -81,3 +81,58 @@
 .address-section .no-address {
   margin-bottom: 1.5rem;
 }
+
+@media (max-width: 1024px) {
+  .address-section {
+    width: 90%;
+    padding: 1rem 1.5rem;
+  }
+
+  .address-section .section-header .button-container {
+    width: 20%;
+  }
+}
+
+@media (max-width: 768px) {
+  .address-section {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .address-section .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .address-section .section-header .button-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .address-section .address-actions {
+    gap: 2rem;
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .address-section {
+    padding: 0.8rem;
+  }
+
+  .address-section .address-list .address-card {
+    padding: 1.2rem;
+  }
+
+  .address-section .address-list .address-card .default-badge {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .address-section .address-actions {
+    gap: 1.5rem;
+    font-size: 1.8rem;
+  }
+}

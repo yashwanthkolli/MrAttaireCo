@@ -6,6 +6,7 @@ import './CartItem.Styles.css';
 import { Link } from 'react-router-dom';
 import { useCountry } from '../../context/CountryContext';
 import API from '../../utils/api';
+import Message from '../Message/Message';
 
 const CartItem = ({ item }) => {
   const { country } = useCountry()
@@ -14,6 +15,7 @@ const CartItem = ({ item }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState('');
   const [currentPrice, setCurrentPrice] = useState(0);
+  const [msg, setMsg] = useState({type: '', text: ''});
 
   useEffect(() => {
     setCurrentPrice(item.discountedPriceAtAddition || item.priceAtAddition);
@@ -28,7 +30,7 @@ const CartItem = ({ item }) => {
         }
       })
       .then(res => setCurrentPrice(res.data.value))
-      .catch(err => setError(err))
+      .catch(err => setMsg({type: 'error', text: 'Error converting prices to local currency.'}))
     }
 
     if (country?.code !== 'IN') {
@@ -49,10 +51,20 @@ const CartItem = ({ item }) => {
 
   const handleRemove = async () => {
     await removeFromCart(item._id);
+    setMsg({type: '', text: `${item.product.name} is removed from cart.`})
   };
 
   return (
     <div className='cart-item'>
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={msg.type === 'success' ? 10000 : 3000}
+        />
+      )}
       <div className='img-container'>
         <img
           src={item.product.images[0]?.url}

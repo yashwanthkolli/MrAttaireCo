@@ -3,19 +3,18 @@ import { AuthContext } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import API from '../../utils/api';
 import GoogleLoginButton from './GoogleLogin';
-
-import './Login.css';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Message from '../Message/Message';
+
+import './Login.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [error, setError] = useState('');
   const [msg, setMsg] = useState({ type: '', text: '' });
 
   const { login } = useContext(AuthContext);
@@ -29,10 +28,10 @@ const Login = () => {
   const resendVerification = async () => {
     try {
       const res = await API.post('/auth/resendverification', { email: resendEmail });
-      setSuccess(res.data.message || 'Verification email resent successfully!');
+      setMsg({type: 'success', text: res.data.message || 'Verification email resent successfully!'});
       setShowResend(false);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to resend verification email');
+      setMsg({type: 'error', text: err.response?.data?.message || 'Failed to resend verification email'})
     }
   };
 
@@ -45,7 +44,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
 
     const { success, error } = await login(formData);
 
@@ -92,7 +90,6 @@ const Login = () => {
         </>
         : <></>
       }
-      {error && !isVerificationError ? <div style={{ color: 'red' }}>{error}</div> : <></>}
       <form onSubmit={handleSubmit}>
         <Input
           name="email"

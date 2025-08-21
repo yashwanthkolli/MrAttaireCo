@@ -7,3 +7,25 @@
 .search-page .sub-heading {
   margin-bottom: 3rem;
 }
+
+@media (max-width: 1024px) {
+  .search-page {
+    padding: 4rem 5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-page {
+    padding: 3rem 2rem;
+  }
+
+  .search-page .sub-heading {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-page {
+    padding: 2rem 1rem;
+  }
+}

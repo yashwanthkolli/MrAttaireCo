@@ -17,11 +17,11 @@ const VerifyEmail = () => {
         
         // Redirect to login after 10 seconds
         setTimeout(() => {
-          navigate('/auth/login');
+          navigate('/auth');
         }, 10000);
       } catch (err) {
         setIsSuccess(false);
-        // setMessage(err.response?.data?.message || 'Email verification failed. The link may be invalid or expired.');
+        setMessage(err.response?.data?.message || 'Email verification failed. The link may be invalid or expired.');
       }
     };
 

@@ -1,12 +1,13 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import GoogleLoginButton from './GoogleLogin';
-
-import './Signup.Styles.css';
+import Message from '../Message/Message';
 import Input from '../Input/Input';
 import { FaEye } from 'react-icons/fa';
 import Button from '../Button/Button';
+
+import './Signup.Styles.css';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -16,12 +17,10 @@ const Signup = () => {
     password: '',
     phone: ''
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false)
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [msg, setMsg] = useState({ type: '', text: '' });
 
   const { register } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -32,13 +31,14 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setMsg({ type: '', text: '' })
+
+    if (formData.password.length < 6) return setMsg({type: 'error', text: 'Password must be at least 6 characters long.'})
 
     const { success, error } = await register(formData);
 
     if (success) {
-      setSuccess('Registration successful! Please check your email to verify your account. You should receive the verification email shortly.');
+      setMsg({type: 'success', text: 'Registration successful! Please check your email to verify your account. You should receive the verification email shortly.'})
       setFormData({
         firstName: '',
         lastName: '',
@@ -47,17 +47,24 @@ const Signup = () => {
         phone: ''
       });
     } else {
-      setError(error.message || 'Registration failed');
+      setMsg({type: 'error', text: error.message || 'Registration failed'})
     }
   };
 
   return (
     <div className='signup-container'>
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={msg.type === 'success' ? 10000 : 3000}
+        />
+      )}
+
       <h2 className='heading'>Start to Style</h2>
       <p className='sub-heading'>Please Fill Your Details To SignUp</p>
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
 
       <form onSubmit={handleSubmit}>
         <Input
@@ -113,7 +120,7 @@ const Signup = () => {
       
       <GoogleLoginButton />
       <p className='others text'>
-        <Link to='/auth/register'>Sign Up</Link>
+        <Link to='/auth'>Sign In</Link>
         <Link to='/pages/termsandconditions'>Terms</Link>
       </p>
     </div>

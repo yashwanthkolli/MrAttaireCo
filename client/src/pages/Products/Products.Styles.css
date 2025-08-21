@@ -8,7 +8,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
   flex-wrap: wrap;
   row-gap: 5rem;
 }
@@ -16,4 +16,40 @@
 .product-grid i {
   width: 23%;
   height: 0;
+}
+
+@media (max-width: 1024px) {
+  .products-page {
+    padding: 4rem 5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .products-page {
+    padding: 3rem 2rem;
+  }
+
+  .product-grid {
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  .product-grid i {
+    width: 45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-page {
+    padding: 2rem 1rem;
+  }
+
+  .product-grid {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .product-grid i {
+    width: 48%;
+  }
 }

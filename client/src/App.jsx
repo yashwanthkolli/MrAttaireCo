@@ -47,12 +47,20 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/auth" element={<AuthPage />}>
-                <Route path="login" element={<Login />} />
+                <Route path="" element={<Login />} />
                 <Route path="register" element={<Signup />} />
                 <Route path="verifyemail/:verificationToken" element={<VerifyEmail />} />
                 <Route path="forgotpassword" element={<ForgotPassword />} />
                 <Route path="resetpassword/:resetToken" element={<ResetPassword />} />
                 <Route path="google/callback" element={<GoogleCallback />} />
+                <Route 
+                  path="change-password" 
+                  element={
+                    <PrivateRoute>
+                      <ChangePassword />
+                    </PrivateRoute>
+                  }
+                />
               </Route>
               <Route 
                 path="/profile" 
@@ -67,14 +75,6 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Address />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="change-password"
-                element={
-                  <PrivateRoute>
-                    <ChangePassword />
                   </PrivateRoute>
                 }
               />

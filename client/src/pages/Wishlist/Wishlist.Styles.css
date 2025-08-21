@@ -7,3 +7,28 @@
 .wishlist-page .heading {
   margin-bottom: 3rem;
 }
+
+/* --------- 1024px and below --------- */
+@media (max-width: 1024px) {
+  .wishlist-page {
+    padding: 4rem 5rem;
+  }
+}
+
+/* --------- 768px and below --------- */
+@media (max-width: 768px) {
+  .wishlist-page {
+    padding: 3rem;
+  }
+}
+
+/* --------- 480px and below --------- */
+@media (max-width: 480px) {
+  .wishlist-page {
+    padding: 2rem;
+  }
+
+  .wishlist-page .heading {
+    font-size: 1.6rem;
+  }
+}
