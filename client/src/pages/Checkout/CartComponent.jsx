@@ -143,7 +143,7 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
       <div className='total-section'>
         <div className='total-item subtotal text'>
           <span>Subtotal- {totalItems} items</span>
-          <span>{country.symbol ? country.symbol : '₹'}{convertedCart.convertedSubtotal && convertedCart.convertedSubtotal.toFixed(2)}</span>
+          <span>{country?.symbol ? country.symbol : '₹'}{convertedCart.convertedSubtotal && convertedCart.convertedSubtotal.toFixed(2)}</span>
         </div>
         <div className='total-item shipping text'>
           <span>Shipping</span>
