@@ -48,6 +48,8 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
       }
     );
 
+    console.log(response.data)
+
     // const options = response.data.data.available_courier_companies.map(option => ({
     //   courierId: option.courier_id,
     //   name: option.courier_name,
@@ -67,9 +69,10 @@ exports.getShippingOptions = asyncHandler(async (req, res, next) => {
     // const latestDate = moment.max(etds);
 
     // res.status(200).json({ etd: latestDate.format('MMMM Do YYYY'), data: options }); 
-    res.status(200).json({data: response})
+    res.status(200).json({data: response.data})
 
   } catch (error) {
+    console.log(error)
     return next(
       new ErrorResponse(`Failed to fetch shipping options`, 500)
     );
