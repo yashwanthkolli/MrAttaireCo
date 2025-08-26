@@ -45,7 +45,7 @@ const Home = () => {
     <div className="homepage">
       <HeroSection />
       <LatestCollection />
-      <Categories />
+      {/* <Categories /> */}
     </div>
   );
 };
