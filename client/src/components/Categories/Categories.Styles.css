@@ -60,6 +60,10 @@
   transform: scale(1);
 }
 
+.categories-section .disabled:hover .background {
+  transform: scale(1.03);
+}
+
 .categories-section .tshirts .background {
   background: linear-gradient(
                     to bottom right, 
@@ -72,8 +76,8 @@
 .categories-section .winterwear .background {
   background: linear-gradient(
                     to bottom right, 
-                    rgba(35, 37, 38, 0.5), 
-                    rgba(65, 67, 69, 0.5)
+                    rgba(35, 37, 38, 0.9), 
+                    rgba(65, 67, 69, 0.9)
                 ), url(../../assets/Categories/wintewear.jpg);
   background-size: cover;
   background-position: center;
@@ -82,8 +86,8 @@
 .categories-section .trackpants .background {
   background: linear-gradient(
                     to bottom right, 
-                    rgba(35, 37, 38, 0.5), 
-                    rgba(65, 67, 69, 0.5)
+                    rgba(35, 37, 38, 0.9), 
+                    rgba(65, 67, 69, 0.9)
                 ), url(../../assets/Categories/trackpants.jpg);
   background-size: cover;
   background-position: center;
@@ -92,8 +96,8 @@
 .categories-section .joggers .background {
   background: linear-gradient(
                     to bottom right, 
-                    rgba(35, 37, 38, 0.5), 
-                    rgba(65, 67, 69, 0.5)
+                    rgba(35, 37, 38, 0.9), 
+                    rgba(65, 67, 69, 0.9)
                 ), url(../../assets/Categories/joggers.jpg);
   background-size: cover;
   background-position: center;
@@ -102,8 +106,8 @@
 .categories-section .shorts .background {
   background: linear-gradient(
                     to bottom right, 
-                    rgba(35, 37, 38, 0.5), 
-                    rgba(65, 67, 69, 0.5)
+                    rgba(35, 37, 38, 0.9), 
+                    rgba(65, 67, 69, 0.9)
                 ), url(../../assets/Categories/shorts.jpg);
   background-size: cover;
   background-position: center;
@@ -119,8 +123,27 @@
   font-size: 2.8rem;
 }
 
+.categories-section .category .disabled-text {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  color: var(--primary-light);
+  padding: var(--space-md) var(--space-sm);
+  font-size: 2.8rem;
+  opacity: 0;
+}
+
 .categories-section .category:hover .category-heading {
   color: var(--accent-color);
+}
+
+.categories-section .category:hover .disabled-text {
+  opacity: 1;
+}
+
+.categories-section .disabled:hover .category-heading {
+  color: gray;
 }
 
 /* Tablet view: reduce padding, change grid proportions */

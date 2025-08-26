@@ -127,7 +127,7 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
               />
               <label htmlFor="razorpay"><SiRazorpay />Razorpay</label>
             </div>
-            <div className='option'>
+            <div className='option' style={{display: newAddress.country === ('IN' || 'India') ? 'block' : 'none'}}>
               <input type="radio" 
                 id="cod" 
                 name="payment-option" 
@@ -136,7 +136,7 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
                 onChange={(e) => setPaymentMethod(e.target.value)}
                 disabled={!isCodAvailable}
               />
-              <label htmlFor="cod"><BsCashCoin />{isCodAvailable ? 'Cash on Delivery' : 'COD is not available to the location'}</label>
+              <label htmlFor="cod" className={isCodAvailable ? '' : 'disable'}><BsCashCoin />{isCodAvailable ? 'Cash on Delivery' : 'COD is not available to the location'}</label>
             </div>
           </div>
           <Button type='submit'>{paymentMethod === 'cod' ? 'Confirm Order' : 'Proceed'}</Button>

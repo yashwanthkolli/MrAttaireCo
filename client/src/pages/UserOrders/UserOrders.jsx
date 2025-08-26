@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../../utils/api';
+import './UserOrders.Styles.css';
 
 const UserOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -12,10 +13,7 @@ const UserOrders = () => {
     const fetchOrders = async () => {
       try {
         const response = await API.get('/orders/my-orders');
-        
-        if (!response.data.success) {
-          throw new Error('Failed to fetch orders');
-        }
+        if (!response.data.success) throw new Error('Failed to fetch orders');
         setOrders(response.data.orders);
       } catch (err) {
         setError(err.message);
@@ -31,37 +29,58 @@ const UserOrders = () => {
     navigate(`/orders/${orderId}`);
   };
 
-  if (loading) return <div>Loading orders...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (orders.length === 0) return <div>No orders found</div>;
+  // if (loading) return <div className="orders-message">Loading orders...</div>;
+  // if (error) return <div className="orders-message error">Error: {error}</div>;
+  // if (orders.length === 0) return <div className="orders-message">No orders found</div>;
 
   return (
-    <div>
-      <h1>My Orders</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map(order => (
-            <tr 
-              key={order._id} 
-              onClick={() => handleOrderClick(order._id)}
-              style={{ cursor: 'pointer' }}
-            >
-              <td>{order._id}</td>
-              <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-              <td>{order.status}</td>
-              <td>₹{order.total.toFixed(2)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="orders-page">
+      <h1 className="heading">My Orders</h1>
+      <div className='order-card-container'>
+        {orders.map(order => (
+          <div 
+            key={order._id} 
+            className="order-card"
+            onClick={() => handleOrderClick(order._id)}
+          >
+            <div className="order-header">
+              <span className="order-id">Order #{order._id.slice(-6)}</span>
+              <span className={`order-status ${order.status}`}>{order.status}</span>
+            </div>
+
+            <div className="order-meta">
+              <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
+              <p><strong>Payment:</strong> {order.paymentMethod} ({order.paymentStatus})</p>
+              <p><strong>Total:</strong> {order.currency + ' ' + order.total.toFixed(2)}</p>
+            </div>
+
+            <div className="order-items">
+              {order.items.map(item => (
+                <div key={item._id} className="order-item">
+                  <img 
+                    src={item.product.images.find(img => img.isPrimary)?.url || item.product.images[0].url} 
+                    alt={item.product.name} 
+                    className="order-item-img"
+                  />
+                  <div className="order-item-details">
+                    <p className="item-name">{item.product.name}</p>
+                    <p className="item-variant">Color: {item.variant.color}, Size: {item.variant.size}</p>
+                    <p className="item-qty">Qty: {item.quantity}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="order-shipping">
+              <p><strong>Shipping to:</strong> {order.shippingAddress.recipientName}</p>
+              <p>{order.shippingAddress.street}, {order.shippingAddress.city}</p>
+              <p>{order.shippingAddress.state}, {order.shippingAddress.zipCode}</p>
+              <p>{order.shippingAddress.country}</p>
+              <p>📞 {order.shippingAddress.phoneNumber}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -78,6 +78,20 @@
   gap: 0.5rem;
 }
 
+.address-section .address-form .form-group select {
+  padding: 3px 1rem;
+  border-radius: 2px;
+  width: 100%;
+  min-height: 36px;
+  background-color: #ffffff;
+  border: 1px solid var(--secondary-dark);
+  transition: all 0.2s ease-in-out 0s;
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: normal;
+}
+
 .address-section .no-address {
   margin-bottom: 1.5rem;
 }
@@ -90,6 +104,11 @@
 
   .address-section .section-header .button-container {
     width: 20%;
+  }
+
+  .address-section .address-form .form-group select {
+    font-size: 1.5rem;
+    padding: 0.4rem 1rem;
   }
 }
 
@@ -115,6 +134,11 @@
     gap: 2rem;
     font-size: 2rem;
   }
+
+  .address-section .address-form .form-group select {
+    font-size: 1.4rem;
+    padding: 0.4rem 1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -134,5 +158,11 @@
   .address-section .address-actions {
     gap: 1.5rem;
     font-size: 1.8rem;
+  }
+
+  .address-section .address-form .form-group select {
+    font-size: 1.3rem;
+    padding: 0.3rem 0.8rem;
+    min-height: 30px;
   }
 }

@@ -69,7 +69,7 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
 
     const amount = subtotal - convertedDiscount + shippingCost;
 
-    const amountInSmallestUnit = amount.toFixed(2) * 100;
+    const amountInSmallestUnit = Math.round(amount.toFixed(2) * 100);
 
     // Create Razorpay order
     const options = {
@@ -97,6 +97,7 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
       subtotal: total,
       shippingCost,
       total: amount,
+      currency: country.currency,
       couponUsed: {code: couponCode ? couponCode : "", discountValue: discount}
     });
 
@@ -116,6 +117,7 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
 // @access  Private
 exports.verifyPayment = asyncHandler (async (req, res, next) => {
   const { razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
+  const userId = req.user._id;
 
   try {
     // Generate HMAC-SHA256 signature
@@ -170,6 +172,11 @@ exports.verifyPayment = asyncHandler (async (req, res, next) => {
 exports.createCODOrder = asyncHandler (async (req, res) => {
   try {
     const { shippingAddress, couponCode } = req.body;
+
+    if (shippingAddress.country !== 'IN') {
+      return next(new ErrorResponse('Cod only works in India.', 400));
+    }
+
     const userId = req.user._id;
 
     const userCart = await Cart.findOne({ user: userId }).populate('items.product');

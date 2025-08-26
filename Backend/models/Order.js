@@ -42,6 +42,7 @@ const orderSchema = new mongoose.Schema({
   shippingCost: { type: Number, required: true },
   tax: { type: Number, default: 0 },
   total: { type: Number, required: true },
+  currency: { type: String, default: 'INR'},
   paymentMethod: { 
     type: String
   },

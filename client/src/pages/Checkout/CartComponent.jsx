@@ -4,20 +4,23 @@ import './CartComponent.Styles.css';
 import { useEffect, useState } from 'react';
 import API from '../../utils/api';
 import { useCountry } from '../../context/CountryContext';
+import Message from '../../components/Message/Message';
 
-const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, etd, refreshCart, convertedCart}) => {
+const CartComponent = ({couponCode, setCouponCode, cart, totalItems, etd, refreshCart, convertedCart}) => {
   const { country } = useCountry();
   const [couponApplied, setCouponApplied] = useState(false);
-  const [couponError, setCouponError] = useState('');
   const [couponData, setCouponData] = useState({});
   const [discount, setDiscount] = useState(0);
+  const [msg, setMsg] = useState({type: '', text:''});
 
   useEffect(() => {
     const fetchCouponData = async () => {
       const { data } =  await API.post('/coupon/apply', { couponCode: cart.couponUsed })
       if (data && data.success && data.couponValid) {
         setCouponData(data.coupon)
-      } 
+      } else {
+        setMsg({type: 'error', text: 'Invalid Coupon'})
+      }
     }
 
     if (cart.couponUsed) {
@@ -29,7 +32,7 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
-    setCouponError('');
+    setMsg({type: '', text: ''});
 
     await API.post('/coupon/apply', { couponCode })
     .then(res => {
@@ -37,11 +40,12 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
         setCouponApplied(true);
         setCouponCode(res.data.coupon.code);
         setCouponData(res.data.coupon);
+        setMsg({type: 'success', text: 'Hurray! You got the discount.'});
       } 
     })
     .catch(err => {
       setCouponCode('')
-      setCouponError(err.response.data.error)
+      setMsg({type: 'error', text: err.response.data.error || 'Invalid Coupon'});
     })
   };
 
@@ -79,7 +83,7 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
       } else {
         convertDiscountValue()
         .then(res => setDiscount(res.value))
-        .catch(err => setCouponError(err))
+        .catch(err => setMsg({type: 'Error', text: 'Currency conversion error'}))
       }
     }
   }, [couponData])
@@ -91,7 +95,16 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
   const total = convertedCart.convertedSubtotal + shipping - discount;
 
   return (
-    <div className='cart-section'>
+    <div className='cart-section-container'>
+      {/* Success/Error Message */}
+      {msg.text && (
+        <Message 
+          type={msg.type} 
+          message={msg.text} 
+          onClose={() => setMsg({ type: '', text: '' })} 
+          duration={msg.type === 'success' ? 10000 : 3000}
+        />
+      )}
       <div className='cart-items-list'>
         {
           convertedCart.items.map(item => 
@@ -101,7 +114,7 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
                 <span className='quatity'>{item.quantity}</span>
               </div>
               <div className='name text'>{item.product.name}</div>
-              <div className='price text'>{country.symbol ? country.symbol : '₹'}{item.convertedPrice * item.quantity}</div>
+              <div className='price text'>{country?.symbol ? country.symbol : '₹'}{item.convertedPrice * item.quantity}</div>
             </div>
           )
         }
@@ -113,7 +126,7 @@ const CartComponent = ({couponCode, setCouponCode, subtotal, cart, totalItems, e
             type='text'
             id='coupon-code'
             value={couponCode}
-            onChange={(e) => setCouponCode(e.target.value)}
+            onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
             disabled={couponApplied}
             placeholder='Coupon Code'
             className='coupon-input'

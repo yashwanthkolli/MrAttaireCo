@@ -16,8 +16,9 @@ const Footer = () => {
               <span className='sub-heading'>Mr Attaire & Co</span>
             </div>
             <div className='company-text text'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-              Vestibulum et quam sed tortor auctor faucibus sit amet in diam. 
+              Mr Attire & Co is a modern streetwear label redefining comfort and class. 
+              From premium T-shirts to elevated essentials, we design apparel that 
+              speaks power, style, and confidence. Built in India, crafted for the world.
             </div>
             <div className='contact text'>
               <div className='email'>

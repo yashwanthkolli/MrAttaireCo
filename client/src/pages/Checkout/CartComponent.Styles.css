@@ -1,55 +1,55 @@
-.cart-section {
+.cart-section-container {
   width: 80%;
   margin: 0 auto;
   padding: 3rem 0;
   border-radius: 7px;
 }
 
-.cart-section .coupon-section {
+.cart-section-container .coupon-section {
   width: 100%;
   display: flex;
   justify-content: space-between;
   margin-bottom: 5rem;
 }
 
-.cart-section .total-section .total-item {
+.cart-section-container .total-section .total-item {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
 
-.cart-section .total-section .total {
+.cart-section-container .total-section .total {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
 
-.cart-section .total-section .total .text {
+.cart-section-container .total-section .total .text {
   font-size: 1rem;
   font-family: var(--font-secondary);
 }
 
-.cart-section .cart-items-list {
+.cart-section-container .cart-items-list {
   margin-bottom: 3rem;
 }
 
-.cart-section .cart-items-list .item {
+.cart-section-container .cart-items-list .item {
   display: flex;
   align-items: center;
   margin-bottom: 2rem;
   justify-content: space-between;
 }
 
-.cart-section .cart-items-list .item .img-container {
+.cart-section-container .cart-items-list .item .img-container {
   width: 20%;
   position: relative;
 }
 
-.cart-section .cart-items-list .item .img-container img {
+.cart-section-container .cart-items-list .item .img-container img {
   border-radius: 2px;
 }
 
-.cart-section .cart-items-list .item .img-container .quatity {
+.cart-section-container .cart-items-list .item .img-container .quatity {
   width: 3rem;
   height: 3rem;
   position: absolute;
@@ -64,12 +64,30 @@
   right: -1rem;
 }
 
-.cart-section .cart-items-list .item .name {
+.cart-section-container .cart-items-list .item .name {
   width: 50%;
   position: relative;
 }
 
-.cart-section .cart-items-list .item .price {
+.cart-section-container .cart-items-list .item .price {
   width: 20%;
   position: relative;
+}
+
+/* ===================== */
+/* 768px and below - Tablet Portrait */
+/* ===================== */
+@media (max-width: 768px) {
+  .cart-section-container {
+    width: 90%;
+  }
+}
+
+/* ===================== */
+/* 480px and below - Mobile */
+/* ===================== */
+@media (max-width: 480px) {
+  .cart-section-container {
+    padding-bottom: 0;
+  }
 }

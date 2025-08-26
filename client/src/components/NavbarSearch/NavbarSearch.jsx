@@ -92,7 +92,7 @@ const NavbarSearch = () => {
             <div 
               className="view-all text"
               onClick={() => {
-                navigate(`/search?q=${encodeURIComponent(query)}`);
+                navigate(`/products/search?q=${encodeURIComponent(query)}`);
                 setIsOpen(false);
               }}
             >

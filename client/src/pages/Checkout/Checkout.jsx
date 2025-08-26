@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const navigate = useNavigate()
-  const { cart, validateCart, totalItems, refreshCart, convertedCart } = useCart();
+  const { cart, totalItems, refreshCart, convertedCart } = useCart();
   const [newAddress, setNewAddress] = useState({
     recipientName: '',
     phoneNumber: '',
@@ -25,10 +25,8 @@ const Checkout = () => {
   const [isCodAvailable, setIsCodAvailable] = useState(false);
 
   useEffect(() => {
-    console.log(newAddress.zipCode)
     const getShippingETD = async (zipCode) => {
       const res = await API.get(`/shipping?deliveryPincode=${zipCode}`)
-      console.log(res.data)
       if (res.data.etd) setEtd(res.data.etd)
       setIsCodAvailable(res.data.isCodAvailable)
     }
@@ -102,30 +100,36 @@ const Checkout = () => {
   }
 
   return (
-    <div className='checkout-page'>
-      <div className='checkout-section'>
-        <AddressComponent 
-          newAddress={newAddress} 
-          setNewAddress={setNewAddress} 
-          handleSubmit={handleProceed} 
-          paymentMethod={paymentMethod}
-          setPaymentMethod={setPaymentMethod}
-          isCodAvailable={isCodAvailable}
+    <>
+    {totalItems > 0 ?
+      <div className='checkout-page'>
+        <div className='checkout-section'>
+          <AddressComponent 
+            newAddress={newAddress} 
+            setNewAddress={setNewAddress} 
+            handleSubmit={handleProceed} 
+            paymentMethod={paymentMethod}
+            setPaymentMethod={setPaymentMethod}
+            isCodAvailable={isCodAvailable}
+            />
+        </div>
+        <div className='cart-section'>
+          <CartComponent 
+            couponCode={coupon} 
+            setCouponCode={setCoupon} 
+            cart={cart} 
+            subtotal={subtotal}
+            totalItems={totalItems} 
+            etd={etd}
+            refreshCart={refreshCart}
+            convertedCart={convertedCart}
           />
+        </div>
       </div>
-      <div className='cart-section'>
-        <CartComponent 
-          couponCode={coupon} 
-          setCouponCode={setCoupon} 
-          cart={cart} 
-          subtotal={subtotal}
-          totalItems={totalItems} 
-          etd={etd}
-          refreshCart={refreshCart}
-          convertedCart={convertedCart}
-        />
-      </div>
-    </div>
+      : 
+      <div>Your cart is empty.</div>
+    }
+    </>
   )
 }
 

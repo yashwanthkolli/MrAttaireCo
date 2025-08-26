@@ -58,8 +58,8 @@
   accent-color: var(--accent-color);
 }
 
-.address-component .address-form .payment-options .option input[disabled] {
-  background-color: red;
+.address-component .address-form .payment-options .option .disable {
+  color: #BBB;
 }
 
 .address-component .address-form .payment-options .option label {
@@ -68,4 +68,80 @@
 
 .address-component .address-form .payment-options .option label svg {
   margin-right: 1rem;
+}
+
+/* ===================== */
+/* 1024px and below - Tablet Landscape */
+/* ===================== */
+@media (max-width: 1024px) {
+  .address-component {
+    width: 90%;
+    padding: 2rem 0;
+  }
+
+  .address-component .address-form .row {
+    gap: 1.5rem;
+  }
+
+  .address-component .address-form select,
+  .address-component .address-form .payment-options .option {
+    font-size: 1.5rem;
+    padding: 0.4rem 1rem;
+  }
+}
+
+/* ===================== */
+/* 768px and below - Tablet Portrait */
+/* ===================== */
+@media (max-width: 768px) {
+  .address-component {
+    width: 95%;
+    padding: 2rem 1rem;
+  }
+
+  .address-component .address-form select {
+    font-size: 1.4rem;
+    padding: 0.4rem 1rem;
+  }
+
+  .address-component .address-form .payment-options .option {
+    font-size: 1.4rem;
+    padding: 0.4rem 1rem;
+    min-height: 26px;
+  }
+
+  .address-component .address-form .payment-options .option input {
+    width: auto;
+    margin-right: 0.5rem;
+  }
+}
+
+/* ===================== */
+/* 480px and below - Mobile */
+/* ===================== */
+@media (max-width: 480px) {
+  .address-component {
+    padding: 1.5rem 1rem;
+  }
+
+  /* .address-component .address-form .row {
+    flex-direction: column;
+    gap: 0.8rem;
+  } */
+
+  .address-component .address-form select {
+    font-size: 1.3rem;
+    padding: 0.3rem 0.8rem;
+    min-height: 30px;
+  }
+
+  .address-component .address-form .payment-options .option {
+    font-size: 1.3rem;
+    padding: 0.3rem 0.8rem;
+    min-height: 20px;
+  }
+
+  .address-component .address-form .payment-options .option label svg {
+    margin-right: 0.5rem;
+  }
 }

@@ -123,7 +123,7 @@ const ProductDetails = () => {
           </div>
           <div className='info-container'>
             {
-              new Date(product.createdAt) > Date.now() - (1000 * 60 * 60 * 24 * 300) ? 
+              new Date(product.createdAt) > Date.now() - (1000 * 60 * 60 * 24 * 30) ? 
                 <span className='text new-tag'>New</span>
                 : <></>
             }

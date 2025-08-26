@@ -159,13 +159,21 @@ const AddressSection = ({setMsg}) => {
           
           <div className="form-group">
             <label>Country</label>
-            <Input
-              type="text"
+            <select
               name="country"
               value={addressForm.country}
               onChange={handleAddressChange}
               required
-            />
+              className="form-select"
+            >
+              <option value="">Select Country</option>
+              <option value='IN'>India</option>
+              <option value='AU'>Australia</option>
+              <option value='CA'>Canada</option>
+              <option value='DE'>Germany</option>
+              <option value='GB'>United Kingdom</option>
+              <option value='US'>United States of America</option>
+            </select>
           </div>
           
           <div className="form-group checkbox">

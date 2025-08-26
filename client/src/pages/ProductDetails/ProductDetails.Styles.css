@@ -85,6 +85,7 @@
 .product-detail .other-details .product-info {
   width: 70%;
   margin: auto;
+  white-space: pre-line;
 }
 
 .shipping-details-container{
