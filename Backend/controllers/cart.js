@@ -46,7 +46,7 @@ exports.addToCart = asyncHandler(async (req, res, next) => {
 
     // Check if product is active
     if (!product.isActive) {
-      throw new ErrorResponse('This product is no longer available', 400);
+      return next(new ErrorResponse('This product is no longer available', 400));
     }
 
     // Enhanced stock validation
