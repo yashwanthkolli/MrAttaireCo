@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const Cart = require('../models/Cart');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../utils/async');
 const { cloudinary } = require('../config/cloudinary');
@@ -8,6 +9,23 @@ const { cloudinary } = require('../config/cloudinary');
 // @access  Public
 exports.getProducts = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.advancedResults);
+});
+
+// @desc    Get all products (Admin) - includes active + inactive
+// @route   GET /api/v1/products/admin
+// @access  Private/Admin
+exports.getAllProducts = asyncHandler(async (req, res, next) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: products.length,
+      data: products,
+    });
+  } catch (err) {
+    return next(new ErrorResponse('Failed to fetch image', 500));
+  }
 });
 
 // @desc    Get single product
@@ -93,6 +111,16 @@ exports.deleteProduct = asyncHandler(async (req, res, next) => {
   // Delete images from cloudinary first
   for (const image of product.images) {
     await cloudinary.uploader.destroy(image.public_id);
+  }
+
+  // Remove this product from all carts
+  try {
+    await Cart.updateMany(
+      { "items.product": product._id },
+      { $pull: { items: { product: product._id } } }
+    );
+  } catch (err) {
+    console.log(err);
   }
 
   await product.deleteOne({ _id: req.params.id });

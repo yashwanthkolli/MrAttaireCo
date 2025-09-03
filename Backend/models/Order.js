@@ -55,7 +55,7 @@ const orderSchema = new mongoose.Schema({
   razorpayPaymentId: String, // Razorpay's payment ID (if successful)
   status: { 
     type: String, 
-    enum: ['processing', 'shipped', 'delivered', 'cancelled'], 
+    enum: ['processing', 'confirmed', 'shipped', 'delivered', 'cancelled', 'refunded'], 
     default: 'processing' 
   },
   estimatedDelivery: Date,  // From Shiprocket API

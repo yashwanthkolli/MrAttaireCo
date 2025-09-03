@@ -15,7 +15,8 @@
   --space-lg: 3rem;
 
   /* Fonts */
-  --font-main: "Roboto Mono", monospace;
+  /* --font-main: "Roboto Mono", monospace; */
+  --font-main: "Roboto", sans-serif;
   --font-secondary: "Open Sans", sans-serif;
 
   /* Font Size */

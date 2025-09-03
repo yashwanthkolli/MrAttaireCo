@@ -139,3 +139,27 @@ exports.getAllOrders = asyncHandler (async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 });
+
+// @desc    Get recent orders
+// @route   GET /api/v1/orders/recent
+// @access  Private/Admin
+exports.getRecentOrders = asyncHandler (async (req, res, next) => {
+  try {
+    // Get recent orders (last 10)
+    const recentOrders = await Order.find()
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .populate('user', 'name email');
+    
+    res.status(200).json({
+      success: true,
+      data: recentOrders
+    });
+  } catch (error) {
+    console.error('Error fetching recent orders:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server Error'
+    });
+  }
+});

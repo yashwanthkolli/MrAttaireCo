@@ -76,6 +76,7 @@ const payment = require('./routes/payment');
 const orders = require('./routes/order');
 const coupons = require('./routes/coupon');
 const country = require('./routes/country');
+const admin = require('./routes/admin');
 
 // Mount routers
 app.use('/api/v1/auth', auth);
@@ -88,6 +89,7 @@ app.use('/api/v1/payments', payment);
 app.use('/api/v1/orders', orders);
 app.use('/api/v1/coupon', coupons);
 app.use('/api/v1/country', country);
+app.use('/api/v1/admin', admin);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

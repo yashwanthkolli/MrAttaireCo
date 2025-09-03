@@ -67,7 +67,7 @@ cartSchema.pre('save', function(next) {
 cartSchema.statics.validateCart = async function(cartId) {
   const cart = await this.findById(cartId).populate({
     path: 'items.product',
-    select: 'name price discountedPrice images slug variants'
+    select: 'name price discountedPrice images slug variants isActive'
   });
 
   if (!cart) return null;
@@ -77,9 +77,21 @@ cartSchema.statics.validateCart = async function(cartId) {
   const unavailableItems = [];
   const updatedItems = [];
 
-  // Check each item's current price and stock
+  // Check each item's current price, stock and active status
   for (const item of cart.items) {
     const currentProduct = item.product;
+
+    // Check if product is inactive
+    if (!currentProduct.isActive) {
+      unavailableItems.push({
+        itemId: item._id,
+        product: currentProduct,
+        variant: item.variant,
+        reason: 'Product is no longer active'
+      });
+      continue;
+    }
+
     const currentPrice = currentProduct.discountedPrice || currentProduct.price;
     const storedPrice = item.discountedPriceAtAddition || item.priceAtAddition;
     

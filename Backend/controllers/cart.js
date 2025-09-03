@@ -44,6 +44,11 @@ exports.addToCart = asyncHandler(async (req, res, next) => {
       throw new ErrorResponse('Product not found', 404);
     }
 
+    // Check if product is active
+    if (!product.isActive) {
+      throw new ErrorResponse('This product is no longer available', 400);
+    }
+
     // Enhanced stock validation
     const variant = product.variants.find(v => v.color === color);
     if (!variant) {

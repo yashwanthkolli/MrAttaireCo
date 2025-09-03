@@ -56,6 +56,13 @@ const advancedResults = (model, populate) => async (req, res, next) => {
     // transformedQuery['variants.sizes.stock'] = { $gt: 0 };
   }
 
+  console.log(req.query.includeInactive)
+
+  // Handle isActive filter (default true, unless explicitly overridden)
+  if (!req.query.includeInactive) {
+    transformedQuery.isActive = true;
+  }
+
   // Finding resource
   query = model.find(transformedQuery);
 

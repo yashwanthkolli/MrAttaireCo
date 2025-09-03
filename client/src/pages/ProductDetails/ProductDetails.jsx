@@ -61,6 +61,10 @@ const ProductDetails = () => {
     fetchRelatedProducts()
   }, [product])
 
+  useEffect(() => {
+    setSelectedSize('');
+  }, [selectedColor])
+
   const handleColorSelector = (variant) => {
     setSelectedColor(variant.color)
     setAvailableSizes(variant.sizes)

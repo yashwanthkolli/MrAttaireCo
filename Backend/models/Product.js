@@ -115,6 +115,10 @@ const productSchema = new mongoose.Schema({
       default: Date.now
     }
   }],
+  isActive: {
+    type: Boolean,
+    default: true
+  },
   isFeatured: {
     type: Boolean,
     default: false
