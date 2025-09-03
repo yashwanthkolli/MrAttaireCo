@@ -168,7 +168,7 @@ const ProductDetails = () => {
             )}
 
             <Link to='/size-guide' className='text size-guide-link'>Need help to Size Guide?</Link>
-            <Button onClick={handleAddToCart}>
+            <Button disabled={!product.isActive} onClick={handleAddToCart}>
               {isAdding ? 'Adding...' : 'Add to Cart'}
             </Button>
             <Button onClick={() => toggleWishlist(product)} variant='secondary'>
