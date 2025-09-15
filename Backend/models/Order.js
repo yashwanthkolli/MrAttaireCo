@@ -58,6 +58,7 @@ const orderSchema = new mongoose.Schema({
     enum: ['processing', 'confirmed', 'shipped', 'delivered', 'cancelled', 'refunded'], 
     default: 'processing' 
   },
+  shiprocketOrderId: String,
   estimatedDelivery: Date,  // From Shiprocket API
 }, { timestamps: true });
 

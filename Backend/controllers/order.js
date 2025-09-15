@@ -4,6 +4,7 @@ const getShiprocketToken = require('../utils/getShipRocketToken');
 const sendEmail = require('../utils/sendEmail');
 const asyncHandler = require('../utils/async');
 const ErrorResponse = require('../utils/errorResponse');
+const createShiprocketOrder = require('../utils/shiprocketOrder');
 
 // @desc    Get All Orders of User
 // @route   GET /api/v1/orders/my-orders
@@ -69,14 +70,33 @@ exports.updateOrderStatus = asyncHandler (async (req, res) => {
       return next(new ErrorResponse('Invalid status', 400))
     }
 
+    // Get current order first to check previous status
+    const currentOrder = await Order.findById(req.params.id);
+    if (!currentOrder) {
+      return next(new ErrorResponse('Order not found', 404));
+    }
+
     const order = await Order.findOneAndUpdate(
       { _id: req.params.id },
       { status },
       { new: true }
-    ).populate('user', 'email');
+    ).populate('user', 'email').populate('items.product');
 
     if (!order) {
       return next(new ErrorResponse('Order not found', 404))
+    }
+
+    // Create Shiprocket order when status changes to 'confirmed'
+    if (status === 'confirmed' && currentOrder.status !== 'confirmed') {
+      try {
+        const shiprocketResponse = await createShiprocketOrder(order);
+        order.shiprocketOrderId = shiprocketResponse.order_id;
+        await order.save();
+      } catch (error) {
+        console.error('Shiprocket order creation failed:', error);
+        // Don't throw error but log it
+        // You might want to notify admin of this failure
+      }
     }
 
     // Trigger actions based on status
