@@ -60,7 +60,7 @@ const CartComponent = ({couponCode, setCouponCode, cart, totalItems, etd, refres
     }
   };
 
-  let shipping = 100;
+  let shipping = 0;
 
   useEffect(() => {
     const convertDiscountValue = async() => {
