@@ -54,6 +54,7 @@ const createShiprocketOrder = async (order) => {
         }
       }
     );
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Shiprocket order creation failed:', error.response?.data);

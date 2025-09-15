@@ -114,7 +114,7 @@ const OrderManager = () => {
 
     try {
       setStatusUpdateLoading(true);
-      await axios.put(`http://localhost:5000/api/v1/orders/${selectedOrder._id}/status`, {
+      await axios.put(`https://mrattireco.com/backend/api/v1/orders/${selectedOrder._id}/status`, {
         status: statusForm.status,
         notes: statusForm.notes
       });
