@@ -50,7 +50,7 @@ const Login = () => {
 
     if (success) {
       setMsg({ type: 'success', text: 'Login Successful!' });
-      if (location.pathname.includes('/auth/')) {
+      if (location.pathname.includes('/auth')) {
         navigate('/');
       } else {
         navigate(-1);
