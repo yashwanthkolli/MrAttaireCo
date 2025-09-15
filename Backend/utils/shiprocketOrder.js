@@ -18,7 +18,7 @@ const createShiprocketOrder = async (order) => {
   const payload = {
     order_id: order._id.toString(),
     order_date: order.createdAt.toISOString().split('T')[0],
-    pickup_location: "Primary", // Your pickup location name in Shiprocket
+    pickup_location: "work", // Your pickup location name in Shiprocket
     billing_customer_name: order.shippingAddress.recipientName,
     billing_last_name: "",
     billing_address: order.shippingAddress.street,
