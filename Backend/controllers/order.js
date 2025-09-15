@@ -10,7 +10,13 @@ const ErrorResponse = require('../utils/errorResponse');
 // @access  Private
 exports.getMyOrders = asyncHandler (async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id })
+    const orders = await Order.find({ 
+      user: req.user._id,
+      $or: [
+        { paymentStatus: 'paid' },
+        { paymentMethod: 'cod' }
+      ] 
+    })
       .populate('items.product', 'name images')
       .sort('-createdAt');
 
@@ -57,7 +63,7 @@ exports.getOrderById = asyncHandler (async (req, res) => {
 exports.updateOrderStatus = asyncHandler (async (req, res) => {
   try {
     const { status } = req.body;
-    const validStatuses = ['processing', 'shipped', 'delivered', 'cancelled'];
+    const validStatuses = ['processing', 'confirmed', 'shipped', 'delivered', 'cancelled', 'refunded'];
 
     if (!validStatuses.includes(status)) {
       return next(new ErrorResponse('Invalid status', 400))
@@ -67,7 +73,7 @@ exports.updateOrderStatus = asyncHandler (async (req, res) => {
       { _id: req.params.id },
       { status },
       { new: true }
-    );
+    ).populate('user', 'email');
 
     if (!order) {
       return next(new ErrorResponse('Order not found', 404))
@@ -105,12 +111,13 @@ exports.updateOrderStatus = asyncHandler (async (req, res) => {
     // Send status update email
     await sendEmail({
       email: order.user.email,
-      subject: `Order #${order._id} status updated`,
+      subject: `Order #${order._id.toString().slice(-8).toUpperCase()} status updated`,
       message: `Your order status is now: ${status}`,
     });
 
     res.json({ success: true, order });
   } catch (error) {
+    console.log(error)
     return next(new ErrorResponse('Failed to update order', 500))
   }
 });

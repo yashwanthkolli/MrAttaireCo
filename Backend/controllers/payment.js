@@ -299,7 +299,7 @@ const createShiprocketOrder = async (order) => {
 const sendOrderConfirmationEmail = async (order) => {
   const emailOptions = {
     email: order.user.email, 
-    subject: `Your Mr. Attire Order #${order._id} is Confirmed!`,
+    subject: `Your Mr. Attire Order #${order._id.toString().slice(-8).toUpperCase()} is Confirmed!`,
     message: `
       Hi ${order.user.name || 'Customer'},
 

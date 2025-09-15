@@ -94,7 +94,6 @@ const HeroEditor = () => {
     try {
       const response = await axios.put('http://localhost:5000/api/v1/hero', heroData);
       setMessage({ type: 'success', text: 'Hero content updated successfully!' });
-      console.log('Hero updated:', response.data);
     } catch (error) {
       console.error('Error updating hero:', error);
       setMessage({ type: 'error', text: 'Failed to update hero content' });

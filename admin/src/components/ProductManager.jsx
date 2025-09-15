@@ -79,7 +79,6 @@ const ProductManager = () => {
     try {
       setLoading(true);
       const response = await axios.get('http://localhost:5000/api/v1/products/admin');
-      console.log(response.data)
       setProducts(response.data.data);
     } catch (error) {
       console.error('Error fetching products:', error);

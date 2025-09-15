@@ -141,9 +141,11 @@ const ProductDetails = () => {
             <div className='thumbnail-container'>
               {
                 product.images ? product.images.map((image, index) => (
-                  <div className='img-container' key={image._id} onClick={() => setMainImageIndex(index)}>
-                    <img src={image.url} alt={`thumbnail ${index + 1}`} />
-                  </div>
+                  image && image.url ? 
+                    <div className='img-container' key={image._id} onClick={() => setMainImageIndex(index)}>
+                      <img src={image.url} alt={`thumbnail ${index + 1}`} />
+                    </div>
+                  : <div>No Images</div>
                 ))
                 : <div>No Images</div>
               }

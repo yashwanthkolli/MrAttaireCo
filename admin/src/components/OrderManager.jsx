@@ -55,6 +55,7 @@ const OrderManager = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [statusFilter, setStatusFilter] = useState('all');
   const [paymentFilter, setPaymentFilter] = useState('all');
+  const [paymentMethodFilter, setPaymentMethodsFilter] = useState('all');
 
   // Status update form
   const [statusForm, setStatusForm] = useState({
@@ -113,7 +114,7 @@ const OrderManager = () => {
 
     try {
       setStatusUpdateLoading(true);
-      await axios.patch(`/api/v1/admin/orders/${selectedOrder._id}/status`, {
+      await axios.put(`http://localhost:5000/api/v1/orders/${selectedOrder._id}/status`, {
         status: statusForm.status,
         notes: statusForm.notes
       });
@@ -147,11 +148,11 @@ const OrderManager = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'processing': return 'default';
-      case 'confirmed': return 'primary';
+      case 'confirmed': return 'warning';
       case 'shipped': return 'info';
       case 'delivered': return 'success';
       case 'cancelled': return 'error';
-      case 'refunded': return 'warning';
+      case 'refunded': return 'primary';
       default: return 'default';
     }
   };
@@ -184,12 +185,12 @@ const OrderManager = () => {
 
   // And update the filteredOrders calculation to handle undefined case:
   const filteredOrders = (orders || []).filter(order => {
+    if (!order) return false;
     const statusMatch = statusFilter === 'all' || order.status === statusFilter;
     const paymentMatch = paymentFilter === 'all' || order.paymentStatus === paymentFilter;
-    return statusMatch && paymentMatch;
+    const paymentMethodMatch = paymentMethodFilter === 'all' || order.paymentMethod === paymentMethodFilter;
+    return statusMatch && paymentMatch && paymentMethodMatch;
   });
-
-  console.log(orders)
 
   if (loading) {
     return (
@@ -249,6 +250,29 @@ const OrderManager = () => {
                 <MenuItem value="failed">Failed</MenuItem>
               </Select>
             </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <FormControl fullWidth>
+              <InputLabel>Payment Method</InputLabel>
+              <Select
+                value={paymentMethodFilter}
+                label="Payment Method"
+                onChange={(e) => setPaymentMethodsFilter(e.target.value)}
+              >
+                <MenuItem value="all">All Methods</MenuItem>
+                <MenuItem value="cod">Cash on Delivery</MenuItem>
+                <MenuItem value="razorpay">Razorpay</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Button 
+              variant="outlined" 
+              onClick={fetchOrders}
+              disabled={loading}
+            >
+              Refresh Orders
+            </Button>
           </Grid>
         </Grid>
       </Paper>
