@@ -134,7 +134,6 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
                 name="payment-option" 
                 value="razorpay" 
                 onChange={(e) => setPaymentMethod(e.target.value)} 
-                defaultChecked 
               />
               <label htmlFor="razorpay"><SiRazorpay />Razorpay</label>
             </div>
