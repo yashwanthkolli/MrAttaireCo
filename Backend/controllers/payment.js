@@ -73,9 +73,12 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
 
     // Create Razorpay order
     const options = {
-      amount: amountInSmallestUnit,
+      amount: 100,
       currency: country.currency,
       receipt: `order_${Date.now()}`,
+      notes: {
+        webhook_url: 'https://mrattireco.com/backend/api/v1/payments/webhook'
+      }
     };
 
     const razorpayOrder = await razorpay.orders.create(options);
@@ -132,9 +135,15 @@ exports.verifyPayment = asyncHandler (async (req, res, next) => {
       return next(new ErrorResponse('Invalid payment signature', 400));
     }
 
+    // Check if webhook already processed this payment
+    const existingOrder = await Order.findOne({ razorpayOrderId });
+    if (existingOrder && existingOrder.paymentStatus === 'paid') {
+      return res.json({ success: true, order: existingOrder });
+    }
+
     // Update Order in Database
     const order = await Order.findOneAndUpdate(
-      { razorpayOrderId },
+      { razorpayOrderId, paymentStatus: 'pending' },
       {
         paymentStatus: 'paid',
         razorpayPaymentId,
@@ -163,6 +172,60 @@ exports.verifyPayment = asyncHandler (async (req, res, next) => {
   } catch (error) {
     console.error('Verification error:', error);
     return next(new ErrorResponse('Payment verification failed', 500));
+  }
+});
+
+// @desc    Handle Razorpay Webhook
+// @route   POST /api/v1/payments/webhook
+// @access  Public (Razorpay will call this)
+exports.handleRazorpayWebhook = asyncHandler(async (req, res) => {
+  try {
+    // Verify webhook signature first
+    const crypto = require('crypto');
+    const shasum = crypto.createHmac('sha256', process.env.RAZORPAY_WEBHOOK_SECRET);
+    shasum.update(JSON.stringify(req.body));
+    const digest = shasum.digest('hex');
+
+    if (digest !== req.headers['x-razorpay-signature']) {
+      console.error('Webhook signature verification failed');
+      return res.status(400).json({ error: 'Invalid signature' });
+    }
+
+    const event = req.body.event;
+    const payment = req.body.payload.payment.entity;
+
+    // Handle different event types
+    if (event === 'payment.captured') {
+      const order = await Order.findOneAndUpdate(
+        { razorpayOrderId: payment.order_id },
+        {
+          paymentStatus: 'paid',
+          razorpayPaymentId: payment.id,
+          status: 'processing',
+        },
+        { new: true }
+      ).populate({ path: 'user', select: 'name email' });
+
+      if (order) {
+        await reduceStock(order.items);
+        await sendOrderConfirmationEmail(order);
+        await Cart.deleteOne({ user: order.user._id });
+      }
+    } else if (event === 'payment.failed') {
+      await Order.findOneAndUpdate(
+        { razorpayOrderId: payment.order_id },
+        {
+          paymentStatus: 'failed',
+          razorpayPaymentId: payment.id,
+          status: 'cancelled',
+        }
+      );
+    }
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error('Webhook error:', error);
+    res.status(500).json({ error: 'Webhook processing failed' });
   }
 });
 

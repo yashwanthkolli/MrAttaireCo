@@ -1,6 +1,6 @@
 const express = require('express');
 const { protect } = require('../middleware/auth');
-const { createRazorpayOrder, verifyPayment, createCODOrder } = require('../controllers/payment');
+const { createRazorpayOrder, verifyPayment, createCODOrder, handleRazorpayWebhook } = require('../controllers/payment');
 
 const router = express.Router();
 
@@ -12,5 +12,8 @@ router.route('/verify')
 
 router.route('/cod')
   .post(protect, createCODOrder);
+
+router.route('/webhook')
+  .post(handleRazorpayWebhook);
 
 module.exports = router;
