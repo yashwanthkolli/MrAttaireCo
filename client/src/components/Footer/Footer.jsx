@@ -13,7 +13,7 @@ const Footer = () => {
           <div className='details'>
             <div className='logo-container'>
               <img src={LogoLight} alt='white-logo' />
-              <span className='sub-heading'>Mr Attaire & Co</span>
+              <span className='sub-heading'>Mr Attire & Co</span>
             </div>
             <div className='company-text text'>
               Mr Attire & Co is a modern streetwear label redefining comfort and class. 
@@ -38,10 +38,10 @@ const Footer = () => {
               <Link to='/pages/aboutus'>About Us</Link>
               <Link to='/products'>Products</Link>
               <Link to='/products/tshirts'>T-Shirts</Link>
-              {/* <Link to='/products/winterwear'>Winter Wear</Link>
+              <Link to='/products/winterwear'>Winter Wear</Link>
               <Link to='/products/trackpants'>Trackpants</Link>
               <Link to='/products/joggers'>Joggers</Link>
-              <Link to='/products/shorts'>Shorts</Link> */}
+              <Link to='/products/shorts'>Shorts</Link>
             </div>
             <div className='links-list'>
               <div className='links-title'>Others</div>
@@ -69,7 +69,7 @@ const Footer = () => {
           <Link to='https://twitter.com' target="_blank" aria-label='Twitter'><FaXTwitter /></Link>
           <Link to='https://whatsapp.com' target="_blank" aria-label='Whatsapp'><FaWhatsapp  /></Link>
         </div>
-        <div className='copywrite text'>© 2025 Mr Attaire Co. All Rights Reserved.</div>
+        <div className='copywrite text'>© 2025 Mr Attire Co. All Rights Reserved.</div>
       </div>
       <div className='footnote text'>Made to Perfection with CVision ✨</div>
     </>
