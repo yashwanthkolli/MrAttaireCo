@@ -51,7 +51,7 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
 
     let discount = 0; 
 
-    let shippingCost = 100;
+    let shippingCost = 0;
 
     if(couponCode) {
       const coupon = await validateCoupon(couponCode, userId, userCart.items);
@@ -73,7 +73,7 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
 
     // Create Razorpay order
     const options = {
-      amount: 1,
+      amount: 100,
       currency: country.currency,
       receipt: `order_${Date.now()}`,
       notes: {
