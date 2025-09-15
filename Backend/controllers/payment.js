@@ -73,7 +73,7 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
 
     // Create Razorpay order
     const options = {
-      amount: 100,
+      amount: amountInSmallestUnit,
       currency: country.currency,
       receipt: `order_${Date.now()}`,
       notes: {
