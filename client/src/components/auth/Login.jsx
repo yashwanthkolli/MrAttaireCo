@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation  } from 'react-router-dom';
 import API from '../../utils/api';
 import GoogleLoginButton from './GoogleLogin';
 import Button from '../Button/Button';
@@ -19,6 +19,7 @@ const Login = () => {
 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [isVerificationError, setIsVerificationError] = useState(false);
   const [showResend, setShowResend] = useState(false);
@@ -49,7 +50,11 @@ const Login = () => {
 
     if (success) {
       setMsg({ type: 'success', text: 'Login Successful!' });
-      navigate(-1);
+      if (location.pathname.includes('/auth/')) {
+        navigate('/');
+      } else {
+        navigate(-1);
+      }
     } else {
       setMsg({ type: 'error', text: error.message || 'Login failed' });
       if(error.message === 'Please verify your email first') setIsVerificationError(true)

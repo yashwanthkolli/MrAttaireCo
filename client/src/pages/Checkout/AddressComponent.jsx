@@ -5,7 +5,7 @@ import { countryStateData } from './CountryData';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import { useNavigate } from 'react-router-dom';
-import { SiRazorpay } from 'react-icons/si';
+import { SiRazorpay, SiPhonepe } from 'react-icons/si';
 import { BsCashCoin } from 'react-icons/bs';
 import { useCountry } from '../../context/CountryContext';
 
@@ -116,6 +116,17 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
           </div>
           <div className='payment-options'>
             <h2>Payment Method</h2>
+            <div className='option'>
+              <input 
+                type="radio" 
+                id="razorpay" 
+                name="payment-option" 
+                value="razorpay" 
+                onChange={(e) => setPaymentMethod(e.target.value)} 
+                defaultChecked 
+              />
+              <label htmlFor="razorpay"><SiPhonepe />Google Pay, Phone Pe or Other UPI</label>
+            </div>
             <div className='option'>
               <input 
                 type="radio" 
