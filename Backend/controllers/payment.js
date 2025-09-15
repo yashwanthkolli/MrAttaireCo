@@ -73,7 +73,7 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
 
     // Create Razorpay order
     const options = {
-      amount: 100,
+      amount: 1,
       currency: country.currency,
       receipt: `order_${Date.now()}`,
       notes: {
@@ -181,6 +181,9 @@ exports.verifyPayment = asyncHandler (async (req, res, next) => {
 exports.handleRazorpayWebhook = asyncHandler(async (req, res) => {
   try {
     // Verify webhook signature first
+    console.log('Webhook received. Headers:', req.headers);
+    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    console.log('Webhook secret exists:', !!webhookSecret);
     const rawBody = req.rawBody || JSON.stringify(req.body);
     const crypto = require('crypto');
     const expectedSignature = crypto
