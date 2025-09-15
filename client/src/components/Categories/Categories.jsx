@@ -12,7 +12,7 @@ const Categories = () => {
   return (
     <div className='categories-section'>
       <div className='categories-container'>
-        <div className='category tshirts' onClick={() => handleClick('/products/tshirts')}>
+        <div className='category tshirts' onClick={() => handleClick('/products/category/tshirts')}>
           <div className='background'></div>
           <div className='category-heading'>
             <span className='name heading'>T-Shirts</span>

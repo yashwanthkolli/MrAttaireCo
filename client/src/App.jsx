@@ -88,7 +88,7 @@ function App() {
               /> */}
               <Route path="/products" element={<Products />} />
               <Route path="/products/search" element={<SearchResults />} />
-              <Route path="/products/:category" element={<Products />} />
+              <Route path="/products/category/:category" element={<Products />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               
               <Route path="/wishlist" element={<Wishlist />} />

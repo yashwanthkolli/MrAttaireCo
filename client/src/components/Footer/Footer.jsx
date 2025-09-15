@@ -37,11 +37,11 @@ const Footer = () => {
               <Link to='/'>Home</Link>
               <Link to='/pages/aboutus'>About Us</Link>
               <Link to='/products'>Products</Link>
-              <Link to='/products/tshirts'>T-Shirts</Link>
-              <Link to='/products/winterwear'>Winter Wear</Link>
-              <Link to='/products/trackpants'>Trackpants</Link>
-              <Link to='/products/joggers'>Joggers</Link>
-              <Link to='/products/shorts'>Shorts</Link>
+              <Link to='/products/category/tshirts'>T-Shirts</Link>
+              <Link to='/products/category/winterwear'>Winter Wear</Link>
+              <Link to='/products/category/trackpants'>Trackpants</Link>
+              <Link to='/products/category/joggers'>Joggers</Link>
+              <Link to='/products/category/shorts'>Shorts</Link>
             </div>
             <div className='links-list'>
               <div className='links-title'>Others</div>
