@@ -68,7 +68,7 @@ const Checkout = () => {
     }
 
     const options = {
-      key: 'rzp_test_MG6XGWYGWVNnPr',
+      key: 'rzp_live_RHqgJJTUyGsFkq',
       amount: data.order.amount,
       currency: data.order.currency,
       order_id: data.order.id,
