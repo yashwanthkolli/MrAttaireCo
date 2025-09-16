@@ -46,9 +46,10 @@
 }
 
 .order-status.processing { background: #f39c12; }
-.order-status.paid,
-.order-status.completed { background: #27ae60; }
-.order-status.pending { background: #e67e22; }
+.order-status.confirmed { background: #277fae; }
+.order-status.shipped { background: #a362be; }
+.order-status.delivered { background: #27ae60; }
+.order-status.refunded { background: #e67e22; }
 .order-status.cancelled { background: #c0392b; }
 
 .order-meta {

@@ -13,7 +13,7 @@ const Footer = () => {
           <div className='details'>
             <div className='logo-container'>
               <img src={LogoLight} alt='white-logo' />
-              <span className='sub-heading'>Mr Attire & Co</span>
+              <span className='sub-heading'>Mr. Attire & Co</span>
             </div>
             <div className='company-text text'>
               Mr Attire & Co is a modern streetwear label redefining comfort and class. 
@@ -27,7 +27,7 @@ const Footer = () => {
               </div>
               <div className='phone'>
                 <div className='medium'>Phone Number</div>
-                <div className='value'>+91 08233 924723</div>
+                <div className='value'>+91 63522 75201</div>
               </div>
             </div>
           </div>
@@ -69,7 +69,7 @@ const Footer = () => {
           <Link to='https://twitter.com' target="_blank" aria-label='Twitter'><FaXTwitter /></Link>
           <Link to='https://whatsapp.com' target="_blank" aria-label='Whatsapp'><FaWhatsapp  /></Link>
         </div>
-        <div className='copywrite text'>© 2025 Mr Attire Co. All Rights Reserved.</div>
+        <div className='copywrite text'>© 2025 Mr. Attire Co. All Rights Reserved.</div>
       </div>
       <div className='footnote text'>Made to Perfection with CVision ✨</div>
     </>
