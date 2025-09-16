@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useCountry } from '../../context/CountryContext';
 import API from '../../utils/api';
 
-const PriceDisplay = ({ basePriceInr, priceType = 'product' }) => {
+const PriceDisplay = ({ basePriceInr, priceType = 'product', className }) => {
   const { country } = useCountry();
   const [priceData, setPriceData] = useState({
     value: null,
@@ -69,7 +69,7 @@ const PriceDisplay = ({ basePriceInr, priceType = 'product' }) => {
 
   return (
     <div className={`price-display ${priceData.error ? 'has-error' : ''}`}>
-      <span className="current-price">
+      <span className={className}>
         {priceData.formatted}
         {priceData.error && (
           <span className="error-tooltip" title="Price conversion failed">

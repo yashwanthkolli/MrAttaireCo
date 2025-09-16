@@ -137,6 +137,9 @@ const ProductDetails = () => {
             <h1 className='name sub-heading'>{product.name}</h1>
             <p className='text description'>{product.description}</p>
             <div className='price sub-heading'>
+              {product.retailPrice && (
+                <PriceDisplay className="original-price text" basePriceInr={product.retailPrice} />
+              )}
               <PriceDisplay basePriceInr={product.price} />
             </div>
 

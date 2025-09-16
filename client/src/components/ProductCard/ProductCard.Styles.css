@@ -50,6 +50,11 @@
   font-size: 1.6rem;
 }
 
+.product-card .product-details .original-price {
+  color: var(--secondary-light);
+  text-decoration: line-through;
+}
+
 .product-card:hover .product-image {
   transform: scale(1.03);
 }

@@ -48,6 +48,11 @@
   margin-top: 1rem;
 }
 
+.info-container .original-price {
+  text-decoration: line-through;
+  color: var(--secondary-light);
+}
+
 .info-container .thumbnail-container{
   display: flex;
   margin: 2rem 0;

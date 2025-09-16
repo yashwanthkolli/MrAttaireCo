@@ -63,6 +63,7 @@ const ProductManager = () => {
     name: '',
     description: '',
     price: '',
+    retailPrice: '', 
     category: '',
     isFeatured: false,
     isActive: true,
@@ -96,6 +97,7 @@ const ProductManager = () => {
         name: product.name,
         description: product.description,
         price: product.price, 
+        retailPrice: product.retailPrice,
         category: product.category,
         isFeatured: product.isFeatured,
         isActive: product.isActive,
@@ -411,7 +413,7 @@ const ProductManager = () => {
         <form onSubmit={handleSubmit}>
           <DialogContent>
             <Grid container spacing={3}>
-              <Grid item size={{ xs: 12, md: 8 }}>
+              <Grid item size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   label="Product Name"
@@ -421,7 +423,7 @@ const ProductManager = () => {
                   required
                 />
               </Grid>
-              <Grid item size={4}>
+              <Grid item size={3}>
                 <TextField
                   fullWidth
                   label="Price (₹)"
@@ -431,6 +433,17 @@ const ProductManager = () => {
                   onChange={handleInputChange}
                   inputProps={{ step: "0.01", min: "0" }}
                   required
+                />
+              </Grid>
+              <Grid item size={3}>
+                <TextField
+                  fullWidth
+                  label="Max Retail Price (₹)"
+                  name="retailPrice"
+                  type="number"
+                  value={formData.retailPrice}
+                  onChange={handleInputChange}
+                  inputProps={{ step: "0.01", min: "0" }}
                 />
               </Grid>
               <TextField

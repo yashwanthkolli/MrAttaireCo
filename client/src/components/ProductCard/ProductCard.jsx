@@ -43,14 +43,10 @@ const ProductCard = ({ product, dark, small }) => {
           <h5 className='description'>{product.description}</h5>
           <h3 className={`name ${small ? 'small' : 'large'}`}>{product.name}</h3>
           <div className="price">
-            {product.discountedPrice ? (
-              <>
-                <span className="original-price">${product.price.toFixed(2)}</span>
-                <span className="discounted-price">${product.discountedPrice.toFixed(2)}</span>
-              </>
-            ) : (
-              <PriceDisplay basePriceInr={product.price} />
+            {product.retailPrice && (
+                <PriceDisplay className="original-price text" basePriceInr={product.retailPrice} />
             )}
+            <PriceDisplay basePriceInr={product.price} />
           </div>
           {/* <div className="product-meta">
             <span className="rating">⭐ {product.ratings || 'New'}</span>
