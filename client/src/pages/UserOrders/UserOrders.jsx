@@ -41,7 +41,7 @@ const UserOrders = () => {
           <div 
             key={order._id} 
             className="order-card"
-            onClick={() => handleOrderClick(order._id)}
+            // onClick={() => handleOrderClick(order._id)}
           >
             <div className="order-header">
               <span className="order-id">Order #{order._id.slice(-6)}</span>
