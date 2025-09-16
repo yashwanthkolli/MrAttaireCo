@@ -7,12 +7,12 @@ const Carousel = () => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('SALE30')
-      .then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000); // Hide after 4s
-      })
-      .catch(err => console.error('Failed to copy text: ', err));
+    // navigator.clipboard.writeText('SALE30')
+    //   .then(() => {
+    //     setCopied(true);
+    //     setTimeout(() => setCopied(false), 2000); // Hide after 4s
+    //   })
+    //   .catch(err => console.error('Failed to copy text: ', err));
   };
 
   return (
@@ -20,19 +20,19 @@ const Carousel = () => {
       <div className='carousel' onClick={handleCopy}>
         <div className='carousel-track'>
           <div className='slide text'>
-            Sale 30% off. Use code: SALE30
+            International Shipping Coming Soon
           </div>
           <div className='slide-small'>★</div>
           <div className='slide text'>
-            Sale 30% off. Use code: SALE30
+            International Shipping Coming Soon
           </div>
           <div className='slide-small'>★</div>
           <div className='slide text'>
-            Sale 30% off. Use code: SALE30
+            International Shipping Coming Soon
           </div>
           <div className='slide-small'>★</div>
           <div className='slide text'>
-            Sale 30% off. Use code: SALE30
+            International Shipping Coming Soon
           </div>
         </div>
       </div>

@@ -3,8 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import API from '../../utils/api';
 import ImageGallery from '../../components/ImageGallery/ImageGallery';
 import SizeSelector from '../../components/SizeSelector/SizeSelector';
-
-import './ProductDetails.Styles.css';
 import ColorSelector from '../../components/ColorSelector/ColorSelector';
 import Button from '../../components/Button/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
@@ -14,6 +12,9 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import PriceDisplay from '../../components/PriceDisplay/PriceDispaly';
 import Message from '../../components/Message/Message';
+import SizeGuide from '../../assets/sizeGuide.jpg';
+
+import './ProductDetails.Styles.css';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -28,6 +29,7 @@ const ProductDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [msg, setMsg] = useState({type: '', text: ''});
 
   useEffect(() => {
@@ -112,7 +114,7 @@ const ProductDetails = () => {
         {/* Breadcrumb Navigation */}
         <nav className="breadcrumb">
           <a href="/">Home</a> &gt; {' '}
-          <a href={`/products/${product.category}`}>
+          <a href={`/products/category/${product.category}`}>
             {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
           </a> &gt; {' '}
           <span>{product.name}</span>
@@ -169,7 +171,7 @@ const ProductDetails = () => {
               />
             )}
 
-            <Link to='/size-guide' className='text size-guide-link'>Need help to Size Guide?</Link>
+            <div className='text size-guide-link' onClick={() => setShowSizeGuide(true)}>Need help to Size Guide?</div>
             <Button disabled={!product.isActive} onClick={handleAddToCart}>
               {isAdding ? 'Adding...' : 'Add to Cart'}
             </Button>
@@ -222,6 +224,16 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
+
+      {showSizeGuide && (
+        <div className="lightbox" onClick={() => setShowSizeGuide(false)}>
+          <img 
+            src={SizeGuide} 
+            alt="Size Guide" 
+            className="size-guide-img"
+          />
+        </div>
+      )}
     </div>
   )
 }

@@ -66,6 +66,7 @@
 }
 
 .info-container .size-guide-link {
+  cursor: pointer;
   width: 100%;;
   color: var(--accent-color);
   text-align: right;

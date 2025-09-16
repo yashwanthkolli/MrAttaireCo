@@ -80,7 +80,7 @@ const CartSummary = () => {
         setCouponApplied(true);
         setCouponCode(res.data.coupon.code);
         setCouponData(res.data.coupon);
-        // refreshCart();
+        refreshCart();
         setMsg({type: 'success', text: 'Hurray! You got the discount.'});
       } 
     })
@@ -95,7 +95,7 @@ const CartSummary = () => {
       setCouponApplied(false);
       setCouponCode('');
       setCouponData({});
-      // refreshCart();
+      refreshCart();
       setMsg({type: 'error', text: 'Coupon removed.'});
     }
   };

@@ -1,3 +1,4 @@
+const { min } = require('moment/moment');
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 
@@ -21,6 +22,10 @@ const productSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: [true, 'Please add a price'],
+    min: [0, 'Price must be at least 0']
+  },
+  retailPrice: {
+    type: Number, 
     min: [0, 'Price must be at least 0']
   },
   discountedPrice: {

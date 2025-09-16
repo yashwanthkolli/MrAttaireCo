@@ -16,7 +16,7 @@ const Footer = () => {
               <span className='sub-heading'>Mr. Attire & Co</span>
             </div>
             <div className='company-text text'>
-              Mr Attire & Co is a modern streetwear label redefining comfort and class. 
+              Mr. Attire & Co is a modern streetwear label redefining comfort and class. 
               From premium T-shirts to elevated essentials, we design apparel that 
               speaks power, style, and confidence. Built in India, crafted for the world.
             </div>
@@ -26,8 +26,8 @@ const Footer = () => {
                 <div className='value'>support@mrattire.co</div>
               </div>
               <div className='phone'>
-                <div className='medium'>Phone Number</div>
-                <div className='value'>+91 63522 75201</div>
+                <div className='medium'>Instagram</div>
+                <a className='value' href='https://www.instagram.com/mrattireco/' target='_blank' rel="noopener noreferrer">@mrattireco</a>
               </div>
             </div>
           </div>
@@ -62,16 +62,16 @@ const Footer = () => {
             </div> */}
           </div>
         </div>
-        <div className='socials'>
+        {/* <div className='socials'>
           <Link to='https://instagram.com' target="_blank" aria-label='Instagram'><FaInstagram /></Link>
           <Link to='https://facebook.com' target="_blank" aria-label='Facebook'><FaFacebook /></Link>
           <Link to='https://linkdedin.com' target="_blank" aria-label='LinkedIn'><FaLinkedin /></Link>
           <Link to='https://twitter.com' target="_blank" aria-label='Twitter'><FaXTwitter /></Link>
           <Link to='https://whatsapp.com' target="_blank" aria-label='Whatsapp'><FaWhatsapp  /></Link>
-        </div>
+        </div> */}
         <div className='copywrite text'>© 2025 Mr. Attire Co. All Rights Reserved.</div>
       </div>
-      <div className='footnote text'>Made to Perfection with CVision ✨</div>
+      <div className='footnote text'>Made to Perfection with <a className='footnote text' href='https://cvisionglobal.com/' target='_blank' rel="noopener noreferrer">CVision</a> ✨</div>
     </>
   )
 }
