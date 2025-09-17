@@ -37,10 +37,10 @@ const createShiprocketOrder = async (order) => {
     transaction_charges: 0,
     total_discount: order.couponUsed?.discountValue || 0,
     sub_total: order.subtotal,
-    length: 30, // Default values - adjust as needed
-    breadth: 25,
-    height: 10,
-    weight: 0.5
+    length: 16, // Default values - adjust as needed
+    breadth: 12,
+    height: 2,
+    weight: 0.1
   };
 
   try {
