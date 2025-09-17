@@ -42,7 +42,7 @@ const Products = () => {
     };
 
     fetchProducts();
-  }, [filters]);
+  }, [filters, category]);
 
   const handleFilterChange = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
