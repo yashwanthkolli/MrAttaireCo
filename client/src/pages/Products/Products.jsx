@@ -42,7 +42,11 @@ const Products = () => {
     };
 
     fetchProducts();
-  }, [filters, category]);
+  }, [filters]);
+
+  useEffect(() => {
+    setFilters(category);
+  }, [category]);
 
   const handleFilterChange = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
