@@ -320,7 +320,6 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    email: req.body.email,
     phone: req.body.phone
   };
 
