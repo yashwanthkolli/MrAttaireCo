@@ -271,7 +271,7 @@ exports.createCODOrder = asyncHandler (async (req, res) => {
 
     let discount = 0;
 
-    let shippingCost = 100;
+    let shippingCost = 0;
 
     if(couponCode) {
       const coupon = await validateCoupon(couponCode, userId, userCart.items);
