@@ -45,7 +45,7 @@ const Products = () => {
   }, [filters]);
 
   useEffect(() => {
-    setFilters(category);
+    if(category) setFilters(category);
   }, [category]);
 
   const handleFilterChange = (newFilters) => {
