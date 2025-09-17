@@ -44,10 +44,6 @@ const Products = () => {
     fetchProducts();
   }, [filters]);
 
-  useEffect(() => {
-    if(category) setFilters(category);
-  }, [category]);
-
   const handleFilterChange = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
   };

@@ -65,6 +65,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: var(--space-md);
+  font-size: 1.6rem;
 }
 
 .footer-section .content .details .contact .medium {
@@ -150,5 +151,9 @@
 
   .footer-section .socials a:hover {
     width: 25%;
+  }
+
+  .footer-section .content .details .contact {
+    font-size: 1.4rem;
   }
 }
