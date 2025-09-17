@@ -20,19 +20,19 @@ const Carousel = () => {
       <div className='carousel' onClick={handleCopy}>
         <div className='carousel-track'>
           <div className='slide text'>
-            International Shipping Coming Soon
+            Shipping Worldwide Soon
           </div>
           <div className='slide-small'>★</div>
           <div className='slide text'>
-            International Shipping Coming Soon
+            Shipping Worldwide Soon
           </div>
           <div className='slide-small'>★</div>
           <div className='slide text'>
-            International Shipping Coming Soon
+            Shipping Worldwide Soon
           </div>
           <div className='slide-small'>★</div>
           <div className='slide text'>
-            International Shipping Coming Soon
+            Shipping Worldwide Soon
           </div>
         </div>
       </div>

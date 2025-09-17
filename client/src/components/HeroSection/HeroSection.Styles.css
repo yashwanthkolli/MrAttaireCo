@@ -97,33 +97,31 @@
 }
 
 .hero h1 {
-  font-size: 3.5rem;
+  font-size: 4rem;
   margin: 0;
   margin-bottom: 3rem;
 }
 
 .hero p {
-  font-size: 1.5rem;
+  font-size: 2.4rem;
   margin-bottom: 1rem;
   font-style: var(--font-secondary);
   text-transform: uppercase;
   font-weight: 300;
   letter-spacing: 1px;
-  font-size: 1.8rem;
 }
 
 .cta-button {
   display: inline-block;
-  padding: 1rem 3rem;
+  padding: 1.5rem 3rem;
   background: var(--accent-color);
   border: 1px solid var(--accent-color);
   color: white;
   text-decoration: none;
-  font-size: 1.4rem;
-  font-weight: 200;
+  font-size: 2rem;
   letter-spacing: 1px;
   border-radius: 2px;
-  font-weight: bold;
+  font-weight: normal;
   transition: all 0.2s ease;
 }
 
@@ -133,12 +131,12 @@
 
 
 @media (max-width: 1024px) {
-  .hero-content {
+  /* .hero-content {
     left: 5rem;
     bottom: 5rem;
     max-width: 600px;
-  }
-  .hero h1 {
+  } */
+  /* .hero h1 {
     font-size: 3rem;
     margin-bottom: 2rem;
   }
@@ -148,7 +146,7 @@
   .cta-button {
     padding: 0.8rem 2.5rem;
     font-size: 1.3rem;
-  }
+  } */
 }
 
 @media (max-width: 768px) {
@@ -157,19 +155,19 @@
     height: 70vh;
   }
   .hero-content {
-    left: 3rem;
-    bottom: 4rem;
+    left: 5rem;
+    bottom: 5rem;
     max-width: 90%;
   }
   .hero h1 {
-    font-size: 2.5rem;
+    font-size: 4rem;
   }
   .hero p {
-    font-size: 1.2rem;
+    font-size: 2.4rem;
   }
   .cta-button {
-    padding: 0.7rem 2rem;
-    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    font-size: 2rem;
   }
 }
 
@@ -180,18 +178,20 @@
     padding: 2rem 1rem;
   }
   .hero-content {
+    left: 3rem;
+    bottom: 4rem;
     max-width: 100%;
   }
   .hero h1 {
-    font-size: 2rem;
+    font-size: 3rem;
     margin-bottom: 1.5rem;
   }
   .hero p {
-    font-size: 1rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
   }
   .cta-button {
-    padding: 0.6rem 1.5rem;
-    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.6rem;
   }
 }

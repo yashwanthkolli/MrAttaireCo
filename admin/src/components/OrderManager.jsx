@@ -71,7 +71,7 @@ const OrderManager = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/v1/orders');
+      const response = await axios.get('https://mrattireco.com/backend/api/v1/orders');
       setOrders(response.data.orders);
     } catch (error) {
       console.error('Error fetching orders:', error);

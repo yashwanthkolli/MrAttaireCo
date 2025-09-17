@@ -79,7 +79,7 @@ const ProductManager = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/v1/products/admin');
+      const response = await axios.get('https://mrattireco.com/backend/api/v1/products/admin');
       setProducts(response.data.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -189,9 +189,9 @@ const ProductManager = () => {
       };
 
       if (editingProduct) {
-        await axios.put(`http://localhost:5000/api/v1/products/${editingProduct._id}`, submitData);
+        await axios.put(`https://mrattireco.com/backend/api/v1/products/${editingProduct._id}`, submitData);
       } else {
-        await axios.post('http://localhost:5000/api/v1/products', submitData);
+        await axios.post('https://mrattireco.com/backend/api/v1/products', submitData);
       }
 
       fetchProducts();
@@ -204,7 +204,7 @@ const ProductManager = () => {
 
   const handleToggleActive = async (productId, currentStatus) => {
     try {
-      await axios.put(`http://localhost:5000/api/v1/products/${productId}`, { 
+      await axios.put(`https://mrattireco.com/backend/api/v1/products/${productId}`, { 
         isActive: !currentStatus 
       });
       fetchProducts();
@@ -217,7 +217,7 @@ const ProductManager = () => {
   const handleDelete = async (productId) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/v1/products/${productId}`);
+        await axios.delete(`https://mrattireco.com/backend/api/v1/products/${productId}`);
         fetchProducts();
       } catch (error) {
         console.error('Error deleting product:', error);
@@ -248,7 +248,7 @@ const ProductManager = () => {
       const formData = new FormData();
       formData.append('image', selectedImage);
 
-      await axios.put(`http://localhost:5000/api/v1/products/${selectedProductId}/image`, formData, {
+      await axios.put(`https://mrattireco.com/backend/api/v1/products/${selectedProductId}/image`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

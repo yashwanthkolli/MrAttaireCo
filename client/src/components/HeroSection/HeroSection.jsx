@@ -68,11 +68,11 @@ const HeroSection = () => {
         />
       )}
       <div className="hero-content">
-        <p>{hero.subtitle}</p>
+        <p dangerouslySetInnerHTML={{ __html: hero.subtitle }} />
         <h1 className='heading'>{hero.title}</h1>
         {hero.ctaButton && (
           <a href={hero.ctaButton.link} className="cta-button">
-            {hero.ctaButton.text}
+            {hero.ctaButton.text.toUpperCase()}
           </a>
         )}
       </div>

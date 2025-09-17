@@ -43,7 +43,7 @@ const HeroEditor = () => {
   useEffect(() => {
     const fetchHeroData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/v1/hero');
+        const response = await axios.get('https://mrattireco.com/backend/api/v1/hero');
         setHeroData(response.data.data);
         setCurrentImage(response.data.data.backgroundImage.url);
       } catch (error) {
@@ -92,7 +92,7 @@ const HeroEditor = () => {
     setMessage({ type: '', text: '' });
 
     try {
-      const response = await axios.put('http://localhost:5000/api/v1/hero', heroData);
+      const response = await axios.put('https://mrattireco.com/backend/api/v1/hero', heroData);
       setMessage({ type: 'success', text: 'Hero content updated successfully!' });
     } catch (error) {
       console.error('Error updating hero:', error);
@@ -115,7 +115,7 @@ const HeroEditor = () => {
       const formData = new FormData();
       formData.append('image', image);
 
-      const response = await axios.put('http://localhost:5000/api/v1/hero/image', formData, {
+      const response = await axios.put('https://mrattireco.com/backend/api/v1/hero/image', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

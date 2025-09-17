@@ -32,8 +32,8 @@ const Dashboard = () => {
       try {
         // These endpoints need to be created in your backend
         const [statsRes, ordersRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/v1/admin/stats'),
-          axios.get('http://localhost:5000/api/v1/orders/recent')
+          axios.get('https://mrattireco.com/backend/api/v1/admin/stats'),
+          axios.get('https://mrattireco.com/backend/api/v1/orders/recent')
         ]);
         
         setStats(statsRes.data.data);

@@ -25,7 +25,7 @@ mongoose.connect(MONGO_URI)
 
 // Middlewares
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://mrattireco.com', 'https://www.mrattireco.com', 'http://192.168.31.104:3000'],
+  origin: ['https://mrattireco.com', 'https://www.mrattireco.com', 'https://mrattirecoadmin.netlify.app'],
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
