@@ -10,7 +10,7 @@ const HeroSection = () => {
         <div className='model-img-container'>
           <img src={modelImg} alt='model' />
         </div>
-        <h1 className='title'>ELEVATE YOUR  STYLE</h1>
+        <h1 className='title'>ELEVATE YOUR STYLE</h1>
         <div className='scroll-btn'><FaArrowDown /></div>
         <Link className='sub-heading' to='/products'><span className='underline'>Browse Collections</span><FaArrowRight /></Link>
       </div>

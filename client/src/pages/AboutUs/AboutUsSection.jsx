@@ -40,7 +40,7 @@ const AboutSectionSection = () => {
             <motion.img variants={itemVariants} src={Img1} alt='img1' />
           </motion.div>
           <motion.h2 variants={itemVariants} className='heading'>
-            MEET <span className='accent'>MR ATTAIRE & CO</span>
+            MEET <span className='accent'>MR. ATTIRE & CO</span>
           </motion.h2>
           
           <motion.p variants={itemVariants} className='text'>

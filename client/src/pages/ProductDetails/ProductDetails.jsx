@@ -210,7 +210,7 @@ const ProductDetails = () => {
             <p>• Items must be unworn, unwashed, and with original tags.</p>
             <p>• Exchanges are processed within 3 business days of receiving your return.</p>
             <p>• Final sale items are not eligible for return or exchange.</p>
-            <p>• We ship to India and UK.</p>
+            <p>• We ship to India and International Shipping coming soon.</p>
             <p>• International delivery times vary by destination (typically 7-14 business days)</p>
           </div>
         </div>
