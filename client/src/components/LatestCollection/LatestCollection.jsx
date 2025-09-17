@@ -4,6 +4,8 @@ import ProductCard from '../ProductCard/ProductCard';
 
 import './LatestCollection.Styles.css'
 import Message from '../Message/Message';
+import Button from '../Button/Button';
+import { Link } from 'react-router-dom';
 
 const LatestCollection = () => {
   const [products, setProducts] = useState([]);
@@ -63,6 +65,9 @@ const LatestCollection = () => {
           <div>No products found</div>
         )}
       </div>
+      <Link to='/products'>
+        <Button variant='danger' width='120px' className='show-more-button'>Show More</Button>
+      </Link>
     </div>
   )
 }

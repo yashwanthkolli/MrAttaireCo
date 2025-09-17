@@ -12,6 +12,10 @@
   padding-top: 3rem;
 }
 
+.latest-section .show-more-button {
+  margin-right: 0;
+}
+
 /* Skeleton loader for product cards */
 .product-skeleton-block {
   width: 23%;
