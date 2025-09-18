@@ -76,6 +76,7 @@
   border: none;
   outline: none;
   background-color: inherit;
+  color: var(--primary-dark);
 }
 
 .navbar .dropdown-container .dropdown-content{
