@@ -11,7 +11,8 @@ const ImageGallery = ({ images, mainImageIndex, setMainImageIndex, totalNumberOf
   console.log(mainImageIndex, totalNumberOfImages, images)
   
   const handlePrev = (e) => {
-    setMainImageIndex((prev) => mainImageIndex === 0 ? setMainImageIndex(totalNumberOfImages - 1) : prev - 1)
+    console.log(totalNumberOfImages - 1)
+    setMainImageIndex((prev) => prev === 0 ? setMainImageIndex(totalNumberOfImages - 1) : prev - 1)
   };
 
   const handleNext = (e) => {
