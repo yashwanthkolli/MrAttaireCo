@@ -125,6 +125,9 @@ const ProductDetails = () => {
             <ImageGallery 
               images={mainImageIndex === product.images.length - 1 ? [product.images[mainImageIndex], product.images[0]]
                 : [product.images[mainImageIndex], product.images[mainImageIndex + 1]]} 
+              mainImageIndex={mainImageIndex}
+              setMainImageIndex={setMainImageIndex}
+              totalNumberOfImages={product.images.length}
             />
           </div>
           <div className='info-container'>

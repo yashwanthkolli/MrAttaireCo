@@ -63,7 +63,7 @@ const HeroSection = () => {
           src={heroImageUrl}
           alt={hero.title || 'Hero background'}
           className="hero-image"
-          fetchpriority="high"
+          fetchPriority="high"
           decoding="async"
         />
       )}
