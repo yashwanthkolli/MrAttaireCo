@@ -7,12 +7,9 @@ const ImageGallery = ({ images, mainImageIndex, setMainImageIndex, totalNumberOf
 
   const [touchStartX, setTouchStartX] = useState(null);
   const [touchEndX, setTouchEndX] = useState(null);
-
-  console.log(mainImageIndex, totalNumberOfImages, images)
   
   const handlePrev = (e) => {
-    console.log(totalNumberOfImages - 1)
-    setMainImageIndex((prev) => prev === 0 ? setMainImageIndex(totalNumberOfImages - 1) : prev - 1)
+    setMainImageIndex((prev) => mainImageIndex === 0 ? totalNumberOfImages - 1 : prev - 1)
   };
 
   const handleNext = (e) => {
