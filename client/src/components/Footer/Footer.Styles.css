@@ -157,3 +157,29 @@
     font-size: 1.4rem;
   }
 }
+
+@media (max-width: 480px) {
+  .footer-section .content .details .logo-container .sub-heading {
+    font-size: 1.8rem;
+  }
+
+  .footer-section .content .details .company-text {
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+
+  .footer-section .content .details .contact {
+    font-size: 1.8rem;
+    line-height: 2.4rem;
+  }
+
+  .footer-section .content .links .links-list .links-title {
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+
+  .footer-section .content .links .links-list a {
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+  }
+}

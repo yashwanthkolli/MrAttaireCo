@@ -182,7 +182,12 @@
     padding: 0.5rem 1rem;
   }
 
+  .navbar .sub-heading {
+    font-size: 1.6rem;
+  }
+
   .navbar .shop-routes {
+    gap: var(--space-md);
     justify-content: space-between;
   }
 

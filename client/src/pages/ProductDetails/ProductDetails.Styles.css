@@ -194,6 +194,16 @@
     padding: 2rem;
   }
 
+  .product-detail .text {
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+
+  .product-detail .sub-heading {
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+  }
+
   .product-detail .product-grid .images-container,
   .product-detail .product-grid .info-container {
     width: calc(100% - 4rem);
