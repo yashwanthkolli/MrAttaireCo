@@ -218,7 +218,7 @@ exports.handleRazorpayWebhook = asyncHandler(async (req, res) => {
 
       if (order) {
         await reduceStock(order.items);
-    await sendOrderConfirmationEmail(order.populate('items.product', 'name'));
+        await sendOrderConfirmationEmail(order);
         await Cart.deleteOne({ user: order.user._id });
       }
     } else if (event === 'payment.failed') {
@@ -314,7 +314,7 @@ exports.createCODOrder = asyncHandler (async (req, res) => {
 
     // Send Confirmation Email
     order.user.email = user.email;
-    await sendOrderConfirmationEmail(order.populate('items.product', 'name'));
+    await sendOrderConfirmationEmail(order);
 
     // Clear user's cart
     await Cart.deleteOne({ user: userId });
@@ -387,10 +387,7 @@ const sendOrderConfirmationEmail = async (order) => {
       🚚 Shipping Info
       Address: ${order.shippingAddress.street}, ${order.shippingAddress.city}, ${order.shippingAddress.zipCode}
 
-      🛍️ Items Ordered
-      ${order.items.map(item => `
-        - ${item.product.name} (${item.variant.color}, ${item.variant.size}) × ${item.quantity}: ₹${item.priceAtAddition.toFixed(2)}
-      `).join('')}
+      
 
       Need help? Reply to this email or contact support@mrattireco.com.
 
