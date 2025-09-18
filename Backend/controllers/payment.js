@@ -17,7 +17,7 @@ const currencyService = require('../utils/currencyService');
 // @access  Private
 exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
   try {
-    const { couponCode, shippingAddress } = req.body;
+    const { couponCode, shippingAddress, estimatedDelivery } = req.body;
     const userId = req.user._id;
 
     // Get country details from shipping address
@@ -101,7 +101,8 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
       shippingCost,
       total: amount,
       currency: country.currency,
-      couponUsed: {code: couponCode ? couponCode : "", discountValue: discount}
+      couponUsed: {code: couponCode ? couponCode : "", discountValue: discount},
+      estimatedDelivery
     });
 
     res.status(201).json({
@@ -217,7 +218,7 @@ exports.handleRazorpayWebhook = asyncHandler(async (req, res) => {
 
       if (order) {
         await reduceStock(order.items);
-        await sendOrderConfirmationEmail(order);
+    await sendOrderConfirmationEmail(order.populate('items.product', 'name'));
         await Cart.deleteOne({ user: order.user._id });
       }
     } else if (event === 'payment.failed') {
@@ -243,7 +244,7 @@ exports.handleRazorpayWebhook = asyncHandler(async (req, res) => {
 // @access  Private
 exports.createCODOrder = asyncHandler (async (req, res) => {
   try {
-    const { shippingAddress, couponCode } = req.body;
+    const { shippingAddress, couponCode, estimatedDelivery } = req.body;
 
     if (shippingAddress.country !== 'IN') {
       return next(new ErrorResponse('Cod only works in India.', 400));
@@ -301,7 +302,8 @@ exports.createCODOrder = asyncHandler (async (req, res) => {
       subtotal: total,
       shippingCost,
       total: amount,
-      couponUsed: {code: couponCode ? couponCode : "", discountValue: discount}
+      couponUsed: {code: couponCode ? couponCode : "", discountValue: discount},
+      estimatedDelivery
     });
 
     // Reduce stock for each ordered item
@@ -312,7 +314,7 @@ exports.createCODOrder = asyncHandler (async (req, res) => {
 
     // Send Confirmation Email
     order.user.email = user.email;
-    await sendOrderConfirmationEmail(order);
+    await sendOrderConfirmationEmail(order.populate('items.product', 'name'));
 
     // Clear user's cart
     await Cart.deleteOne({ user: userId });
@@ -344,7 +346,7 @@ const createShiprocketOrder = async (order) => {
       billing_last_name: '',
       billing_address: order.shippingAddress.street,
       billing_city: order.shippingAddress.city,
-      billing_pincode: order.shippingAddress.pincode,
+      billing_pincode: order.shippingAddress.zipCode,
       billing_state: order.shippingAddress.state,
       billing_country: 'India',
       billing_email: order.user.email,
@@ -377,15 +379,15 @@ const sendOrderConfirmationEmail = async (order) => {
 
       Thank you for shopping with Mr. Attire! Your order is confirmed.
 
-      📦 **Order Summary**
+      📦 Order Summary
       Order ID: ${order._id}
       Date: ${new Date(order.createdAt).toLocaleDateString()}
       Total: ₹${order.total.toFixed(2)}
 
-      🚚 **Shipping Info**
-      Address: ${order.shippingAddress.street}, ${order.shippingAddress.city}, ${order.shippingAddress.pincode}
+      🚚 Shipping Info
+      Address: ${order.shippingAddress.street}, ${order.shippingAddress.city}, ${order.shippingAddress.zipCode}
 
-      🛍️ **Items Ordered**
+      🛍️ Items Ordered
       ${order.items.map(item => `
         - ${item.product.name} (${item.variant.color}, ${item.variant.size}) × ${item.quantity}: ₹${item.priceAtAddition.toFixed(2)}
       `).join('')}

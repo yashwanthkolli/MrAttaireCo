@@ -47,7 +47,8 @@ const Checkout = () => {
     if (paymentMethod === 'cod') {
       const { data } = await API.post('/payments/cod', {
         shippingAddress: newAddress, 
-        couponCode: coupon
+        couponCode: coupon,
+        estimatedDelivery: etd
       });
       if (data && data.success) {
         refreshCart();
@@ -60,7 +61,8 @@ const Checkout = () => {
 
     const { data } = await API.post('/payments/create-order', {
       shippingAddress: newAddress, 
-      couponCode: coupon
+      couponCode: coupon,
+      estimatedDelivery: etd
     });
 
     if (!isScriptLoaded) {

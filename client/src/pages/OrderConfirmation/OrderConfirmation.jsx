@@ -90,7 +90,7 @@ const OrderConfirmation = () => {
             <li>
               <span className="next-step">
                 <strong>Estimated Delivery:</strong>{' '}
-                {new Date(order.estimatedDelivery).toDateString()}
+                {order.estimatedDelivery}
               </span>
             </li>
             <li className="next-step">

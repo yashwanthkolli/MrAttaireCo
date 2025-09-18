@@ -59,7 +59,7 @@ const orderSchema = new mongoose.Schema({
     default: 'processing' 
   },
   shiprocketOrderId: String,
-  estimatedDelivery: Date,  // From Shiprocket API
+  estimatedDelivery: String,  // From Shiprocket API
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);
