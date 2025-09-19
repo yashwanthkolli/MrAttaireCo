@@ -95,6 +95,7 @@
   font-size: 1.4rem;
   color: var(--text-light);
   margin-bottom: 0.5rem;
+  text-transform: capitalize;
 }
 
 .order-confirmation .item-price {
@@ -148,16 +149,40 @@
 }
 
 @media (max-width: 480px) {
+  .order-confirmation .order-header {
+    display: flex;
+    flex-direction: column;
+  }
   .order-confirmation .order-title {
     font-size: 2.2rem;
   }
 
-  .order-confirmation .section-heading {
+  .order-confirmation .order-subtitle {
     font-size: 1.6rem;
   }
 
+  .order-confirmation .order-subtitle .order-id {
+    font-size: 1.6rem;
+  }
+
+  .order-confirmation .section-heading {
+    font-size: 2rem;
+  }
+
+.order-confirmation .summary-text {
+  font-size: 1.6rem;
+}
+
   .order-confirmation .item-name,
   .order-confirmation .item-price {
-    font-size: 1.4rem;
+    font-size: 2rem;
+  }
+
+  .order-confirmation .item-variant {
+    font-size: 1.6rem;
+  } 
+
+  .order-confirmation .order-next-steps li {
+    font-size: 1.6rem;
   }
 }

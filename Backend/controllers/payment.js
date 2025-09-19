@@ -162,6 +162,7 @@ exports.verifyPayment = asyncHandler (async (req, res, next) => {
 
     // Send Confirmation Email
     await sendOrderConfirmationEmail(order);
+    await sendAcknowledgementEmail();
 
     // Create ShipRocket shipment
 
@@ -219,6 +220,7 @@ exports.handleRazorpayWebhook = asyncHandler(async (req, res) => {
       if (order) {
         await reduceStock(order.items);
         await sendOrderConfirmationEmail(order);
+        await sendAcknowledgementEmail();
         await Cart.deleteOne({ user: order.user._id });
       }
     } else if (event === 'payment.failed') {
@@ -315,6 +317,7 @@ exports.createCODOrder = asyncHandler (async (req, res) => {
     // Send Confirmation Email
     order.user.email = user.email;
     await sendOrderConfirmationEmail(order);
+    await sendAcknowledgementEmail();
 
     // Clear user's cart
     await Cart.deleteOne({ user: userId });
@@ -395,6 +398,16 @@ const sendOrderConfirmationEmail = async (order) => {
       Team Mr. Attire
     `.replace(/^\s+/gm, '') // Remove indentation whitespace
   };
+
+  await sendEmail(emailOptions);
+}
+
+const sendAcknowledgementEmail = async () => {
+  const emailOptions = {
+    email: 'mrattireco@gmail.com',
+    subject: 'New Order Recieved',
+    message: 'New order has been placed. Please check the admin portal.'
+  }
 
   await sendEmail(emailOptions);
 }

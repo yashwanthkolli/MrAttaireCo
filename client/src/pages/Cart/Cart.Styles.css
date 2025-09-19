@@ -85,6 +85,16 @@
     font-size: 1.6rem;
   }
 
+  .cart-page .text {
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+
+  .cart-page .sub-heading {
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+  }
+
   .cart-page .guest-warning {
     margin: 0 2rem 2rem;
     font-size: 1.2rem;

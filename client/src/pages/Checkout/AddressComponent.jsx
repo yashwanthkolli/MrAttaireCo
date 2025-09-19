@@ -49,7 +49,7 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
             required
             className="form-select"
           >
-            <option value="">Select Country</option>
+            {/* <option value="">Select Country</option> */}
             <option value='IN'>India</option>
             {/* <option value='AU'>Australia</option>
             <option value='CA'>Canada</option>

@@ -68,7 +68,8 @@
 
 @media (max-width: 480px) {
   .input-container input {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
+    line-height: 2rem;
     padding: 0.3rem 0.8rem;
     min-height: 30px;
   }

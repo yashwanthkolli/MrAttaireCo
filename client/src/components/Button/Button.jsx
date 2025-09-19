@@ -43,11 +43,11 @@ const Button = ({
       ) : (
         <>
           {icon && iconPosition === 'left' && (
-            <span className="mr-2">{icon}</span>
+            <span>{icon}</span>
           )}
           {children}
           {icon && iconPosition === 'right' && (
-            <span className="ml-2">{icon}</span>
+            <span>{icon}</span>
           )}
         </>
       )}

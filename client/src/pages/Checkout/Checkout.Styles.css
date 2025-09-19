@@ -44,6 +44,16 @@
     padding: 0 1rem;
   }
 
+  .checkout-page .text {
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+
+  .checkout-page .sub-heading {
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+  }
+
   .checkout-page .checkout-section,
   .checkout-page .cart-section {
     width: 100%;

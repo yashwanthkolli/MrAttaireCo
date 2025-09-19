@@ -44,7 +44,7 @@ const UserOrders = () => {
             // onClick={() => handleOrderClick(order._id)}
           >
             <div className="order-header">
-              <span className="order-id">Order #{order._id.slice(-6)}</span>
+              <span className="order-id">Order #{order._id.slice(-6).toUpperCase()}</span>
               <span className={`order-status ${order.status}`}>{order.status}</span>
             </div>
 

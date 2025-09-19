@@ -35,7 +35,7 @@ const OrderConfirmation = () => {
         <div className="order-header">
           <h1 className="order-title">Order Confirmed!</h1>
           <p className="order-subtitle">
-            Your payment was successful. Order ID: <span className="order-id">{order._id}</span>
+            Your payment was successful. Order ID: <span className="order-id">{order._id.slice(-6).toUpperCase()}</span>
           </p>
         </div>
 

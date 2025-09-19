@@ -34,13 +34,13 @@
 
 .order-id {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 2rem;
 }
 
 .order-status {
   padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.9rem;
+  border-radius: 2px;
+  font-size: 1.6rem;
   text-transform: capitalize;
   color: #fff;
 }
@@ -54,7 +54,7 @@
 
 .order-meta {
   margin-top: 8px;
-  font-size: 0.95rem;
+  font-size: 1.6rem;
   color: #444;
 }
 
@@ -77,21 +77,23 @@
 }
 
 .order-item-details {
-  font-size: 0.9rem;
+  font-size: 1.6rem;
 }
 
 .item-name {
   font-weight: 600;
+  margin-top: 0;
 }
 
 .item-variant, .item-qty, .item-price {
   color: #666;
-  font-size: 0.85rem;
+  font-size: 1.6rem;
+  margin: 0;
 }
 
 .order-shipping {
   margin-top: 15px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   background: #fafafa;
   padding: 10px;
   border-radius: 8px;
@@ -130,7 +132,7 @@
   }
 
   .order-card-container {
-    width: 100%;
+    width: calc(100% - 4rem);
     justify-content: center;
   }
 
@@ -146,7 +148,7 @@
   }
 
   .order-card-container {
-    width: 100%;
+    width: calc(100% - 2rem);
   }
 
   .order-card {
@@ -155,12 +157,12 @@
   }
 
   .order-item-img {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
   }
 
   .orders-message {
-    font-size: 1rem;
+    font-size: 1.6rem;
     margin-top: 30px;
   }
 }

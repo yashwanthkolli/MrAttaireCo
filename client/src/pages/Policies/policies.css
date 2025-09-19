@@ -26,3 +26,18 @@
 .policy .bold {
   font-weight: 500;
 }
+
+@media (max-width: 480px) {
+  .policy {
+    padding: 1rem 2rem;
+  }
+  .policy .text {
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+
+  .policy .sub-heading {
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+  }
+}
