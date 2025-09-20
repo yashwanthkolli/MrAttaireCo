@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import './ImageGallery.Styles.css';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaHeart, FaRegHeart } from 'react-icons/fa';
 
-const ImageGallery = ({ images, mainImageIndex, setMainImageIndex, totalNumberOfImages }) => {
+const ImageGallery = ({ images, mainImageIndex, setMainImageIndex, totalNumberOfImages, isInWishlist, onAddToWishlist }) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const [touchStartX, setTouchStartX] = useState(null);
@@ -69,6 +69,14 @@ const ImageGallery = ({ images, mainImageIndex, setMainImageIndex, totalNumberOf
         <button onClick={handlePrev}><FaChevronLeft /></button>
         <button onClick={handleNext}><FaChevronRight /></button>
       </div>
+
+      <button onClick={onAddToWishlist} className='wishlist-btn'>
+        {
+          isInWishlist ? 
+          <span><FaHeart style={{color: '#A3320B'}} /></span>
+          : <span><FaRegHeart style={{color: '#A3320B'}} /></span>
+        }
+      </button>
     </div>
   );
 };

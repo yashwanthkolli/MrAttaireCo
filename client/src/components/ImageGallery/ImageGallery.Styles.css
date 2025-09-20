@@ -41,6 +41,21 @@
   display: none;
 }
 
+.wishlist-btn {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0.5rem;
+  border: none;
+}
+
 /* Mobile slider */
 @media (max-width: 768px) {
   .image-grid {

@@ -147,7 +147,7 @@ const ProductDetails = () => {
           shippingAddress: address,
           estimatedDelivery: etd
         });
-        console.log(data)
+        
         if (!isScriptLoaded) {
           throw new Error('Razorpay SDK failed to load');
         }
@@ -229,6 +229,11 @@ const ProductDetails = () => {
     setShowBuyNowDialog(false)
   }
 
+  const onAddToWishlist = (e) => {
+    e.stopPropagation();
+    toggleWishlist(product);
+  }
+
   if (loading) return <div>Loading...</div>;
   if (!product) return <div>Product not found</div>;
 
@@ -261,6 +266,8 @@ const ProductDetails = () => {
               mainImageIndex={mainImageIndex}
               setMainImageIndex={setMainImageIndex}
               totalNumberOfImages={product.images.length}
+              isInWishlist={isInWishlist(product._id)}
+              onAddToWishlist={onAddToWishlist}
             />
           </div>
           <div className='info-container'>
@@ -314,16 +321,16 @@ const ProductDetails = () => {
             <Button disabled={!product.isActive} onClick={handleBuyNowClick}>
               Buy Now
             </Button>
-            <Button disabled={!product.isActive} onClick={handleAddToCart}>
+            <Button disabled={!product.isActive} onClick={handleAddToCart} variant='secondary'>
               {isAdding ? 'Adding...' : 'Add to Cart'}
             </Button>
-            <Button onClick={() => toggleWishlist(product)} variant='secondary'>
+            {/* <Button onClick={() => toggleWishlist(product)} variant='secondary'>
               {
                 isInWishlist(product._id) ? 
                 <span>In Wishlist&nbsp; <FaHeart style={{color: '#A3320B'}} /></span>
                 : <span>Add to Wishlist&nbsp; <FaRegHeart style={{color: '#A3320B'}} /></span>
               }
-            </Button>
+            </Button> */}
             <div className='shipping-charges-info text'>
               <p>✔ Free delivery over ₹1000 per order</p>
               <p>✔ Easy returns</p>
