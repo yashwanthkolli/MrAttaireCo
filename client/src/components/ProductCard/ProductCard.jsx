@@ -13,7 +13,9 @@ const ProductCard = ({ product, dark, small }) => {
     //     setImage(product.images[i].url)
     //   }, i * 1000)
     // }
-    setImage(product.images[1]?.url)
+    if(product.images[1]) {
+      setImage(product.images[1]?.url)
+    }
   }
 
   const handleMouseLeave = () => {

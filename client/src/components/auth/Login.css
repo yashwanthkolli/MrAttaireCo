@@ -119,4 +119,15 @@
   .google-button .text {
     font-size: 1.6rem;
   }
+
+  
+  .login-container .others { 
+    font-size: 1.6rem;
+    margin-top: 3rem;
+  }
+
+  .login-container .forgot-password a {
+    margin-top: 1rem;
+    font-size: 1.6rem;
+  }
 }

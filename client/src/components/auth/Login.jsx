@@ -50,7 +50,10 @@ const Login = () => {
 
     if (success) {
       setMsg({ type: 'success', text: 'Login Successful!' });
-      if (location.pathname.includes('/auth')) {
+
+      const prevPath = window.sessionStorage.getItem("lastPath");
+
+      if (!prevPath || prevPath.includes("/auth")) {
         navigate('/');
       } else {
         navigate(-1);

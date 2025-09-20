@@ -146,7 +146,7 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
                 onChange={(e) => setPaymentMethod(e.target.value)}
                 disabled={!isCodAvailable}
               />
-              <label htmlFor="cod" className={isCodAvailable ? '' : 'disable'}><BsCashCoin />{isCodAvailable ? 'Cash on Delivery' : 'COD is not available to the location'}</label>
+              <label htmlFor="cod" className={isCodAvailable ? '' : 'disable'}><BsCashCoin />{isCodAvailable ? 'Cash on Delivery' : newAddress.zipCode.length > 5 ? 'COD is not available to the location' : 'Enter Pincode to Check for COD availability'}</label>
             </div>
           </div>
           <Button type='submit'>{paymentMethod === 'cod' ? 'Confirm Order' : 'Proceed'}</Button>

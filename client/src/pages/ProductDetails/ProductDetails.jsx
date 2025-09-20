@@ -97,6 +97,7 @@ const ProductDetails = () => {
   const handleBuyNowClick = () => {
     if (!isAuthenticated) {
       setMsg({ text: 'Please login to place order', type: 'error' })
+      setTimeout(() => navigate('/auth'), 1000);
       return;
     }
     if (!selectedColor || !selectedSize) {
@@ -497,7 +498,9 @@ const ProductDetails = () => {
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   disabled={!isCodAvailable}
                 />
-                <label htmlFor="cod" className={isCodAvailable ? '' : 'disable'}><BsCashCoin />{isCodAvailable ? 'Cash on Delivery' : 'COD is not available to the location'}</label>
+                <label htmlFor="cod" className={isCodAvailable ? '' : 'disable'}>
+                  <BsCashCoin />{isCodAvailable ? 'Cash on Delivery' : address.zipCode.length > 5 ? 'COD is not available to the location' : 'Enter Pincode to Check for COD availability'}
+                </label>
               </div>
             </div>
 
