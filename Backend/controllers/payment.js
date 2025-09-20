@@ -116,6 +116,108 @@ exports.createRazorpayOrder = asyncHandler (async (req, res, next) => {
   }
 });
 
+// @desc    Buy Now - Razorpay
+// @route   POST /api/v1/payments/buy-now/razorpay
+// @access  Private
+exports.buyNowRazorpayOrder = asyncHandler(async (req, res, next) => {
+  try {
+    const { productId, variant, quantity = 1, couponCode, shippingAddress, estimatedDelivery } = req.body;
+    const userId = req.user._id;
+
+    // Get country details from shipping address
+    const country = countryConfig.supportedCountries.find(
+      c => c.code === shippingAddress.country
+    ) || countryConfig.supportedCountries.find(
+      c => c.code === countryConfig.defaultCountry
+    );
+
+    if (!country) {
+      return next(new ErrorResponse('Invalid shipping country', 400));
+    }
+
+    // Fetch product
+    const product = await Product.findById(productId);
+    if (!product) {
+      return next(new ErrorResponse('Product not found', 404));
+    }
+
+    // Find variant & check stock
+    const selectedVariant = product.variants.find(v => v.color === variant.color);
+    if (!selectedVariant) return next(new ErrorResponse('Invalid variant color', 400));
+
+    const selectedSize = selectedVariant.sizes.find(s => s.size === variant.size);
+    if (!selectedSize || selectedSize.stock < quantity) {
+      return next(new ErrorResponse('Requested quantity not available', 400));
+    }
+
+    let price = product.price;
+    let subtotal = price * quantity;
+
+    // Apply coupon if any
+    let discount = 0;
+    let shippingCost = 0;
+    if (couponCode) {
+      const coupon = await validateCoupon(couponCode, userId, [{ product, variant, quantity }]);
+      const couponDiscount = calculateDiscount(coupon, subtotal);
+      if (couponDiscount === "FREE_SHIPPING") {
+        shippingCost = 0;
+      } else if (couponDiscount > 0) {
+        discount = couponDiscount;
+      }
+    }
+
+    // Convert to buyer’s currency
+    const convertedPrice = await convertPrice(subtotal, country);
+    const convertedDiscount = await convertPrice(discount, country);
+
+    const amount = convertedPrice - convertedDiscount + shippingCost;
+    const amountInSmallestUnit = Math.round(amount.toFixed(2) * 100);
+
+    // Create Razorpay order
+    const options = {
+      amount: amountInSmallestUnit,
+      currency: country.currency,
+      receipt: `buy_now_${Date.now()}`,
+      notes: {
+        productId,
+        webhook_url: 'https://mrattireco.com/backend/api/v1/payments/webhook'
+      }
+    };
+
+    const razorpayOrder = await razorpay.orders.create(options);
+
+    // Save order in DB
+    const order = await Order.create({
+      user: userId,
+      items: [{
+        product: product._id,
+        variant,
+        quantity,
+        priceAtAddition: price,
+      }],
+      razorpayOrderId: razorpayOrder.id,
+      paymentMethod: 'razorpay',
+      paymentStatus: 'pending',
+      shippingAddress,
+      subtotal,
+      shippingCost,
+      total: amount,
+      currency: country.currency,
+      couponUsed: { code: couponCode || "", discountValue: discount },
+      estimatedDelivery
+    });
+
+    res.status(201).json({
+      success: true,
+      order: razorpayOrder,
+      dbOrderId: order._id,
+    });
+  } catch (error) {
+    console.error('Buy Now Razorpay error:', error);
+    return next(new ErrorResponse('Payment processing failed', 500));
+  }
+});
+
 // @desc    Verify Razorpay Payments
 // @route   POST /api/v1/payments/verify
 // @access  Private
@@ -334,44 +436,89 @@ exports.createCODOrder = asyncHandler (async (req, res) => {
   }
 });
 
+// @desc    Buy Now - COD
+// @route   POST /api/v1/payments/buy-now/cod
+// @access  Private
+exports.buyNowCODOrder = asyncHandler(async (req, res, next) => {
+  try {
+    const { productId, variant, quantity = 1, couponCode, shippingAddress, estimatedDelivery } = req.body;
 
-const createShiprocketOrder = async (order) => {
-  const token = await getShiprocketToken();
-  
-  const response = await axios.post(
-    'https://apiv2.shiprocket.in/v1/external/orders/create/adhoc',
-    {
-      order_id: order._id.toString(),
-      order_date: new Date().toISOString(),
-      pickup_location: 'Primary', // Your warehouse name in ShipRocket
-      channel_id: '', // Leave empty for direct orders
-      billing_customer_name: order.user.name,
-      billing_last_name: '',
-      billing_address: order.shippingAddress.street,
-      billing_city: order.shippingAddress.city,
-      billing_pincode: order.shippingAddress.zipCode,
-      billing_state: order.shippingAddress.state,
-      billing_country: 'India',
-      billing_email: order.user.email,
-      billing_phone: order.user.phone,
-      shipping_is_billing: true,
-      order_items: order.items.map(item => ({
-        name: item.product.name,
-        sku: item.product.sku || `variant_${item.variant.color}_${item.variant.size}`,
-        units: item.quantity,
-        selling_price: item.priceAtPurchase,
-      })),
-      payment_method: order.paymentMethod === 'cod' ? 'COD' : 'Prepaid',
-      total_discount: order.discount,
-      shipping_charges: order.shippingCost,
-      giftwrap_charges: 0,
-      transaction_charges: 0,
-    },
-    { headers: { Authorization: `Bearer ${token}` } }
-  );
+    if (shippingAddress.country !== 'IN') {
+      return next(new ErrorResponse('COD only works in India.', 400));
+    }
 
-  return response.data;
-};
+    const userId = req.user._id;
+
+    // Fetch product
+    const product = await Product.findById(productId);
+    if (!product) {
+      return next(new ErrorResponse('Product not found', 404));
+    }
+
+    // Validate variant & stock
+    const selectedVariant = product.variants.find(v => v.color === variant.color);
+    if (!selectedVariant) return next(new ErrorResponse('Invalid variant color', 400));
+
+    const selectedSize = selectedVariant.sizes.find(s => s.size === variant.size);
+    if (!selectedSize || selectedSize.stock < quantity) {
+      return next(new ErrorResponse('Requested quantity not available', 400));
+    }
+
+    let price = product.price;
+    
+    let subtotal = price * quantity;
+
+    // Apply coupon
+    let discount = 0;
+    let shippingCost = 0;
+    if (couponCode) {
+      const coupon = await validateCoupon(couponCode, userId, [{ product, variant, quantity }]);
+      const couponDiscount = calculateDiscount(coupon, subtotal);
+      if (couponDiscount === "FREE_SHIPPING") {
+        shippingCost = 0;
+      } else if (couponDiscount > 0) {
+        discount = couponDiscount;
+      }
+    }
+
+    const total = subtotal - discount + shippingCost;
+
+    // Create DB order
+    const order = await Order.create({
+      user: userId,
+      items: [{
+        product: product._id,
+        variant,
+        quantity,
+        priceAtAddition: price,
+      }],
+      shippingAddress,
+      paymentMethod: 'cod',
+      paymentStatus: 'pending',
+      subtotal,
+      shippingCost,
+      total,
+      couponUsed: { code: couponCode || "", discountValue: discount },
+      estimatedDelivery
+    });
+
+    // Reduce stock
+    await reduceStock(order.items);
+
+    // Send confirmation mail
+    order.user = await User.findById(userId).select('name email');
+    await sendOrderConfirmationEmail(order);
+    await sendAcknowledgementEmail();
+
+    res.status(201).json({
+      success: true,
+      order
+    });
+  } catch (error) {
+    console.error('Buy Now COD error:', error);
+    return next(new ErrorResponse('COD order failed', 500));
+  }
+});
 
 const sendOrderConfirmationEmail = async (order) => {
   const emailOptions = {
@@ -389,8 +536,6 @@ const sendOrderConfirmationEmail = async (order) => {
 
       🚚 Shipping Info
       Address: ${order.shippingAddress.street}, ${order.shippingAddress.city}, ${order.shippingAddress.zipCode}
-
-      
 
       Need help? Reply to this email or contact support@mrattireco.com.
 

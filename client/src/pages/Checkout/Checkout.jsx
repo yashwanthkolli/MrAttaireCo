@@ -89,7 +89,7 @@ const Checkout = () => {
           navigate(`/order-confirmation/${data.dbOrderId}`)
         }
       },
-      theme: { color: '#242423' },
+      theme: { color: '#A3320B' },
       modal: {
         ondismiss: () => {
           alert('Payment window closed');

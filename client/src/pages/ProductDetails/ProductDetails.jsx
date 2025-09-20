@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import API from '../../utils/api';
+import { loadRazorpay } from '../../utils/loadRazorpay';
 import ImageGallery from '../../components/ImageGallery/ImageGallery';
 import SizeSelector from '../../components/SizeSelector/SizeSelector';
 import ColorSelector from '../../components/ColorSelector/ColorSelector';
@@ -13,10 +14,17 @@ import { useWishlist } from '../../context/WishlistContext';
 import PriceDisplay from '../../components/PriceDisplay/PriceDispaly';
 import Message from '../../components/Message/Message';
 import SizeGuide from '../../assets/sizeGuide.jpg';
+import { AuthContext } from '../../context/AuthContext';
+import { countryStateData } from '../Checkout/CountryData';
+import { SiRazorpay, SiPhonepe } from 'react-icons/si';
+import { BsCashCoin } from 'react-icons/bs';
 
 import './ProductDetails.Styles.css';
+import Input from '../../components/Input/Input';
 
 const ProductDetails = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthContext);
   const { id } = useParams();
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -31,6 +39,20 @@ const ProductDetails = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [msg, setMsg] = useState({type: '', text: ''});
+  const [showBuyNowDialog, setShowBuyNowDialog] = useState(false);
+  const [address, setAddress] = useState({
+    recipientName: '',
+    phoneNumber: '',
+    street: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    country: 'IN'
+  });
+  const [paymentMethod, setPaymentMethod] = useState('razorpay');
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [etd, setEtd] = useState('');
+  const [isCodAvailable, setIsCodAvailable] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -72,6 +94,108 @@ const ProductDetails = () => {
     setAvailableSizes(variant.sizes)
   }
 
+  const handleBuyNowClick = () => {
+    if (!isAuthenticated) {
+      setMsg({ text: 'Please login to place order', type: 'error' })
+      return;
+    }
+    if (!selectedColor || !selectedSize) {
+      setMsg({ type: 'error', text: 'Please select both color and size' });
+      return;
+    }
+    setShowBuyNowDialog(true);
+  };
+
+  useEffect(() => {
+    const getShippingETD = async (zipCode) => {
+      const res = await API.get(`/shipping?deliveryPincode=${zipCode}`)
+      if (res.data.etd) setEtd(res.data.etd)
+      setIsCodAvailable(res.data.isCodAvailable)
+    }
+
+    if((address.country === 'India' || 'IN') && address?.zipCode?.length > 5) {
+      getShippingETD(address.zipCode)
+    } 
+  }, [address.zipCode])
+
+  const handlePlaceOrder = async () => {
+    if (!address.recipientName || !address.phoneNumber || !address.street || !address.city || !address.state) {
+      setMsg({ text: 'Please enter an address', type: 'error'});
+      return;
+    }
+
+    setIsPlacingOrder(true);
+
+    try {
+      if (paymentMethod === 'cod') {
+        const { data } = await API.post('/payments/buy-now-cod', {
+          productId: product._id,
+          variant: {color: selectedColor,  size: selectedSize },
+          shippingAddress: address,
+          estimatedDelivery: etd
+        });
+        if (data && data.success) {
+          navigate(`/order-confirmation/${data.order._id}`)
+        }
+        return null;
+      } else {
+        const isScriptLoaded = await loadRazorpay();
+
+        const { data } = await API.post('/payments/buy-now', {
+          productId: product._id,
+          variant: {color: selectedColor,  size: selectedSize },
+          shippingAddress: address,
+          estimatedDelivery: etd
+        });
+        console.log(data)
+        if (!isScriptLoaded) {
+          throw new Error('Razorpay SDK failed to load');
+        }
+
+        const options = {
+          key: 'rzp_live_RHqgJJTUyGsFkq',
+          amount: data.order.amount,
+          currency: data.order.currency,
+          order_id: data.order.id,
+          name: 'Mr. Attire',
+          description: 'Purchase Description',
+          handler: async (response) => {
+            // Verify payment on your backend
+            const res = await API.post('/payments/verify', {
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpayOrderId: data.order.id,
+              razorpaySignature: response.razorpay_signature,
+            });
+            alert('Payment Successful!');
+            if (res.data && res.data.success) {
+              navigate(`/order-confirmation/${data.dbOrderId}`)
+            }
+          },
+          theme: {
+            color: '#A3320B',
+          },
+          modal: {
+            ondismiss: () => {
+              alert('Payment window closed');
+            },
+          },
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+      }
+
+      setShowBuyNowDialog(false);
+      setAddress('');
+      setPaymentMethod('razorpay');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to place order');
+    } finally {
+      setIsPlacingOrder(false);
+    }
+  };
+
   const handleAddToCart = async () => {
     if (!selectedColor || !selectedSize) {
       setMsg({type: 'error', text: 'Please select both color and size'});
@@ -95,6 +219,15 @@ const ProductDetails = () => {
       setMsg({type: 'error', text: result.message || 'Failed to add to cart'});
     }
   };
+
+  const handleChange = (e) => {
+    setAddress({...address, [e.target.name]: e.target.value})
+  }
+
+  const closeBuyNowDialog = (e) => {
+    e.stopPropagation()
+    setShowBuyNowDialog(false)
+  }
 
   if (loading) return <div>Loading...</div>;
   if (!product) return <div>Product not found</div>;
@@ -178,6 +311,9 @@ const ProductDetails = () => {
             )}
 
             <div className='text size-guide-link' onClick={() => setShowSizeGuide(true)}>Need help to Size Guide?</div>
+            <Button disabled={!product.isActive} onClick={handleBuyNowClick}>
+              Buy Now
+            </Button>
             <Button disabled={!product.isActive} onClick={handleAddToCart}>
               {isAdding ? 'Adding...' : 'Add to Cart'}
             </Button>
@@ -209,7 +345,7 @@ const ProductDetails = () => {
           <div className={`details-section text ${isOpen ? 'open' : 'closed'}`}>
             <p>• Free standard shipping on all orders over ₹1000.</p>
             <p>• Orders typically ship within 1-2 business days.</p>
-            <p>• Easy 30-day return policy.</p>
+            <p>• Easy 7-day return policy.</p>
             <p>• Items must be unworn, unwashed, and with original tags.</p>
             <p>• Exchanges are processed within 3 business days of receiving your return.</p>
             <p>• Final sale items are not eligible for return or exchange.</p>
@@ -238,6 +374,138 @@ const ProductDetails = () => {
             alt="Size Guide" 
             className="size-guide-img"
           />
+        </div>
+      )}
+
+      {showBuyNowDialog && (
+        <div className="buy-now-overlay" onClick={closeBuyNowDialog}>
+          <div className="buy-now-dialog" onClick={(e) => e.stopPropagation()}>
+            <h2>Buy Now</h2>
+
+            <div className="address-form">
+              <select
+                name="country"
+                value={address.country}
+                onChange={(e) => setAddress(prev => ({...prev, country: e.target.value, state: e.target.value === 'GB' ? '' : prev.state}))}
+                required
+                className="form-select"
+              >
+                {/* <option value="">Select Country</option> */}
+                <option value='IN'>India</option>
+                {/* <option value='AU'>Australia</option>
+                <option value='CA'>Canada</option>
+                <option value='DE'>Germany</option>
+                <option value='GB'>United Kingdom</option>
+                <option value='US'>United States of America</option> */}
+              </select>
+              <div className='row'>
+                <Input 
+                  name='recipientName'
+                  value={address.recipientName}
+                  onChange={handleChange}
+                  placeholder='Name'
+                  required
+                />
+                <Input 
+                  name='phoneNumber'
+                  value={address.phoneNumber}
+                  onChange={handleChange}
+                  placeholder='Phone Number'
+                  required
+                />
+              </div>
+
+              <Input 
+                name='street'
+                value={address.street}
+                onChange={handleChange}
+                placeholder='Street'
+                required
+              />
+
+              <div className='row'>
+                <Input 
+                  name='city'
+                  value={address.city}
+                  onChange={handleChange}
+                  placeholder='City'
+                  required
+                />
+                {
+                  address.country !== 'GB' && 
+                  <select
+                    name="state"
+                    value={address.state}
+                    onChange={handleChange}
+                    required
+                    className="form-select"
+                  >
+                    <option value="">Select State</option>
+                    {
+                      countryStateData && countryStateData[address.country] &&
+                      countryStateData[address.country].map(state => 
+                        <option key={state} value={state}>{state}</option>
+                      )
+                    }
+                  </select>
+                }
+                <Input 
+                  name='zipCode'
+                  value={address.zipCode}
+                  onChange={handleChange}
+                  placeholder='ZipCode'
+                  required
+                />
+              </div>
+            </div>
+
+            <div className='payment-options'>
+              <h2>Payment Method</h2>
+              <div className='option'>
+                <input 
+                  type="radio" 
+                  id="razorpay" 
+                  name="payment-option" 
+                  value="razorpay" 
+                  onChange={(e) => setPaymentMethod(e.target.value)} 
+                  defaultChecked 
+                />
+                <label htmlFor="razorpay"><SiPhonepe />Google Pay, Phone Pe or Other UPI</label>
+              </div>
+              <div className='option'>
+                <input 
+                  type="radio" 
+                  id="razorpay" 
+                  name="payment-option" 
+                  value="razorpay" 
+                  onChange={(e) => setPaymentMethod(e.target.value)} 
+                />
+                <label htmlFor="razorpay"><SiRazorpay />Razorpay</label>
+              </div>
+              <div className='option' style={{display: address.country === ('IN' || 'India') ? 'block' : 'none'}}>
+                <input type="radio" 
+                  id="cod" 
+                  name="payment-option" 
+                  value="cod" 
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  disabled={!isCodAvailable}
+                />
+                <label htmlFor="cod" className={isCodAvailable ? '' : 'disable'}><BsCashCoin />{isCodAvailable ? 'Cash on Delivery' : 'COD is not available to the location'}</label>
+              </div>
+            </div>
+
+            <div className="dialog-actions">
+              <Button onClick={handlePlaceOrder} disabled={isPlacingOrder}>
+                {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
+              </Button>
+              <Button
+                onClick={() => setShowBuyNowDialog(false)}
+                variant="secondary"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>
