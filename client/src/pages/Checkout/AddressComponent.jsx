@@ -49,13 +49,13 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
             required
             className="form-select"
           >
-            {/* <option value="">Select Country</option> */}
+            <option value="">Select Country</option>
             <option value='IN'>India</option>
-            {/* <option value='AU'>Australia</option>
+            <option value='AU'>Australia</option>
             <option value='CA'>Canada</option>
             <option value='DE'>Germany</option>
             <option value='GB'>United Kingdom</option>
-            <option value='US'>United States of America</option> */}
+            <option value='US'>United States of America</option>
           </select>
           <div className='row'>
             <Input 
@@ -116,7 +116,7 @@ const AddressComponent = ({newAddress, setNewAddress, handleSubmit, paymentMetho
           </div>
           <div className='payment-options'>
             <h2>Payment Method</h2>
-            <div className='option'>
+            <div className='option' style={{display: newAddress.country === ('IN' || 'India') ? 'block' : 'none'}}>
               <input 
                 type="radio" 
                 id="razorpay" 

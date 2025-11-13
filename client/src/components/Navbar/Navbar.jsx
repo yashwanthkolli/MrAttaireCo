@@ -88,7 +88,7 @@ const Navbar = () => {
               <span className='value cart'>{totalItems < 9 ? totalItems : '9+'}</span>
             }
           </Link>
-          {/* <CountrySelector /> */}
+          <CountrySelector />
       </div>
     </nav>
   );

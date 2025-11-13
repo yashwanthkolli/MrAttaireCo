@@ -17,7 +17,7 @@ const Checkout = () => {
     city: '',
     state: '',
     zipCode: '',
-    country: 'IN'
+    country: ''
   });
   const [paymentMethod, setPaymentMethod] = useState('razorpay')
   const [coupon, setCoupon] = useState('');
