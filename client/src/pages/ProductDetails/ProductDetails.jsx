@@ -47,7 +47,7 @@ const ProductDetails = () => {
     city: '',
     state: '',
     zipCode: '',
-    country: 'IN'
+    country: ''
   });
   const [paymentMethod, setPaymentMethod] = useState('razorpay');
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -398,13 +398,13 @@ const ProductDetails = () => {
                 required
                 className="form-select"
               >
-                {/* <option value="">Select Country</option> */}
+                <option value="">Select Country</option>
                 <option value='IN'>India</option>
-                {/* <option value='AU'>Australia</option>
+                <option value='AU'>Australia</option>
                 <option value='CA'>Canada</option>
                 <option value='DE'>Germany</option>
                 <option value='GB'>United Kingdom</option>
-                <option value='US'>United States of America</option> */}
+                <option value='US'>United States of America</option>
               </select>
               <div className='row'>
                 <Input 
