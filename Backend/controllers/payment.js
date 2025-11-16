@@ -150,7 +150,7 @@ exports.buyNowRazorpayOrder = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Requested quantity not available', 400));
     }
 
-    let price = product.price;
+    let price = await currencyService.getLocalizedPrice({basePrice: product.price}, country.code);
     let subtotal = price * quantity;
 
     // Apply coupon if any
@@ -166,11 +166,9 @@ exports.buyNowRazorpayOrder = asyncHandler(async (req, res, next) => {
       }
     }
 
-    // Convert to buyer’s currency
-    const convertedPrice = await convertPrice(subtotal, country);
     const convertedDiscount = await convertPrice(discount, country);
 
-    const amount = convertedPrice - convertedDiscount + shippingCost;
+    const amount = subtotal - convertedDiscount + shippingCost;
     const amountInSmallestUnit = Math.round(amount.toFixed(2) * 100);
 
     // Create Razorpay order

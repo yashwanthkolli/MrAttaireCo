@@ -469,14 +469,13 @@ const ProductDetails = () => {
 
             <div className='payment-options'>
               <h2>Payment Method</h2>
-              <div className='option'>
+              <div className='option' style={{display: address.country === ('IN' || 'India') ? 'block' : 'none'}}>
                 <input 
                   type="radio" 
                   id="razorpay" 
                   name="payment-option" 
                   value="razorpay" 
                   onChange={(e) => setPaymentMethod(e.target.value)} 
-                  defaultChecked 
                 />
                 <label htmlFor="razorpay"><SiPhonepe />Google Pay, Phone Pe or Other UPI</label>
               </div>
@@ -487,6 +486,7 @@ const ProductDetails = () => {
                   name="payment-option" 
                   value="razorpay" 
                   onChange={(e) => setPaymentMethod(e.target.value)} 
+                  defaultChecked 
                 />
                 <label htmlFor="razorpay"><SiRazorpay />Razorpay</label>
               </div>
