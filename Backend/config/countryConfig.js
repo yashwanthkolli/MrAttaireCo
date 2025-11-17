@@ -12,7 +12,7 @@ module.exports = {
       code: 'US',
       name: 'United States',
       currency: 'USD',
-      priceMultiplier: 2.7, 
+      priceMultiplier: 4.8, 
       symbol: '$',
       shippingAvailable: true
     },
@@ -20,7 +20,7 @@ module.exports = {
       code: 'CA',
       name: 'Canada',
       currency: 'CAD',
-      priceMultiplier: 2.1,
+      priceMultiplier: 3.65,
       symbol: 'CA$',
       shippingAvailable: true
     },
@@ -28,7 +28,7 @@ module.exports = {
       code: 'AU',
       name: 'Australia',
       currency: 'AUD',
-      priceMultiplier: 1.75,
+      priceMultiplier: 3.85,
       symbol: 'A$',
       shippingAvailable: true
     },
@@ -36,7 +36,7 @@ module.exports = {
       code: 'GB',
       name: 'United Kingdom',
       currency: 'GBP',
-      priceMultiplier: 4.4,
+      priceMultiplier: 7.8,
       symbol: '£',
       shippingAvailable: true
     },
@@ -44,7 +44,7 @@ module.exports = {
       code: 'DE',
       name: 'Germany',
       currency: 'EUR',
-      priceMultiplier: 2.9,
+      priceMultiplier: 5.1,
       symbol: '€',
       shippingAvailable: true
     }
