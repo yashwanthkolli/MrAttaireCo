@@ -20,7 +20,7 @@ module.exports = {
       code: 'CA',
       name: 'Canada',
       currency: 'CAD',
-      priceMultiplier: 3.65,
+      priceMultiplier: 3.7,
       symbol: 'CA$',
       shippingAvailable: true
     },
@@ -44,7 +44,7 @@ module.exports = {
       code: 'DE',
       name: 'Germany',
       currency: 'EUR',
-      priceMultiplier: 5.1,
+      priceMultiplier: 5.2,
       symbol: '€',
       shippingAvailable: true
     }
