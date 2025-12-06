@@ -351,7 +351,7 @@ const ProductDetails = () => {
             </span>
           </div>
           <div className={`details-section text ${isOpen ? 'open' : 'closed'}`}>
-            <p>• Free standard shipping on all orders over ₹1000.</p>
+            {/* <p>• Free standard shipping on all orders over ₹1000.</p> */}
             <p>• Orders typically ship within 1-2 business days.</p>
             <p>• Easy 7-day return policy.</p>
             <p>• Items must be unworn, unwashed, and with original tags.</p>
